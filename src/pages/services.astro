@@ -1,0 +1,755 @@
+---
+const navLinks = [
+  { href: "/services", label: "Services" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
+const plans = [
+  {
+    name: "BASIC",
+    price: "$750",
+    features: [
+      "Dedicated Content Vault",
+      "Content pillars & strategy",
+      "Scripting",
+      "Scheduling & posting",
+      "Profile optimization",
+      "Instagram only",
+      "1 filming session/mo, up to 2 hrs",
+      "Basic editing",
+      "Short-form video, 30-75 sec",
+      "4 videos/mo",
+      "1 custom video request/mo",
+      "1 strategy call/mo",
+    ],
+  },
+  {
+    name: "STANDARD",
+    price: "$1,500",
+    featured: true,
+    features: [
+      "Everything in Basic",
+      "Instagram & TikTok",
+      "Competitor & niche analysis",
+      "2 filming sessions/mo, up to 2 hrs each",
+      "Full & advanced editing with transitions, effects, color, AI video, motion graphics",
+      "Social Media Automation, 2 flows",
+      "8 videos/mo",
+      "2 custom video requests/mo",
+      "1 strategy call/mo",
+    ],
+  },
+  {
+    name: "PREMIUM",
+    price: "$3,000",
+    features: [
+      "Everything in Standard",
+      "Instagram, TikTok, YouTube & Facebook",
+      "3 filming sessions/mo, up to 2 hrs each",
+      "Advanced editing with AI video, motion graphics, color grading, sound design",
+      "Social Media Automation, 4 flows",
+      "16 videos/mo",
+      "4 custom video requests/mo",
+      "2 strategy calls/mo",
+    ],
+  },
+];
+
+const comparisonGroups = [
+  {
+    label: "Foundation",
+    rows: [
+      { feature: "Dedicated Content Vault", values: ["✓", "✓", "✓"] },
+      { feature: "Scripting", values: ["✓", "✓", "✓"] },
+      { feature: "Scheduling & posting", values: ["✓", "✓", "✓"] },
+      { feature: "Profile optimization", values: ["✓", "✓", "✓"] },
+    ],
+  },
+  {
+    label: "Strategy",
+    rows: [
+      { feature: "Content pillars & strategy", values: ["✓", "✓", "✓"] },
+      { feature: "Competitor & niche analysis", values: ["✗", "✓", "✓"] },
+      { feature: "Strategy calls/mo", values: ["1", "1", "2"] },
+    ],
+  },
+  {
+    label: "Platforms",
+    rows: [
+      { feature: "Instagram", values: ["✓", "✓", "✓"] },
+      { feature: "TikTok", values: ["✗", "✓", "✓"] },
+      { feature: "YouTube & Facebook", values: ["✗", "✗", "✓"] },
+    ],
+  },
+  {
+    label: "Production",
+    rows: [
+      { feature: "Filming sessions/mo, up to 2 hrs each", values: ["1", "2", "3"] },
+      { feature: "Short-form videos/mo (30-75 sec)", values: ["4", "8", "16"] },
+      { feature: "Custom video requests/mo", values: ["1", "2", "4"] },
+    ],
+  },
+  {
+    label: "Editing",
+    rows: [
+      { feature: "Basic editing", values: ["✓", "✓", "✓"] },
+      { feature: "Full & advanced editing", values: ["✗", "✓", "✓"] },
+    ],
+  },
+  {
+    label: "Automations",
+    rows: [
+      { feature: "Social Media Automation flows", values: ["—", "2", "4"] },
+    ],
+  },
+];
+
+const oneOffServices = [
+  { name: "Video editing (single video)", price: "$120" },
+  { name: "Filming", price: "$90/hr" },
+  { name: "Event package (filming + editing)", price: "Custom Quote" },
+  { name: "Social Media Automation flow setup (1 flow)", price: "$250" },
+];
+
+const addOns = [
+  { name: "Extra filming session", price: "$60/hr" },
+  { name: "Additional Social Media Automation flow", price: "$150" },
+  { name: "Extra edited video", price: "$90" },
+];
+
+const monthlyPrices = [750, 1500, 3000];
+const discountTiers = [
+  { term: "3 Months", discount: 0.05 },
+  { term: "6 Months", discount: 0.10 },
+  { term: "12 Months", discount: 0.15 },
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services & Pricing | Shockwave Studios</title>
+  <meta name="description" content="Social media management, video production, and Social Media Automation packages from Shockwave Studios." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+      <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
+    </a>
+    <nav class="nav">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        {navLinks.map(link => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="page-hero-inner">
+        <h1>Services & Pricing</h1>
+        <p class="subheadline">Pick the plan that fits where your business is right now.</p>
+      </div>
+    </section>
+
+    <section class="pricing-section pricing-section-navy">
+      <div class="pricing-grid">
+        {plans.map(plan => (
+          <div class={`pricing-card ${plan.featured ? "featured" : ""}`}>
+            {plan.featured && <p class="badge">Most Popular</p>}
+            <h3>{plan.name}</h3>
+            <p class="price">{plan.price}<span>/mo</span></p>
+            <ul class="feature-list">
+              {plan.features.map(f => <li>{f}</li>)}
+            </ul>
+            <a href="/contact" class="btn btn-primary">Get Started</a>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="comparison-section">
+      <div class="comparison-section-inner">
+        <h2>Package Comparison</h2>
+        <div class="comparison-wrap">
+          <div class="comparison-table">
+            <div class="comparison-row comparison-header">
+              <div class="comparison-feature"></div>
+              <div>BASIC</div>
+              <div>STANDARD</div>
+              <div>PREMIUM</div>
+            </div>
+            {comparisonGroups.map(group => (
+              <>
+                <div class="comparison-group-label">{group.label}</div>
+                {group.rows.map((row, i) => (
+                  <div class={`comparison-row ${i % 2 === 1 ? "alt" : ""}`}>
+                    <div class="comparison-feature">{row.feature}</div>
+                    {row.values.map(v => (
+                      <div class={v === "✓" ? "check" : v === "✗" ? "cross" : "value"}>{v}</div>
+                    ))}
+                  </div>
+                ))}
+              </>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="table-section table-section-navy">
+      <div class="table-section-inner">
+        <h2>Add-Ons</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Add-On</th><th>Price</th></tr></thead>
+            <tbody>
+              {addOns.map(a => (
+                <tr><td>{a.name}</td><td>{a.price}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="table-section">
+      <div class="table-section-inner">
+        <h2>Contract Discounts</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Commitment</th>
+                <th>Discount</th>
+                <th>Basic</th>
+                <th>Standard</th>
+                <th>Premium</th>
+              </tr>
+            </thead>
+            <tbody>
+              {discountTiers.map(tier => (
+                <tr>
+                  <td>{tier.term}</td>
+                  <td>{Math.round(tier.discount * 100)}% off</td>
+                  {monthlyPrices.map(price => (
+                    <td>${Math.round(price * (1 - tier.discount)).toLocaleString()}/mo</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="table-section table-section-navy">
+      <div class="table-section-inner">
+        <div class="section-break">
+          <h2>À La Carte Services</h2>
+          <p>Need something specific? These are available without a retainer.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Service</th><th>Price</th></tr></thead>
+            <tbody>
+              {oneOffServices.map(s => (
+                <tr><td>{s.name}</td><td>{s.price}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+        <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="footer-logo-img" />
+      </a>
+      <ul class="nav-links footer-links">
+        {navLinks.map(link => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+    </div>
+    <p class="copyright">&copy; {new Date().getFullYear()} Shockwave Studios. Melbourne, Florida.</p>
+  </footer>
+
+  <style>
+    :root {
+      --bg: #F4F7FC;
+      --bg-secondary: #FFFFFF;
+      --accent: #A8C5F0;
+      --primary: #1B3A6B;
+      --secondary: #5B8FD4;
+      --text: #1A1A2E;
+    }
+
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('/fonts/MonumentExtended-Regular.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('/fonts/MonumentExtended-Ultrabold.otf') format('opentype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    h1, h2, h3 {
+      font-family: 'Monument Extended', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #6B9FD4;
+    }
+
+    .eyebrow, .subheadline, .badge, .case-type, .comparison-group-label, th {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 88px;
+      overflow: hidden;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(168, 197, 240, 0.1);
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-img {
+      height: 192px;
+      width: auto;
+      display: block;
+    }
+
+    .footer-logo-img {
+      height: 160px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(168, 197, 240, 0.25);
+    }
+
+    .page-hero {
+      background: var(--bg-secondary);
+    }
+
+    .page-hero-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 5rem 5% 3rem;
+      text-align: center;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .subheadline {
+      font-size: 1.15rem;
+      color: rgba(26, 26, 46, 0.75);
+    }
+
+    .pricing-section {
+      padding: 2rem 5% 5rem;
+    }
+
+    .pricing-section-navy {
+      background: var(--primary);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1150px;
+      margin: 0 auto 1rem;
+      align-items: start;
+      padding-top: 1rem;
+    }
+
+    .pricing-card {
+      background: var(--bg-secondary);
+      border: 1px solid rgba(168, 197, 240, 0.1);
+      border-radius: 16px;
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(168, 197, 240, 0.35);
+      box-shadow: 0 16px 40px rgba(27, 58, 107, 0.35);
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent), 0 20px 50px rgba(168, 197, 240, 0.12);
+      transform: scale(1.03);
+    }
+
+    .pricing-card.featured:hover {
+      transform: scale(1.03) translateY(-6px);
+    }
+
+    .badge {
+      position: absolute;
+      top: -0.85rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: var(--bg);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+    }
+
+    .pricing-card h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .price {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+    }
+
+    .price span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: rgba(26, 26, 46, 0.6);
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-bottom: 2rem;
+      flex-grow: 1;
+    }
+
+    .feature-list li {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(168, 197, 240, 0.08);
+      font-size: 0.92rem;
+      color: rgba(26, 26, 46, 0.85);
+      line-height: 1.4;
+    }
+
+    .feature-list li:last-child { border-bottom: none; }
+
+    .comparison-section-inner {
+      padding: 1rem 5% 3rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .comparison-section h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .comparison-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(168, 197, 240, 0.1);
+    }
+
+    .comparison-table {
+      background: var(--bg-secondary);
+      min-width: 560px;
+    }
+
+    .comparison-row {
+      display: grid;
+      grid-template-columns: 2.2fr 1fr 1fr 1fr;
+      align-items: center;
+      border-bottom: 1px solid rgba(168, 197, 240, 0.08);
+    }
+
+    .comparison-row.alt {
+      background: rgba(168, 197, 240, 0.03);
+    }
+
+    .comparison-row > div {
+      padding: 0.85rem 1rem;
+      text-align: center;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .comparison-feature {
+      text-align: left !important;
+      font-weight: 500 !important;
+      color: rgba(26, 26, 46, 0.85);
+    }
+
+    .comparison-header {
+      background: var(--bg);
+      border-bottom: none;
+    }
+
+    .comparison-header > div {
+      color: var(--secondary);
+      letter-spacing: 0.04em;
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .comparison-group-label {
+      background: rgba(168, 197, 240, 0.06);
+      color: var(--accent);
+      padding: 0.6rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .check { color: var(--secondary); }
+    .cross { color: rgba(26, 26, 46, 0.25); }
+    .value { color: rgba(26, 26, 46, 0.9); }
+
+    .section-break {
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+
+    .section-break h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-break p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+    }
+
+    .table-section-inner {
+      padding: 3rem 5%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .table-section-navy {
+      background: var(--primary);
+    }
+
+    .table-section-navy h2 {
+      color: var(--accent);
+    }
+
+    .table-section h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(168, 197, 240, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-secondary);
+      min-width: 480px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid rgba(168, 197, 240, 0.08);
+      font-size: 0.95rem;
+    }
+
+    th {
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tbody tr {
+      transition: background 0.2s ease;
+    }
+
+    tbody tr:hover {
+      background: rgba(168, 197, 240, 0.05);
+    }
+
+    .site-footer {
+      padding: 1.5rem 5% 1.25rem;
+      border-top: 1px solid rgba(168, 197, 240, 0.1);
+      text-align: center;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem 2rem;
+    }
+
+    .copyright {
+      color: rgba(26, 26, 46, 0.4);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .logo-img { height: 144px; }
+
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .nav-links.open { max-height: 400px; }
+
+      .nav-links li {
+        width: 100%;
+        border-top: 1px solid rgba(168, 197, 240, 0.1);
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 1rem 5%;
+      }
+
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</body>
+</html>

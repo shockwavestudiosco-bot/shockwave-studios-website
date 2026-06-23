@@ -1,0 +1,429 @@
+---
+const navLinks = [
+  { href: "/services", label: "Services" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
+const paragraphs = [
+  "Hi, I'm Ashton Shock, founder of Shockwave Studios. I've been creating content since the first time I picked up a camera and figured out how to use an editing software. What started as a passion turned into something bigger: a marketing agency built on the belief that great content should do more than just look good. It should get you results.",
+  "I didn't get into this for the business. I got into it because I genuinely love creating. The process of taking an idea, putting a camera on it, and turning it into something people actually stop and watch, that's what drives me. Every client I work with gets that same energy. Every piece of content I make for you gets that same passion.",
+  "Based out of Melbourne, Florida, Shockwave Studios helps local businesses turn their social media into their number one source of leads. Video production, content strategy, scripting, and automation, all under one roof, all handled by someone who actually cares.",
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | Shockwave Studios</title>
+  <meta name="description" content="Meet Ashton Shock, founder of Shockwave Studios, a social media marketing agency based in Melbourne, Florida." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+      <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
+    </a>
+    <nav class="nav">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        {navLinks.map(link => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="page-hero-inner">
+        <h1>We're Not Your Typical Agency.</h1>
+      </div>
+    </section>
+
+    <section class="about-body-navy">
+      <div class="about-body">
+        {paragraphs.map(p => <p>{p}</p>)}
+      </div>
+    </section>
+
+    <section class="gallery-section">
+      <div class="gallery-section-inner">
+        <p class="gallery-eyebrow">Behind the Lens</p>
+        <div class="gallery-feature">
+          <img src="/about/photo-1.jpg" alt="Ashton reviewing footage on a camera screen during a content shoot" />
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-photo">
+            <img src="/about/photo-2.jpg" alt="On location filming a skate session" />
+          </div>
+          <div class="gallery-photo">
+            <img src="/about/photo-3.jpg" alt="Filming a youth sports session on the field" />
+          </div>
+          <div class="gallery-photo">
+            <img src="/about/photo-4.jpg" alt="Filming a surf lesson on the beach at sunset" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <h2>Ready to grow?</h2>
+      <a href="/contact" class="btn btn-primary">Book a Free Call</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+        <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="footer-logo-img" />
+      </a>
+      <ul class="nav-links footer-links">
+        {navLinks.map(link => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+    </div>
+    <p class="copyright">&copy; {new Date().getFullYear()} Shockwave Studios. Melbourne, Florida.</p>
+  </footer>
+
+  <style>
+    :root {
+      --bg: #F4F7FC;
+      --bg-secondary: #FFFFFF;
+      --accent: #A8C5F0;
+      --primary: #1B3A6B;
+      --secondary: #5B8FD4;
+      --text: #1A1A2E;
+    }
+
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('/fonts/MonumentExtended-Regular.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('/fonts/MonumentExtended-Ultrabold.otf') format('opentype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    h1, h2, h3 {
+      font-family: 'Monument Extended', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #6B9FD4;
+    }
+
+    .eyebrow, .subheadline, .badge, .case-type, .comparison-group-label, th {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 88px;
+      overflow: hidden;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(168, 197, 240, 0.1);
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-img {
+      height: 192px;
+      width: auto;
+      display: block;
+    }
+
+    .footer-logo-img {
+      height: 160px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(168, 197, 240, 0.25);
+    }
+
+    .page-hero {
+      background: var(--bg-secondary);
+    }
+
+    .page-hero-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 5rem 5% 2rem;
+      text-align: center;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .about-body-navy {
+      background: var(--primary);
+    }
+
+    .about-body {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem 5% 4rem;
+      animation: fadeUp 0.8s ease 0.1s both;
+    }
+
+    .about-body p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 1.5rem;
+    }
+
+    .gallery-section {
+      background: var(--bg);
+    }
+
+    .gallery-section-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 4rem 5%;
+    }
+
+    .gallery-eyebrow {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--secondary);
+      margin-bottom: 1.75rem;
+    }
+
+    .gallery-feature {
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(27, 58, 107, 0.12);
+      height: 360px;
+      margin-bottom: 1rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .gallery-photo {
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(27, 58, 107, 0.12);
+      height: 220px;
+    }
+
+    .gallery-feature img,
+    .gallery-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .gallery-feature:hover img,
+    .gallery-photo:hover img {
+      transform: scale(1.05);
+    }
+
+    .cta-section {
+      background: var(--bg-secondary);
+      text-align: center;
+      padding: 4rem 5%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(168, 197, 240, 0.1) 0%, rgba(168, 197, 240, 0) 70%);
+      pointer-events: none;
+    }
+
+    .cta-section h2 {
+      position: relative;
+    }
+
+    .cta-section a {
+      position: relative;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+    }
+
+    .site-footer {
+      padding: 1.5rem 5% 1.25rem;
+      border-top: 1px solid rgba(168, 197, 240, 0.1);
+      text-align: center;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem 2rem;
+    }
+
+    .copyright {
+      color: rgba(26, 26, 46, 0.4);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .logo-img { height: 144px; }
+
+      .gallery-feature {
+        height: 220px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .gallery-photo {
+        height: 200px;
+      }
+
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .nav-links.open { max-height: 400px; }
+
+      .nav-links li {
+        width: 100%;
+        border-top: 1px solid rgba(168, 197, 240, 0.1);
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 1rem 5%;
+      }
+    }
+  </style>
+</body>
+</html>

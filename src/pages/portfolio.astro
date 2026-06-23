@@ -1,0 +1,435 @@
+---
+const navLinks = [
+  { href: "/services", label: "Services" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
+const reels = [
+  "https://www.instagram.com/reel/DZxLWD4jRlj/",
+  "https://www.instagram.com/reel/DZVR3HVxF-w/",
+  "https://www.instagram.com/reel/DZB3HFpiajg/",
+  "https://www.instagram.com/reel/DY19LKeEUKi/",
+  "https://www.instagram.com/reel/DYSfXmoxHt_/",
+  "https://www.instagram.com/reel/DYASBuEzxwA/",
+  "https://www.instagram.com/reel/DXzn0_LTEGV/",
+  "https://www.instagram.com/reel/DXt-wjWE5Mv/",
+  "https://www.instagram.com/reel/DW9l2JiTEY1/",
+  "https://www.instagram.com/reel/DZiU7d1kvLX/",
+  "https://www.instagram.com/reel/DZfJvzBFfJN/",
+  "https://www.instagram.com/reel/DZOBd-rl6U4/",
+];
+
+const caseStudies = [
+  {
+    name: "PWO Training Center",
+    type: "Indoor surf & skate gym",
+    results: "82,000 organic views, 6,000 interactions, and 40 new leads over a 3-month engagement.",
+    services: [
+      "Content strategy & scripting",
+      "Weekly reel production",
+      "Social Media Automation",
+      "Brand voice development",
+    ],
+  },
+  {
+    name: "Markle Construction",
+    type: "Construction & real estate",
+    results: "Luxury property listing videos and Meta ads setup.",
+    services: [
+      "Owner spotlight video",
+      "Property listing reels",
+      "Meta Ads Manager setup",
+      "Social Media Automation",
+    ],
+  },
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio | Shockwave Studios</title>
+  <meta name="description" content="See real social media content Shockwave Studios has produced for businesses in Melbourne, Florida." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+      <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
+    </a>
+    <nav class="nav">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        {navLinks.map(link => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="page-hero-inner">
+        <h1>Content That Actually Performs.</h1>
+        <p class="subheadline">Real videos made for real businesses right here in Florida.</p>
+      </div>
+    </section>
+
+    <section class="reel-section reel-section-navy">
+      <div class="reel-section-inner">
+        <div class="reel-grid">
+          {reels.map(url => (
+            <div class="reel-embed">
+              <blockquote
+                class="instagram-media"
+                data-instgrm-permalink={url}
+                data-instgrm-version="14"
+                style="background:#FFFFFF; border:1px solid rgba(168, 197, 240,0.1); border-radius:12px; margin:0; width:100%;"
+              >
+              </blockquote>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="case-study-section">
+      <div class="case-study-section-inner">
+        <h2>Case Studies</h2>
+        <div class="case-grid">
+          {caseStudies.map(study => (
+            <div class="case-card">
+              <h3>{study.name}</h3>
+              <p class="case-type">{study.type}</p>
+              <p class="case-results">{study.results}</p>
+              <ul class="case-services">
+                {study.services.map(s => <li>{s}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+        <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="footer-logo-img" />
+      </a>
+      <ul class="nav-links footer-links">
+        {navLinks.map(link => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+    </div>
+    <p class="copyright">&copy; {new Date().getFullYear()} Shockwave Studios. Melbourne, Florida.</p>
+  </footer>
+
+  <script async src="//www.instagram.com/embed.js"></script>
+
+  <style>
+    :root {
+      --bg: #F4F7FC;
+      --bg-secondary: #FFFFFF;
+      --accent: #A8C5F0;
+      --primary: #1B3A6B;
+      --secondary: #5B8FD4;
+      --text: #1A1A2E;
+    }
+
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('/fonts/MonumentExtended-Regular.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('/fonts/MonumentExtended-Ultrabold.otf') format('opentype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    h1, h2, h3 {
+      font-family: 'Monument Extended', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #6B9FD4;
+    }
+
+    .eyebrow, .subheadline, .badge, .case-type, .comparison-group-label, th {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 88px;
+      overflow: hidden;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(168, 197, 240, 0.1);
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-img {
+      height: 192px;
+      width: auto;
+      display: block;
+    }
+
+    .footer-logo-img {
+      height: 160px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+    }
+
+    .page-hero {
+      background: var(--bg-secondary);
+    }
+
+    .page-hero-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 5rem 5% 3rem;
+      text-align: center;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .subheadline {
+      font-size: 1.15rem;
+      color: rgba(26, 26, 46, 0.75);
+    }
+
+    .reel-section-navy {
+      background: var(--primary);
+    }
+
+    .reel-section-inner {
+      padding: 1rem 5% 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .reel-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .reel-embed {
+      display: flex;
+      justify-content: center;
+      border-radius: 12px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .reel-embed:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(27, 58, 107, 0.4);
+    }
+
+    .case-study-section-inner {
+      padding: 3rem 5% 5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .case-study-section h2 {
+      text-align: center;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 800;
+      margin-bottom: 3rem;
+      letter-spacing: -0.02em;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .case-card {
+      background: var(--bg-secondary);
+      border: 1px solid rgba(168, 197, 240, 0.1);
+      border-radius: 16px;
+      padding: 2.25rem;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .case-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(168, 197, 240, 0.35);
+      box-shadow: 0 16px 40px rgba(27, 58, 107, 0.35);
+    }
+
+.case-card h3 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+      color: var(--accent);
+    }
+
+    .case-type {
+      color: rgba(26, 26, 46, 0.55);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .case-results {
+      font-weight: 600;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    .case-services {
+      list-style: none;
+    }
+
+    .case-services li {
+      padding: 0.5rem 0;
+      border-top: 1px solid rgba(168, 197, 240, 0.08);
+      font-size: 0.92rem;
+      color: rgba(26, 26, 46, 0.85);
+    }
+
+    .site-footer {
+      padding: 1.5rem 5% 1.25rem;
+      border-top: 1px solid rgba(168, 197, 240, 0.1);
+      text-align: center;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem 2rem;
+    }
+
+    .copyright {
+      color: rgba(26, 26, 46, 0.4);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 900px) {
+      .reel-grid { grid-template-columns: repeat(2, 1fr); }
+      .case-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .logo-img { height: 144px; }
+
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .nav-links.open { max-height: 400px; }
+
+      .nav-links li {
+        width: 100%;
+        border-top: 1px solid rgba(168, 197, 240, 0.1);
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 1rem 5%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .reel-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</body>
+</html>
