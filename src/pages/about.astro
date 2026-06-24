@@ -7,7 +7,7 @@ const navLinks = [
 ];
 
 const paragraphs = [
-  "Hi, I'm Ashton Shock, founder of Shockwave Studios. I've been creating content since the first time I picked up a camera and figured out how to use an editing software. What started as a passion turned into something bigger: a marketing agency built on the belief that great content should do more than just look good. It should get you results.",
+  "Hi, I'm Ashton Shock, founder of Shockwave Studios. Born and raised on the space coast of Florida, I grew up surfing, fishing, hooping, and more but throughout all that, I've been creating content. Since the first time I figured out how to use an editing software making gaming videos, to challenge videos and middle school skits. What started as a passion turned into something bigger: a marketing agency built on the belief that great content should do more than just look good. It should get you results.",
   "I didn't get into this for the business. I got into it because I genuinely love creating. The process of taking an idea, putting a camera on it, and turning it into something people actually stop and watch, that's what drives me. Every client I work with gets that same energy. Every piece of content I make for you gets that same passion.",
   "Based out of Melbourne, Florida, Shockwave Studios helps local businesses turn their social media into their number one source of leads. Video production, content strategy, scripting, and automation, all under one roof, all handled by someone who actually cares.",
 ];
@@ -48,8 +48,16 @@ const paragraphs = [
     </section>
 
     <section class="about-body-navy">
-      <div class="about-body">
-        {paragraphs.map(p => <p>{p}</p>)}
+      <div class="about-with-photos">
+        <div class="about-side-photo">
+          <img src="/about/ashton-left.jpg" alt="Ashton Shock" />
+        </div>
+        <div class="about-body">
+          {paragraphs.map(p => <p>{p}</p>)}
+        </div>
+        <div class="about-side-photo">
+          <img src="/about/ashton-right.png" alt="Ashton Shock" />
+        </div>
       </div>
     </section>
 
@@ -256,18 +264,38 @@ const paragraphs = [
       background: var(--primary);
     }
 
-    .about-body {
-      max-width: 700px;
+    .about-with-photos {
+      display: grid;
+      grid-template-columns: 300px 1fr 300px;
+      gap: 3.5rem;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 2rem 5% 4rem;
+      padding: 4rem 5% 5rem;
+      align-items: center;
+    }
+
+    .about-side-photo {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .about-side-photo img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .about-body {
       animation: fadeUp 0.8s ease 0.1s both;
     }
 
     .about-body p {
-      font-size: 1.1rem;
-      line-height: 1.8;
+      font-size: 1.15rem;
+      line-height: 1.85;
       color: rgba(255, 255, 255, 0.85);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
     }
 
     .gallery-section {
@@ -384,6 +412,14 @@ const paragraphs = [
 
     @media (max-width: 768px) {
       .logo-img { height: 144px; }
+
+      .about-with-photos {
+        grid-template-columns: 1fr;
+      }
+
+      .about-side-photo img {
+        height: 220px;
+      }
 
       .gallery-feature {
         height: 220px;

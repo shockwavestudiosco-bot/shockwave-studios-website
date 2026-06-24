@@ -45,23 +45,51 @@ const navLinks = [
       </div>
     </section>
 
+    <section class="our-work-section">
+      <h2>Our Work</h2>
+      <div class="our-work-grid">
+        <div class="work-item">
+          <video autoplay muted loop playsinline>
+            <source src="/videos/video-1.mp4" type="video/mp4" />
+          </video>
+          <p class="work-label">What We Do Video</p>
+        </div>
+        <div class="work-item">
+          <video autoplay muted loop playsinline>
+            <source src="/videos/video-2.mp4" type="video/mp4" />
+          </video>
+          <p class="work-label">Event Recap</p>
+        </div>
+        <div class="work-item">
+          <video autoplay muted loop playsinline>
+            <source src="/videos/video-3.mp4" type="video/mp4" />
+          </video>
+          <p class="work-label">Premium Listing Video</p>
+        </div>
+      </div>
+    </section>
+
     <section class="services-section">
       <h2>What We Do</h2>
       <p class="services-subheader">Every client starts with the same foundation.</p>
       <div class="card-grid">
         <div class="card">
+          <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           <h3>Strategy & Content Pillars</h3>
           <p>Every account we manage starts with a plan. We audit your profile first, bio, highlights, link, profile photo, and make sure it's set up to convert visitors into followers and followers into customers. Then we figure out who you're talking to, what they care about, and what kind of content makes them stop scrolling. From there we build a repeatable content system so your page always has a direction, not just random posts.</p>
         </div>
         <div class="card">
+          <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
           <h3>On-Site Filming & Production</h3>
           <p>We show up. Whether it's a daily session, a big event, or a product shoot, we handle the camera so you don't have to. Real locations, real people, real moments. Shot to perform on social, not just to look pretty.</p>
         </div>
         <div class="card">
+          <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           <h3>Editing & Scheduling</h3>
           <p>Raw footage becomes polished Reels, stories, and posts, edited for your brand, captioned for your audience, and scheduled so your page stays consistent without you lifting a finger.</p>
         </div>
         <div class="card">
+          <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <h3>Automated DM Flows</h3>
           <p>We set up systems that turn your comments and DMs into leads automatically. Someone comments on your Reel, they get a message. They ask about pricing, they get a response. It runs 24/7 so you never miss a lead while you're busy running your business.</p>
         </div>
@@ -246,28 +274,33 @@ const navLinks = [
     }
 
     .hero {
-      background: var(--bg-secondary);
+      position: relative;
+      background-image: url('/hero-bg.jpg');
+      background-size: cover;
+      background-position: right 50%;
+      background-repeat: no-repeat;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10, 20, 45, 0.6) 0%, rgba(10, 20, 45, 0.75) 100%);
+      z-index: 0;
     }
 
     .hero-inner {
       position: relative;
+      z-index: 1;
       max-width: 800px;
       margin: 0 auto;
-      padding: 6rem 5% 5rem;
+      padding: 8rem 5% 7rem;
       text-align: center;
       animation: fadeUp 0.8s ease both;
     }
 
     .hero-glow {
-      position: absolute;
-      top: -10%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(168, 197, 240, 0.14) 0%, rgba(168, 197, 240, 0) 70%);
-      pointer-events: none;
-      z-index: -1;
+      display: none;
     }
 
     .eyebrow {
@@ -285,6 +318,7 @@ const navLinks = [
       line-height: 1.15;
       letter-spacing: -0.02em;
       margin-bottom: 1.5rem;
+      color: #ffffff;
     }
 
     .hero h1 .highlight {
@@ -298,7 +332,7 @@ const navLinks = [
 
     .subheadline {
       font-size: 1.2rem;
-      color: rgba(26, 26, 46, 0.8);
+      color: rgba(255, 255, 255, 0.85);
       margin-bottom: 0.75rem;
       line-height: 1.6;
     }
@@ -315,6 +349,51 @@ const navLinks = [
       font-weight: 800;
       margin-bottom: 3rem;
       letter-spacing: -0.02em;
+    }
+
+    .our-work-section {
+      padding: 5rem 5%;
+      background: var(--bg);
+      text-align: center;
+    }
+
+    .our-work-section h2 {
+      color: var(--primary);
+      margin-bottom: 3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .our-work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .work-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .work-item video {
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid rgba(168, 197, 240, 0.2);
+    }
+
+    .work-label {
+      font-family: 'Monument Extended', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--primary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-align: center;
     }
 
     .services-section, .results-section {
@@ -368,6 +447,11 @@ const navLinks = [
       transform: translateY(-6px);
       border-color: rgba(168, 197, 240, 0.35);
       box-shadow: 0 16px 40px rgba(27, 58, 107, 0.35);
+    }
+
+    .card-icon {
+      color: var(--accent);
+      margin-bottom: 1rem;
     }
 
     .card h3 {
@@ -492,6 +576,10 @@ const navLinks = [
       .nav-links a {
         display: block;
         padding: 1rem 5%;
+      }
+
+      .our-work-grid {
+        grid-template-columns: 1fr;
       }
 
       .card-grid {
