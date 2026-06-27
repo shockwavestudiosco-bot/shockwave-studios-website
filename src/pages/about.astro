@@ -33,9 +33,16 @@ const paragraphs = [
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links">
-        {navLinks.map(link => (
-          <li><a href={link.href}>{link.label}</a></li>
-        ))}
+        <li class="has-dropdown">
+          <a href="/services">Services</a>
+          <ul class="dropdown">
+            <li><a href="/services">Social Media Management</a></li>
+            <li><a href="/videography">Videography</a></li>
+          </ul>
+        </li>
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -199,6 +206,38 @@ const paragraphs = [
     }
 
     .nav-links a:hover { color: var(--accent); }
+
+    .has-dropdown { position: relative; }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-secondary);
+      border: 1px solid rgba(168, 197, 240, 0.15);
+      border-radius: 10px;
+      min-width: 220px;
+      box-shadow: 0 8px 24px rgba(27, 58, 107, 0.12);
+      padding: 0.5rem 0;
+      list-style: none;
+      flex-direction: column;
+      z-index: 200;
+    }
+
+    .has-dropdown:hover .dropdown { display: flex; }
+
+    .dropdown li a {
+      display: block;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .dropdown li a:hover {
+      background: rgba(168, 197, 240, 0.08);
+      color: var(--accent);
+    }
 
     .nav-toggle {
       display: none;

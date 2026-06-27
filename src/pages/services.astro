@@ -147,9 +147,16 @@ const discountTiers = [
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links">
-        {navLinks.map(link => (
-          <li><a href={link.href}>{link.label}</a></li>
-        ))}
+        <li class="has-dropdown">
+          <a href="/services">Services</a>
+          <ul class="dropdown">
+            <li><a href="/services">Social Media Management</a></li>
+            <li><a href="/videography">Videography</a></li>
+          </ul>
+        </li>
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -157,7 +164,7 @@ const discountTiers = [
   <main>
     <section class="page-hero">
       <div class="page-hero-inner">
-        <h1>Services & Pricing</h1>
+        <h1>Social Media Management</h1>
         <p class="subheadline">Pick the plan that fits where your business is right now.</p>
       </div>
     </section>
@@ -207,21 +214,6 @@ const discountTiers = [
       </div>
     </section>
 
-    <section class="table-section table-section-navy">
-      <div class="table-section-inner">
-        <h2>Add-Ons</h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Add-On</th><th>Price</th></tr></thead>
-            <tbody>
-              {addOns.map(a => (
-                <tr><td>{a.name}</td><td>{a.price}</td></tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
 
     <section class="table-section">
       <div class="table-section-inner">
@@ -253,24 +245,6 @@ const discountTiers = [
       </div>
     </section>
 
-    <section class="table-section table-section-navy">
-      <div class="table-section-inner">
-        <div class="section-break">
-          <h2>À La Carte Services</h2>
-          <p>Need something specific? These are available without a retainer.</p>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Service</th><th>Price</th></tr></thead>
-            <tbody>
-              {oneOffServices.map(s => (
-                <tr><td>{s.name}</td><td>{s.price}</td></tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="site-footer">
@@ -378,6 +352,10 @@ const discountTiers = [
       list-style: none;
     }
 
+    .nav-links {
+      align-items: center;
+    }
+
     .nav-links a {
       font-weight: 500;
       font-size: 0.95rem;
@@ -385,6 +363,42 @@ const discountTiers = [
     }
 
     .nav-links a:hover { color: var(--accent); }
+
+    .has-dropdown {
+      position: relative;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-secondary);
+      border: 1px solid rgba(168, 197, 240, 0.15);
+      border-radius: 10px;
+      min-width: 220px;
+      box-shadow: 0 8px 24px rgba(27, 58, 107, 0.12);
+      padding: 0.5rem 0;
+      list-style: none;
+      flex-direction: column;
+      z-index: 200;
+    }
+
+    .has-dropdown:hover .dropdown {
+      display: flex;
+    }
+
+    .dropdown li a {
+      display: block;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .dropdown li a:hover {
+      background: rgba(168, 197, 240, 0.08);
+      color: var(--accent);
+    }
 
     .nav-toggle {
       display: none;
@@ -694,6 +708,26 @@ const discountTiers = [
       background: rgba(168, 197, 240, 0.05);
     }
 
+    .video-table td:last-child {
+      white-space: nowrap;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .video-cta-note {
+      text-align: center;
+      margin-top: 1.75rem;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .video-cta-note a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
     .site-footer {
       padding: 1.5rem 5% 1.25rem;
       border-top: 1px solid rgba(168, 197, 240, 0.1);
@@ -750,6 +784,21 @@ const discountTiers = [
       }
 
       .pricing-grid { grid-template-columns: 1fr; }
+
+      .has-dropdown .dropdown {
+        display: flex;
+        position: static;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        background: rgba(168, 197, 240, 0.05);
+        padding: 0;
+        min-width: unset;
+      }
+
+      .dropdown li a {
+        padding-left: 10%;
+      }
     }
   </style>
 </body>

@@ -1,0 +1,426 @@
+---
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Videography Services | Shockwave Studios</title>
+  <meta name="description" content="Professional videography services from Shockwave Studios. Real estate, events, brand promos, sports, and more. No monthly commitment." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+      <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
+    </a>
+    <nav class="nav">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li class="has-dropdown">
+          <a href="/services">Services</a>
+          <ul class="dropdown">
+            <li><a href="/services">Social Media Management</a></li>
+            <li><a href="/videography">Videography</a></li>
+          </ul>
+        </li>
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="page-hero-inner">
+        <h1>Videography Services</h1>
+        <p class="subheadline">No monthly commitment. Book what you need.</p>
+      </div>
+    </section>
+
+    <section class="packages-section">
+      <div class="packages-inner">
+        <h2>Popular Packages</h2>
+        <div class="packages-grid">
+          <div class="package-card">
+            <h3>Real Estate Listing Video</h3>
+            <p>Property tour video, professional edit</p>
+            <p class="package-price">Starting at $300</p>
+            <a href="/contact" class="btn btn-primary">Book Now</a>
+          </div>
+          <div class="package-card">
+            <h3>Event Coverage</h3>
+            <p>Full highlight reel / Recap video</p>
+            <p class="package-price">Starting at $450</p>
+            <a href="/contact" class="btn btn-primary">Book Now</a>
+          </div>
+          <div class="package-card">
+            <h3>Brand / Promo Video</h3>
+            <p>A cinematic video that tells your brand's story</p>
+            <p class="package-price">Starting at $300</p>
+            <a href="/contact" class="btn btn-primary">Book Now</a>
+          </div>
+          <div class="package-card">
+            <h3>Sports / Action</h3>
+            <p>Music-synced hype edit / Mixtape</p>
+            <p class="package-price">Starting at $250</p>
+            <a href="/contact" class="btn btn-primary">Book Now</a>
+          </div>
+          <div class="package-card">
+            <h3>Product / Service Showcase</h3>
+            <p>Short video showing off what your business offers</p>
+            <p class="package-price">Starting at $250</p>
+            <a href="/contact" class="btn btn-primary">Book Now</a>
+          </div>
+          <div class="package-card">
+            <h3>Menu Showcase</h3>
+            <p>Cinematic food and drink visuals that make people hungry</p>
+            <p class="package-price">Starting at $300</p>
+            <a href="/contact" class="btn btn-primary">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-note-section">
+      <p class="video-cta-note">Have something else in mind? <a href="/contact">Let's talk.</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+        <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="footer-logo-img" />
+      </a>
+      <ul class="nav-links footer-links">
+        <li><a href="/services">Social Media Management</a></li>
+        <li><a href="/videography">Videography</a></li>
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <p class="copyright">&copy; {new Date().getFullYear()} Shockwave Studios. Melbourne, Florida.</p>
+  </footer>
+
+  <style>
+    :root {
+      --bg: #F4F7FC;
+      --bg-secondary: #FFFFFF;
+      --accent: #A8C5F0;
+      --primary: #1B3A6B;
+      --secondary: #5B8FD4;
+      --text: #1A1A2E;
+    }
+
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('/fonts/MonumentExtended-Regular.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('/fonts/MonumentExtended-Ultrabold.otf') format('opentype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    h1, h2, h3 {
+      font-family: 'Monument Extended', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--primary);
+    }
+
+    .subheadline {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 88px;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(168, 197, 240, 0.1);
+    }
+
+    .logo-link { display: flex; align-items: center; height: 100%; overflow: hidden; }
+    .logo-img { height: 192px; width: auto; display: block; }
+    .footer-logo-img { height: 160px; width: auto; display: block; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .has-dropdown { position: relative; }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-secondary);
+      border: 1px solid rgba(168, 197, 240, 0.15);
+      border-radius: 10px;
+      min-width: 220px;
+      box-shadow: 0 8px 24px rgba(27, 58, 107, 0.12);
+      padding: 0.5rem 0;
+      list-style: none;
+      flex-direction: column;
+      z-index: 200;
+    }
+
+    .has-dropdown:hover .dropdown { display: flex; }
+
+    .dropdown li a {
+      display: block;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .dropdown li a:hover {
+      background: rgba(168, 197, 240, 0.08);
+      color: var(--accent);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--text); }
+
+    .page-hero {
+      background: var(--primary);
+    }
+
+    .page-hero-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 6rem 5% 5rem;
+      text-align: center;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+      color: #ffffff;
+    }
+
+    .subheadline {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+    }
+
+    .packages-section {
+      padding: 5rem 5%;
+      background: var(--bg-secondary);
+    }
+
+    .packages-inner {
+      max-width: 1150px;
+      margin: 0 auto;
+    }
+
+    .packages-inner h2 {
+      text-align: center;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      margin-bottom: 3rem;
+      color: var(--accent);
+    }
+
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .package-card {
+      background: var(--bg);
+      border: 1px solid rgba(168, 197, 240, 0.15);
+      border-radius: 16px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .package-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(168, 197, 240, 0.35);
+      box-shadow: 0 16px 40px rgba(27, 58, 107, 0.15);
+    }
+
+    .package-card h3 {
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+
+    .package-card p {
+      font-size: 0.92rem;
+      color: rgba(26, 26, 46, 0.7);
+      flex-grow: 1;
+    }
+
+    .package-price {
+      font-size: 1.4rem !important;
+      font-weight: 800;
+      color: var(--primary) !important;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(168, 197, 240, 0.25);
+    }
+
+    .cta-note-section {
+      padding: 3rem 5% 4rem;
+      background: var(--primary);
+      text-align: center;
+    }
+
+    .video-cta-note {
+      font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+      color: rgba(255, 255, 255, 0.8);
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+    }
+
+    .video-cta-note a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .site-footer {
+      padding: 1.5rem 5% 1.25rem;
+      border-top: 1px solid rgba(168, 197, 240, 0.1);
+      text-align: center;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem 2rem;
+    }
+
+    .copyright {
+      color: rgba(26, 26, 46, 0.4);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .logo-img { height: 144px; }
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .nav-links.open { max-height: 500px; }
+
+      .nav-links li {
+        width: 100%;
+        border-top: 1px solid rgba(168, 197, 240, 0.1);
+      }
+
+      .nav-links a { display: block; padding: 1rem 5%; }
+
+      .packages-grid { grid-template-columns: 1fr; }
+
+      .has-dropdown .dropdown {
+        display: flex;
+        position: static;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        background: rgba(168, 197, 240, 0.05);
+        padding: 0;
+        min-width: unset;
+      }
+
+      .dropdown li a { padding-left: 10%; }
+    }
+  </style>
+</body>
+</html>
