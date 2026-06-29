@@ -9,7 +9,8 @@ const navLinks = [
 const plans = [
   {
     name: "BASIC",
-    price: "$750",
+    price: "$600",
+    description: "For businesses that are ready to show up online but don't know where to start. We build your content strategy, film, edit, and post for you every month. You focus on running your business, we handle the rest.",
     features: [
       "Dedicated Content Vault",
       "Content pillars & strategy",
@@ -27,8 +28,9 @@ const plans = [
   },
   {
     name: "STANDARD",
-    price: "$1,500",
+    price: "$1,250",
     featured: true,
+    description: "For businesses that want to grow faster and start turning followers into actual leads. We expand to more platforms, go deeper on strategy, and set up automations that capture leads for you while you sleep.",
     features: [
       "Everything in Basic",
       "Instagram & TikTok",
@@ -43,7 +45,8 @@ const plans = [
   },
   {
     name: "PREMIUM",
-    price: "$3,000",
+    price: "$2,750",
+    description: "For businesses that are serious about owning their market online. Maximum content, maximum platforms, and full automation so your social media is working for you around the clock.",
     features: [
       "Everything in Standard",
       "Instagram, TikTok, YouTube & Facebook",
@@ -119,7 +122,7 @@ const addOns = [
   { name: "Extra edited video", price: "$90" },
 ];
 
-const monthlyPrices = [750, 1500, 3000];
+const monthlyPrices = [600, 1250, 2750];
 const discountTiers = [
   { term: "3 Months", discount: 0.05 },
   { term: "6 Months", discount: 0.10 },
@@ -171,14 +174,21 @@ const discountTiers = [
 
     <section class="pricing-section pricing-section-navy">
       <div class="pricing-grid">
-        {plans.map(plan => (
+        {plans.map((plan, i) => (
           <div class={`pricing-card ${plan.featured ? "featured" : ""}`}>
             {plan.featured && <p class="badge">Most Popular</p>}
             <h3>{plan.name}</h3>
             <p class="price">{plan.price}<span>/mo</span></p>
-            <ul class="feature-list">
-              {plan.features.map(f => <li>{f}</li>)}
-            </ul>
+            <p class="plan-description">{plan.description}</p>
+            <div class="features-dropdown">
+              <button class="features-toggle" onclick={`this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')`}>
+                See what's included
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <ul class="feature-list">
+                {plan.features.map(f => <li>{f}</li>)}
+              </ul>
+            </div>
             <a href="https://calendly.com/shockwavestudios-co/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Get Started</a>
           </div>
         ))}
@@ -541,10 +551,55 @@ const discountTiers = [
       color: rgba(26, 26, 46, 0.6);
     }
 
-    .feature-list {
-      list-style: none;
+    .plan-description {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: rgba(26, 26, 46, 0.7);
+      margin-bottom: 1.25rem;
+    }
+
+    .features-dropdown {
       margin-bottom: 2rem;
       flex-grow: 1;
+    }
+
+    .features-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--secondary);
+      padding: 0;
+      font-family: inherit;
+      transition: color 0.2s ease;
+    }
+
+    .features-toggle:hover { color: var(--primary); }
+
+    .features-toggle svg {
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .features-toggle.open svg {
+      transform: rotate(180deg);
+    }
+
+    .feature-list {
+      list-style: none;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, margin-top 0.3s ease;
+      margin-top: 0;
+    }
+
+    .feature-list.open {
+      max-height: 600px;
+      margin-top: 0.75rem;
     }
 
     .feature-list li {
@@ -556,6 +611,7 @@ const discountTiers = [
     }
 
     .feature-list li:last-child { border-bottom: none; }
+
 
     .comparison-section-inner {
       padding: 1rem 5% 3rem;
