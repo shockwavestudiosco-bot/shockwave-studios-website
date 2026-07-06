@@ -1,0 +1,53 @@
+---
+const { text = "Ready to grow? Let's talk." } = Astro.props;
+const calendlyUrl = "https://calendly.com/shockwavestudios-co/30min";
+---
+<section class="bottom-cta-section">
+  <div class="bottom-cta-inner">
+    <p class="bottom-cta-text">{text}</p>
+    <a href={calendlyUrl} target="_blank" rel="noopener noreferrer" class="bottom-cta-btn">Book a Free Call</a>
+  </div>
+</section>
+
+<style>
+  .bottom-cta-section {
+    background: #1B3A6B;
+    padding: 4rem 5%;
+    text-align: center;
+  }
+
+  .bottom-cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .bottom-cta-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.4;
+  }
+
+  .bottom-cta-btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    border-radius: 999px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    background: #A8C5F0;
+    color: #1B3A6B;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .bottom-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(168, 197, 240, 0.35);
+  }
+</style>
