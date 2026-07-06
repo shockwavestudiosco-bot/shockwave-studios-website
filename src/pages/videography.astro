@@ -85,12 +85,10 @@ import BottomCTA from '../components/BottomCTA.astro';
             <a href="https://calendly.com/shockwavestudios-co/30min?a1=Menu Showcase" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book Now</a>
           </div>
         </div>
+        <p class="video-cta-note">Have something else in mind? <a href="/contact">Let's talk.</a></p>
       </div>
     </section>
 
-    <section class="cta-note-section">
-      <p class="video-cta-note">Have something else in mind? <a href="/contact">Let's talk.</a></p>
-    </section>
     <BottomCTA text="Ready to book? Let's make something great." />
   </main>
 
@@ -342,21 +340,17 @@ import BottomCTA from '../components/BottomCTA.astro';
       box-shadow: 0 8px 24px rgba(168, 197, 240, 0.25);
     }
 
-    .cta-note-section {
-      padding: 3rem 5% 4rem;
-      background: var(--primary);
-      text-align: center;
-    }
-
     .video-cta-note {
-      font-size: clamp(1.2rem, 2.5vw, 1.75rem);
-      color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: rgba(26, 26, 46, 0.6);
       font-family: 'Playfair Display', serif;
       font-style: italic;
     }
 
     .video-cta-note a {
-      color: var(--accent);
+      color: var(--secondary);
       font-weight: 700;
       text-decoration: underline;
       text-underline-offset: 4px;
