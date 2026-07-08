@@ -17,6 +17,10 @@ pnpm-debug.log*
 .env
 .env.production
 
+# client strategy files — private, never pushed
+strategy-system/clients/*
+!strategy-system/clients/.gitkeep
+
 # macOS-specific files
 .DS_Store
 

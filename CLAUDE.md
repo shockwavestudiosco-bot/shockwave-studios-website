@@ -1,3 +1,7 @@
+## Business brain
+
+Before changing any copy, pricing, stats, or client references on this site, read `C:\Users\qshoc\business-brain\CLAUDE.md` and the files it points to — it holds the current pricing, the approved results/claims list, and brand-voice rules (e.g. never say "ManyChat" publicly). If a change here alters pricing or claims, update the brain's reference notes too.
+
 ## Development
 
 When starting the dev server, use background mode:
