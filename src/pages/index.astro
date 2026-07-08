@@ -1,4 +1,5 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import BottomCTA from '../components/BottomCTA.astro';
 const navLinks = [
   { href: "/services", label: "Services" },
@@ -7,18 +8,10 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 ---
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Shockwave Studios | Social Media Marketing in Melbourne, FL</title>
-  <meta name="description" content="Shockwave Studios is a social media marketing agency in Melbourne, Florida offering content, video production, and automation services." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-</head>
-<body>
+<Layout
+  title="Shockwave Studios | Social Media Marketing in Melbourne, FL"
+  description="Shockwave Studios is a social media marketing agency in Melbourne, Florida offering content, video production, and automation services."
+>
   <header class="site-header">
     <a href="/" class="logo-link" aria-label="Shockwave Studios home">
       <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
@@ -755,5 +748,4 @@ const navLinks = [
       }
     }
   </style>
-</body>
-</html>
+</Layout>

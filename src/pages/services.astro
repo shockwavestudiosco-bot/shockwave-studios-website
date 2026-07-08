@@ -1,4 +1,5 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import BottomCTA from '../components/BottomCTA.astro';
 const navLinks = [
   { href: "/services", label: "Services" },
@@ -130,18 +131,10 @@ const discountTiers = [
   { term: "12 Months", discount: 0.15 },
 ];
 ---
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Services & Pricing | Shockwave Studios</title>
-  <meta name="description" content="Social media management, video production, and Social Media Automation packages from Shockwave Studios." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-</head>
-<body>
+<Layout
+  title="Services & Pricing | Shockwave Studios"
+  description="Social media management, video production, and Social Media Automation packages from Shockwave Studios."
+>
   <header class="site-header">
     <a href="/" class="logo-link" aria-label="Shockwave Studios home">
       <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
@@ -858,5 +851,4 @@ const discountTiers = [
       }
     }
   </style>
-</body>
-</html>
+</Layout>

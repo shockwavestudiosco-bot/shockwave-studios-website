@@ -1,18 +1,11 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import BottomCTA from '../components/BottomCTA.astro';
 ---
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Videography Services | Shockwave Studios</title>
-  <meta name="description" content="Professional videography services from Shockwave Studios. Real estate, events, brand promos, sports, and more. No monthly commitment." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-</head>
-<body>
+<Layout
+  title="Videography Services | Shockwave Studios"
+  description="Professional videography services from Shockwave Studios. Real estate, events, brand promos, sports, and more. No monthly commitment."
+>
   <header class="site-header">
     <a href="/" class="logo-link" aria-label="Shockwave Studios home">
       <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
@@ -442,5 +435,4 @@ import BottomCTA from '../components/BottomCTA.astro';
       .dropdown li a { padding-left: 10%; }
     }
   </style>
-</body>
-</html>
+</Layout>
