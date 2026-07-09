@@ -49,6 +49,69 @@ const navLinks = [
         </div>
       </div>
     </section>
+
+    <section class="contact-form-section">
+      <div class="contact-form-inner">
+        <h2>Not Ready For A Call? No Problem.</h2>
+        <p class="form-subheader">Send a quick message and we'll get back to you.</p>
+
+        <form id="contact-form" class="contact-form">
+          <input type="hidden" name="access_key" value="34ebf4bb-11a8-4f19-b8ad-a58aca6b600e" />
+          <input type="hidden" name="subject" value="New message from shockwavestudios.co" />
+          <input type="hidden" name="from_name" value="Shockwave Studios Website" />
+          <input
+            type="checkbox"
+            name="botcheck"
+            class="botcheck"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          />
+
+          <div class="form-row">
+            <label for="name">Name <span class="required">*</span></label>
+            <input type="text" id="name" name="name" required />
+          </div>
+
+          <div class="form-row">
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required />
+          </div>
+
+          <div class="form-row">
+            <label for="handle">Business / Instagram Handle</label>
+            <input type="text" id="handle" name="handle" placeholder="@yourbusiness" />
+          </div>
+
+          <div class="form-row">
+            <label for="need">What do you need help with?</label>
+            <select id="need" name="need">
+              <option value="" selected disabled>Select one</option>
+              <option value="Social Media Management">Social Media Management</option>
+              <option value="Videography">Videography</option>
+              <option value="Both">Both</option>
+              <option value="Not sure yet">Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="4" placeholder="What's going on?"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary form-submit">
+            <span class="btn-text">Send Message</span>
+          </button>
+
+          <p id="form-error" class="form-error" hidden>Something went wrong. Try again, or email us directly at shockwavestudios.co@gmail.com.</p>
+        </form>
+
+        <div id="form-success" class="form-success" hidden>
+          <h3>Got it.</h3>
+          <p>I'll get back to you within 24 hours.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -64,6 +127,49 @@ const navLinks = [
     </div>
     <p class="copyright">&copy; {new Date().getFullYear()} Shockwave Studios. Melbourne, Florida.</p>
   </footer>
+
+  <script>
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const successBox = document.getElementById('form-success');
+    const errorBox = document.getElementById('form-error');
+
+    if (form && successBox && errorBox) {
+      const submitBtn = form.querySelector('.form-submit') as HTMLButtonElement;
+      const btnText = submitBtn.querySelector('.btn-text') as HTMLElement;
+      const honeypot = form.querySelector('.botcheck') as HTMLInputElement;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Bots fill hidden fields; humans never see this one. Drop silently, no submission.
+        if (honeypot.checked) return;
+
+        errorBox.hidden = true;
+        submitBtn.disabled = true;
+        btnText.textContent = 'Sending...';
+
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(form))),
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            form.hidden = true;
+            successBox.hidden = false;
+          } else {
+            throw new Error(data.message || 'Submission failed');
+          }
+        } catch {
+          errorBox.hidden = false;
+          submitBtn.disabled = false;
+          btnText.textContent = 'Send Message';
+        }
+      });
+    }
+  </script>
 
   <style>
     :root {
@@ -322,6 +428,148 @@ const navLinks = [
       color: rgba(26, 26, 46, 0.6);
       font-size: 0.95rem;
       margin-bottom: 0.3rem;
+    }
+
+    .contact-form-section {
+      background: var(--bg);
+      padding: 5rem 5% 6rem;
+    }
+
+    .contact-form-inner {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .contact-form-inner h2 {
+      text-align: center;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .form-subheader {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: rgba(26, 26, 46, 0.6);
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-form {
+      background: var(--bg-secondary);
+      border: 1px solid rgba(168, 197, 240, 0.15);
+      border-radius: 16px;
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact-form[hidden] {
+      display: none;
+    }
+
+    .botcheck {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-row label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .required {
+      color: var(--secondary);
+    }
+
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--text);
+      background: #FFFFFF;
+      border: 1px solid rgba(168, 197, 240, 0.3);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-row textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-row input:focus,
+    .form-row select:focus,
+    .form-row textarea:focus {
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(168, 197, 240, 0.25);
+    }
+
+    .form-submit {
+      width: 100%;
+      border: none;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    .form-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .form-error {
+      color: var(--primary);
+      background: rgba(91, 143, 212, 0.08);
+      border-left: 3px solid var(--primary);
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-top: -0.5rem;
+    }
+
+    .form-success {
+      background: var(--bg-secondary);
+      border: 1px solid rgba(168, 197, 240, 0.15);
+      border-radius: 16px;
+      padding: 3rem 2.25rem;
+      text-align: center;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .form-success h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .form-success p {
+      color: rgba(26, 26, 46, 0.75);
+      font-size: 1.05rem;
+    }
+
+    @media (max-width: 768px) {
+      .contact-form-section {
+        padding: 3.5rem 5% 4rem;
+      }
+
+      .contact-form {
+        padding: 1.75rem;
+      }
     }
 
     .site-footer {
