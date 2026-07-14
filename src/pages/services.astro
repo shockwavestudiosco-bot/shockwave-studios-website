@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BottomCTA from '../components/BottomCTA.astro';
+import InstagramLink from '../components/InstagramLink.astro';
 const navLinks = [
   { href: "/services", label: "Services" },
   { href: "/portfolio", label: "Portfolio" },
@@ -261,6 +262,7 @@ const discountTiers = [
           <li><a href={link.href}>{link.label}</a></li>
         ))}
       </ul>
+      <InstagramLink />
     </div>
     <p class="copyright">&copy; {new Date().getFullYear()} Shockwave Studios. Melbourne, Florida.</p>
   </footer>
