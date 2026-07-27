@@ -34,12 +34,16 @@ import InstagramLink from '../components/InstagramLink.astro';
     <section class="page-hero">
       <div class="page-hero-inner">
         <h1>Videography Services</h1>
-        <p class="subheadline">No monthly commitment. Book what you need.</p>
       </div>
     </section>
 
     <section class="packages-section">
       <div class="packages-inner">
+        <div class="custom-project-box">
+          <h2 class="custom-project-title">Custom Project</h2>
+          <p>Need specific videos, coverage, or something you don't see here? If it can be filmed, we can film it. Let's talk and figure out exactly what we can do for you.</p>
+          <a href="https://calendly.com/shockwavestudios-co/30min?a1=Custom Project" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Let's Talk</a>
+        </div>
         <h2>Popular Packages</h2>
         <div class="packages-grid">
           <div class="package-card">
@@ -280,6 +284,45 @@ import InstagramLink from '../components/InstagramLink.astro';
       font-size: clamp(1.6rem, 4vw, 2.2rem);
       margin-bottom: 3rem;
       color: var(--accent);
+    }
+
+    .custom-project-box {
+      background: var(--primary);
+      border: 1px solid rgba(168, 197, 240, 0.25);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      text-align: center;
+      margin-bottom: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 16px 48px rgba(27, 58, 107, 0.25);
+    }
+
+    .custom-project-box .custom-project-title {
+      color: var(--accent);
+      margin-bottom: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .custom-project-box p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1.15rem;
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    .custom-project-box .btn {
+      margin-top: 0.5rem;
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    .custom-project-box .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(168, 197, 240, 0.4);
     }
 
     .packages-grid {

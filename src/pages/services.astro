@@ -12,51 +12,51 @@ const navLinks = [
 const plans = [
   {
     name: "BASIC",
-    price: "$600",
-    description: "For businesses that are ready to show up online but don't know where to start. We build your content strategy, film, edit, and post for you every month. You focus on running your business, we handle the rest.",
+    price: "$1,200",
+    description: "10 videos a month plus 1 custom requested video. A full page revamp with simply strategy, scripting and editing. Perfect for small businesses ready to show up online and build an audience, expect slow but steady traffic with room to grow.",
     features: [
       "Dedicated Content Vault",
       "Content pillars & strategy",
       "Scripting",
       "Scheduling & posting",
       "Profile optimization",
-      "Instagram only",
+      "1 platform",
       "1 filming session/mo, up to 2 hrs",
       "Basic editing",
-      "Short-form video, 30-75 sec",
-      "4 videos/mo",
+      "Short-form video, 10-60 sec",
+      "10 videos/mo",
       "1 custom video request/mo",
       "1 strategy call/mo",
     ],
   },
   {
     name: "STANDARD",
-    price: "$1,250",
+    price: "$2,100",
     featured: true,
-    description: "For businesses that want to grow faster and start turning followers into actual leads. We expand to more platforms, go deeper on strategy, and set up automations that capture leads for you while you sleep.",
+    description: "20 videos a month plus 2 custom requested videos. An in-depth competitor and niche analysis to perfect your social media strategy. Perfect for businesses ready to grow faster on more platforms and turn followers into leads, expect consistent growth with automations capturing leads while you sleep.",
     features: [
       "Everything in Basic",
-      "Instagram & TikTok",
+      "2 platforms",
       "Competitor & niche analysis",
       "2 filming sessions/mo, up to 2 hrs each",
       "Advanced editing",
       "Social Media Automation, 2 flows",
-      "8 videos/mo",
+      "20 videos/mo",
       "2 custom video requests/mo",
       "1 strategy call/mo",
     ],
   },
   {
     name: "PREMIUM",
-    price: "$2,750",
-    description: "For businesses that are serious about owning their market online. Maximum content, maximum platforms, and full automation so your social media is working for you around the clock.",
+    price: "$3,000",
+    description: "30 videos a month plus 4 custom requested videos. Full production for your business, virality won't be hard to get on this plan! Perfect for businesses serious about owning their market online, expect maximum content across every platform with full automation working around the clock.",
     features: [
       "Everything in Standard",
-      "Instagram, TikTok, YouTube & Facebook",
+      "4 platforms",
       "3 filming sessions/mo, up to 2 hrs each",
       "Advanced editing",
       "Social Media Automation, 4 flows",
-      "16 videos/mo",
+      "30 videos/mo",
       "4 custom video requests/mo",
       "2 strategy calls/mo",
     ],
@@ -84,16 +84,14 @@ const comparisonGroups = [
   {
     label: "Platforms",
     rows: [
-      { feature: "Instagram", values: ["✓", "✓", "✓"] },
-      { feature: "TikTok", values: ["✗", "✓", "✓"] },
-      { feature: "YouTube & Facebook", values: ["✗", "✗", "✓"] },
+      { feature: "Platforms", values: ["1", "2", "4"] },
     ],
   },
   {
     label: "Production",
     rows: [
       { feature: "Filming sessions/mo, up to 2 hrs each", values: ["1", "2", "3"] },
-      { feature: "Short-form videos/mo (30-75 sec)", values: ["4", "8", "16"] },
+      { feature: "Short-form videos/mo (10-60 sec)", values: ["10", "20", "30"] },
       { feature: "Custom video requests/mo", values: ["1", "2", "4"] },
     ],
   },
@@ -125,7 +123,7 @@ const addOns = [
   { name: "Extra edited video", price: "$90" },
 ];
 
-const monthlyPrices = [600, 1250, 2750];
+const monthlyPrices = [1200, 2100, 3000];
 const discountTiers = [
   { term: "3 Months", discount: 0.05 },
   { term: "6 Months", discount: 0.10 },
