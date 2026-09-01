@@ -1058,6 +1058,21 @@ const reviews = [
         padding: 1rem 5%;
       }
 
+      /* Hover cannot open a submenu on touch, so the arm links sit open
+         inside the collapsed menu instead of hiding behind :hover. */
+      .has-dropdown .dropdown {
+        display: flex;
+        position: static;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        background: rgba(168, 197, 240, 0.05);
+        padding: 0;
+        min-width: unset;
+      }
+
+      .dropdown li a { padding-left: 10%; }
+
       .our-work-grid {
         column-count: 1;
       }
