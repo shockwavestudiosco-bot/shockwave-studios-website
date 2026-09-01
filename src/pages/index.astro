@@ -15,9 +15,11 @@ const navLinks = [
 // public/videos/ (keep it under 20MB for Cloudflare Pages) and change the
 // src and label here. Order on the page follows this list.
 const workVideos = [
-  { slug: "missy-promo",       label: "Service Showcase", orientation: "portrait" },
-  { slug: "driftline-roofing", label: "Talking Head",     orientation: "landscape" },
-  { slug: "fca-beach",         label: "Event Recap",      orientation: "landscape" },
+  { slug: "missy-promo",       label: "Service Showcase",   orientation: "portrait" },
+  { slug: "driftline-roofing", label: "Talking Head",       orientation: "landscape" },
+  { slug: "fca-beach",         label: "Event Recap",        orientation: "landscape" },
+  { slug: "marlo",             label: "Vlog",               orientation: "landscape" },
+  { slug: "hurricane-pools",   label: "Service Walkthrough", orientation: "portrait" },
 ];
 
 const reviews = [
@@ -494,18 +496,19 @@ const reviews = [
     }
 
     .our-work-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      align-items: start;
-      gap: 2rem;
+      column-count: 3;
+      column-gap: 2rem;
       max-width: 1100px;
       margin: 0 auto;
+      text-align: left;
     }
 
     .work-item {
+      break-inside: avoid;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
+      margin: 0 0 2rem;
     }
 
     .work-video-btn {
@@ -1019,6 +1022,10 @@ const reviews = [
       }
     }
 
+    @media (max-width: 900px) {
+      .our-work-grid { column-count: 2; }
+    }
+
     @media (max-width: 768px) {
       .logo-img { height: 144px; }
 
@@ -1052,7 +1059,7 @@ const reviews = [
       }
 
       .our-work-grid {
-        grid-template-columns: 1fr;
+        column-count: 1;
       }
 
       .card-grid {
