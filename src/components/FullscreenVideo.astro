@@ -1,0 +1,85 @@
+---
+/**
+ * Wires every `.fs-video` button on the page.
+ *
+ * Click or tap takes that button's video full screen with sound. Coming back
+ * out restores it: videos marked `data-loop="true"` resume their muted
+ * autoplay loop, the rest pause and rewind to their poster frame.
+ *
+ * Where the Fullscreen API is blocked, the click plays the video with sound
+ * in place rather than doing nothing at all.
+ */
+---
+<script>
+  const buttons = [...document.querySelectorAll('.fs-video')];
+  let lastFullscreenVideo = null;
+
+  function requestFullscreen(video) {
+    if (video.requestFullscreen) return video.requestFullscreen();
+    if (video.webkitRequestFullscreen) return video.webkitRequestFullscreen();
+    // iOS Safari only ever allows this on the video element itself
+    if (video.webkitEnterFullscreen) return video.webkitEnterFullscreen();
+    return Promise.reject(new Error('unsupported'));
+  }
+
+  function enterSound(video) {
+    video.dataset.soundOn = 'true';
+    video.muted = false;
+    video.controls = true;
+    video.play().catch(() => {});
+  }
+
+  function exitSound(video) {
+    video.dataset.soundOn = 'false';
+    video.muted = true;
+    video.controls = false;
+    if (video.dataset.loop === 'true') {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+      video.currentTime = 0;
+    }
+  }
+
+  // Only ever touches the video that actually entered or left full screen, so
+  // a video playing with sound in place is never reset behind its back.
+  function onFullscreenChange() {
+    const active = document.fullscreenElement || document.webkitFullscreenElement || null;
+    if (active && active.tagName === 'VIDEO') {
+      lastFullscreenVideo = active;
+      enterSound(active);
+    } else if (lastFullscreenVideo) {
+      exitSound(lastFullscreenVideo);
+      lastFullscreenVideo = null;
+    }
+  }
+
+  function toggleSound(video) {
+    video.dataset.soundOn === 'true' ? exitSound(video) : enterSound(video);
+  }
+
+  buttons.forEach(btn => {
+    const video = btn.querySelector('video');
+    if (!video) return;
+
+    btn.addEventListener('click', () => {
+      let result;
+      try {
+        result = requestFullscreen(video);
+      } catch (e) {
+        toggleSound(video);
+        return;
+      }
+      if (result && typeof result.catch === 'function') {
+        result.catch(() => toggleSound(video));
+      }
+    });
+
+    // iOS fires these instead of fullscreenchange
+    video.addEventListener('webkitbeginfullscreen', () => enterSound(video));
+    video.addEventListener('webkitendfullscreen', () => exitSound(video));
+  });
+
+  document.addEventListener('fullscreenchange', onFullscreenChange);
+  document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+</script>

@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import BottomCTA from '../components/BottomCTA.astro';
 import ResearchedCall from '../components/ResearchedCall.astro';
 import InstagramLink from '../components/InstagramLink.astro';
+import FullscreenVideo from '../components/FullscreenVideo.astro';
 const navLinks = [
   { href: "/services", label: "Services" },
   { href: "/portfolio", label: "Portfolio" },
@@ -14,9 +15,9 @@ const navLinks = [
 // public/videos/ (keep it under 20MB for Cloudflare Pages) and change the
 // src and label here. Order on the page follows this list.
 const workVideos = [
-  { src: "/videos/video-1.mp4", label: "Speaker Event Edit" },
-  { src: "/videos/video-2.mp4", label: "Event Recap" },
-  { src: "/videos/video-3.mp4", label: "Premium Listing Video" },
+  { slug: "missy-promo",       label: "Service Showcase", orientation: "portrait" },
+  { slug: "driftline-roofing", label: "Talking Head",     orientation: "landscape" },
+  { slug: "fca-beach",         label: "Event Recap",      orientation: "landscape" },
 ];
 
 const reviews = [
@@ -85,9 +86,9 @@ const reviews = [
       <div class="our-work-grid">
         {workVideos.map(v => (
           <div class="work-item">
-            <button type="button" class="work-video-btn" aria-label={`Play ${v.label} full screen`}>
-              <video autoplay muted loop playsinline>
-                <source src={v.src} type="video/mp4" />
+            <button type="button" class={`work-video-btn fs-video ${v.orientation}`} aria-label={`Play ${v.label} full screen`}>
+              <video autoplay muted loop playsinline data-loop="true" poster={`/videos/portfolio/${v.slug}.jpg`}>
+                <source src={`/videos/portfolio/${v.slug}.mp4`} type="video/mp4" />
               </video>
               <span class="work-expand" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
@@ -495,6 +496,7 @@ const reviews = [
     .our-work-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
+      align-items: start;
       gap: 2rem;
       max-width: 1100px;
       margin: 0 auto;
@@ -548,11 +550,16 @@ const reviews = [
 
     .work-item video {
       width: 100%;
-      aspect-ratio: 9 / 16;
+      height: 100%;
+      display: block;
       object-fit: cover;
       border-radius: 12px;
       border: 1px solid rgba(168, 197, 240, 0.2);
     }
+
+    /* Each clip keeps its own shape rather than being cropped to one tile ratio */
+    .work-video-btn.portrait { aspect-ratio: 9 / 16; }
+    .work-video-btn.landscape { aspect-ratio: 16 / 9; }
 
     .work-label {
       font-family: 'Monument Extended', sans-serif;
@@ -1166,69 +1173,5 @@ const reviews = [
     }
   </script>
 
-  <script>
-    // Tap or click a work video to take it full screen, with sound. Coming
-    // back out restores the muted autoplay loop. Where full screen is
-    // blocked, the click plays it with sound in place instead of doing
-    // nothing at all.
-    const workButtons = [...document.querySelectorAll('.work-video-btn')];
-    let lastFullscreenVideo = null;
-
-    function requestFullscreen(video) {
-      if (video.requestFullscreen) return video.requestFullscreen();
-      if (video.webkitRequestFullscreen) return video.webkitRequestFullscreen();
-      // iOS Safari only ever allows this on the video element itself
-      if (video.webkitEnterFullscreen) return video.webkitEnterFullscreen();
-      return Promise.reject(new Error('unsupported'));
-    }
-
-    function enterSound(video) {
-      video.muted = false;
-      video.controls = true;
-      video.play().catch(() => {});
-    }
-
-    function exitSound(video) {
-      video.muted = true;
-      video.controls = false;
-      video.play().catch(() => {});
-    }
-
-    // Only ever touches the video that actually entered or left full screen,
-    // so a video playing with sound in place is never reset behind its back.
-    function onFullscreenChange() {
-      const active = document.fullscreenElement || document.webkitFullscreenElement || null;
-      if (active && active.tagName === 'VIDEO') {
-        lastFullscreenVideo = active;
-        enterSound(active);
-      } else if (lastFullscreenVideo) {
-        exitSound(lastFullscreenVideo);
-        lastFullscreenVideo = null;
-      }
-    }
-
-    workButtons.forEach(btn => {
-      const video = btn.querySelector('video');
-
-      btn.addEventListener('click', () => {
-        let result;
-        try {
-          result = requestFullscreen(video);
-        } catch (e) {
-          video.muted ? enterSound(video) : exitSound(video);
-          return;
-        }
-        if (result && typeof result.catch === 'function') {
-          result.catch(() => { video.muted ? enterSound(video) : exitSound(video); });
-        }
-      });
-
-      // iOS fires these instead of fullscreenchange
-      video.addEventListener('webkitbeginfullscreen', () => enterSound(video));
-      video.addEventListener('webkitendfullscreen', () => exitSound(video));
-    });
-
-    document.addEventListener('fullscreenchange', onFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', onFullscreenChange);
-  </script>
+  <FullscreenVideo />
 </Layout>
