@@ -166,14 +166,6 @@ const discountTiers = [
       </div>
     </section>
 
-    <section class="stat-quote-section">
-      <div class="stat-quote-inner">
-        <p class="stat-quote-number">85%</p>
-        <p class="stat-quote-text">of marketers say video has helped them generate leads.</p>
-        <p class="stat-quote-source">Source: <a href="https://wyzowl.com/video-marketing-statistics/" target="_blank" rel="noopener noreferrer">Wyzowl, 2026 Video Marketing Report</a></p>
-      </div>
-    </section>
-
     <section class="pricing-section pricing-section-navy">
       <div class="pricing-grid">
         {plans.map((plan, i) => (
@@ -860,44 +852,6 @@ const discountTiers = [
       .dropdown li a {
         padding-left: 10%;
       }
-    }
-    .stat-quote-section {
-      background: var(--primary);
-      padding: 3.5rem 5%;
-      text-align: center;
-    }
-
-    .stat-quote-inner {
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    .stat-quote-number {
-      font-size: clamp(3rem, 8vw, 4.5rem);
-      font-weight: 800;
-      color: var(--accent);
-      line-height: 1;
-      letter-spacing: -0.02em;
-    }
-
-    .stat-quote-text {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: clamp(1.15rem, 2.5vw, 1.5rem);
-      color: rgba(255, 255, 255, 0.9);
-      margin-top: 0.75rem;
-      line-height: 1.5;
-    }
-
-    .stat-quote-source {
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.55);
-      margin-top: 1.25rem;
-    }
-
-    .stat-quote-source a {
-      color: rgba(255, 255, 255, 0.75);
-      text-decoration: underline;
     }
   </style>
 </Layout>
