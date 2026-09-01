@@ -1,12 +1,36 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BottomCTA from '../components/BottomCTA.astro';
+import ResearchedCall from '../components/ResearchedCall.astro';
 import InstagramLink from '../components/InstagramLink.astro';
 const navLinks = [
   { href: "/services", label: "Services" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+];
+
+const reviews = [
+  {
+    name: "Charlie Murray",
+    org: "Driftline Roofing",
+    quote: "We had the pleasure of working with Ashton at Shockwave Studios, and we couldn't be happier with the experience! Ashton was incredibly professional, easy to work with, and did an amazing job creating a video for our roofing company's website. He was quick to deliver the final product, and the quality exceeded our expectations. Beyond his work, Ashton is just an all-around great person. We highly recommend Shockwave Studios to anyone looking for high-quality video work and a great experience from start to finish!",
+  },
+  {
+    name: "Cameron Wickline",
+    org: "Fellowship of Christian Athletes",
+    quote: "Ashton shot some stuff for the ministry I work for and it was unbelievable!! Definitely a blessing to us. This kid knows what he is doing, listens to the needs of his clients well, and executed exactly what we needed!! Hit him up for anything in the realm of business promotion, not to mention he does other photo/videographer work.",
+  },
+  {
+    name: "Joshua Kelly",
+    org: "G37 owner",
+    quote: "Ashton was super nice and professional. He was quick and efficient and made a phenomenal video for my car. He was understanding of what I wanted and always asked my input if I would like certain ideas or not. Would recommend 10/10",
+  },
+  {
+    name: "Daniel Lofaso",
+    org: "Digital Elevator",
+    quote: "I hired Shockwave to help with some social clipper-type content. They are fast, professional, and creative. Highly recommend.",
+  },
 ];
 ---
 <Layout
@@ -25,8 +49,8 @@ const navLinks = [
         <li class="has-dropdown">
           <a href="/services">Services</a>
           <ul class="dropdown">
-            <li><a href="/services">Social Media Management</a></li>
-            <li><a href="/videography">Videography</a></li>
+            <li><a href="/services">Lead Generation</a></li>
+            <li><a href="/videography">Video Production</a></li>
           </ul>
         </li>
         <li><a href="/portfolio">Portfolio</a></li>
@@ -138,29 +162,25 @@ const navLinks = [
     </section>
 
     <section class="results-section">
-      <h2>Results That Speak for Themselves</h2>
-      <div class="stat-grid">
-        <div class="stat-card">
-          <p class="stat-number">82,000</p>
-          <p class="stat-unit">Views</p>
-          <p class="stat-label">Organic reach, zero ad spend.</p>
-        </div>
-        <div class="stat-card">
-          <p class="stat-number">6,000 Interactions</p>
-          <p class="stat-label">Likes, comments, and shares.</p>
-        </div>
-        <div class="stat-card">
-          <p class="stat-number">40 New Leads</p>
-          <p class="stat-label">Generated organically.</p>
-        </div>
+      <h2>What Clients Say</h2>
+      <p class="results-subhead">5.0 stars from 4 reviews on Google.</p>
+      <div class="review-grid">
+        {reviews.map(r => (
+          <figure class="review-card">
+            <p class="review-stars" aria-label="Rated 5 out of 5 stars">★★★★★</p>
+            <blockquote class="review-quote">{r.quote}</blockquote>
+            <figcaption class="review-author">
+              <span class="review-name">{r.name}</span>
+              <span class="review-org">{r.org}</span>
+            </figcaption>
+          </figure>
+        ))}
       </div>
-      <p class="results-note">Results from the first 3 months working with a client.</p>
     </section>
 
     <section class="video-packages-section">
       <div class="video-packages-inner">
         <h2>Just Need One Video?</h2>
-        <p class="video-packages-sub">No monthly commitment. Book a single shoot starting at $250.</p>
         <div class="video-packages-grid">
           <div class="video-pkg-card">
             <h3>Real Estate Listing</h3>
@@ -174,13 +194,15 @@ const navLinks = [
           </div>
           <div class="video-pkg-card">
             <h3>Brand / Promo Video</h3>
-            <p>A cinematic 60–120 second video built to make people feel something about your business.</p>
+            <p>A cinematic 60 to 120 second video built to make people feel something about your business.</p>
             <p class="video-pkg-price">$300</p>
           </div>
         </div>
         <a href="/videography" class="btn btn-outline-primary">See All Packages</a>
       </div>
     </section>
+
+    <ResearchedCall />
 
     <BottomCTA text="Your next client is already scrolling. Let's make sure they stop on you." />
   </main>
@@ -584,59 +606,67 @@ const navLinks = [
       color: rgba(26, 26, 46, 0.85);
     }
 
-    .stat-grid {
+    .results-subhead {
+      text-align: center;
+      color: rgba(26, 26, 46, 0.6);
+      font-weight: 600;
+      margin-top: -0.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .review-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+      align-items: start;
       gap: 2rem;
       max-width: 1100px;
       margin: 0 auto;
     }
 
-    .stat-card {
+    .review-card {
       background: var(--bg);
       border: 1px solid rgba(168, 197, 240, 0.15);
       border-radius: 16px;
-      padding: 2.5rem;
-      text-align: center;
+      padding: 2.25rem;
+      margin: 0;
       transition: transform 0.25s ease, box-shadow 0.25s ease;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
     }
 
-    .stat-label {
-      margin-top: auto;
-    }
-
-    .stat-card:hover {
+    .review-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 16px 40px rgba(27, 58, 107, 0.35);
     }
 
-    .stat-number {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--accent);
-      margin-bottom: 0.25rem;
+    .review-stars {
+      color: #E8A33D;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
     }
 
-    .stat-unit {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
+    .review-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: rgba(26, 26, 46, 0.85);
+      margin: 0 0 1.5rem;
     }
 
-    .stat-label {
-      color: rgba(26, 26, 46, 0.75);
-      font-weight: 500;
+    .review-author {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
     }
 
-    .results-note {
-      text-align: center;
-      color: rgba(26, 26, 46, 0.5);
+    .review-name {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .review-org {
       font-size: 0.9rem;
-      margin-top: 2rem;
+      color: rgba(26, 26, 46, 0.6);
     }
 
     .video-packages-section {
@@ -1149,7 +1179,7 @@ const navLinks = [
         grid-template-columns: 1fr;
       }
 
-      .stat-grid {
+      .review-grid {
         grid-template-columns: 1fr;
       }
 

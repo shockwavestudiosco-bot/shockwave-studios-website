@@ -23,31 +23,6 @@ const reels = [
   "https://www.instagram.com/reel/DZfJvzBFfJN/",
   "https://www.instagram.com/reel/DZOBd-rl6U4/",
 ];
-
-const caseStudies = [
-  {
-    name: "PWO Training Center",
-    type: "Indoor surf & skate gym",
-    results: "82,000 organic views, 6,000 interactions, and 40 new leads over a 3-month engagement.",
-    services: [
-      "Content strategy & scripting",
-      "Weekly reel production",
-      "Social Media Automation",
-      "Brand voice development",
-    ],
-  },
-  {
-    name: "Markle Construction",
-    type: "Construction & real estate",
-    results: "Luxury property listing videos and Meta ads setup.",
-    services: [
-      "Owner spotlight video",
-      "Property listing reels",
-      "Meta Ads Manager setup",
-      "Social Media Automation",
-    ],
-  },
-];
 ---
 <Layout
   title="Portfolio | Shockwave Studios"
@@ -62,9 +37,16 @@ const caseStudies = [
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links">
-        {navLinks.map(link => (
-          <li><a href={link.href}>{link.label}</a></li>
-        ))}
+        <li class="has-dropdown">
+          <a href="/services">Services</a>
+          <ul class="dropdown">
+            <li><a href="/services">Lead Generation</a></li>
+            <li><a href="/videography">Video Production</a></li>
+          </ul>
+        </li>
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -101,24 +83,7 @@ const caseStudies = [
       </div>
     </section>
 
-    <section class="case-study-section">
-      <div class="case-study-section-inner">
-        <h2>Case Studies</h2>
-        <div class="case-grid">
-          {caseStudies.map(study => (
-            <div class="case-card">
-              <h3>{study.name}</h3>
-              <p class="case-type">{study.type}</p>
-              <p class="case-results">{study.results}</p>
-              <ul class="case-services">
-                {study.services.map(s => <li>{s}</li>)}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-    <BottomCTA text="Want results like these? Let's build something together." />
+    <BottomCTA text="Like what you see? Let's build something for your business." />
   </main>
 
   <footer class="site-footer">
@@ -181,9 +146,29 @@ const caseStudies = [
       color: #6B9FD4;
     }
 
-    .eyebrow, .subheadline, .badge, .case-type, .comparison-group-label, th {
+    .eyebrow, .subheadline, .badge, .comparison-group-label, th {
       font-family: 'Playfair Display', serif;
     }
+
+    .has-dropdown { position: relative; }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-secondary);
+      border: 1px solid rgba(168, 197, 240, 0.15);
+      border-radius: 10px;
+      min-width: 220px;
+      box-shadow: 0 8px 24px rgba(27, 58, 107, 0.12);
+      padding: 0.5rem 0;
+      list-style: none;
+      flex-direction: column;
+      z-index: 200;
+    }
+
+    .has-dropdown:hover .dropdown { display: flex; }
 
     .site-header {
       display: flex;
@@ -333,70 +318,6 @@ const caseStudies = [
       box-shadow: 0 16px 40px rgba(27, 58, 107, 0.4);
     }
 
-    .case-study-section-inner {
-      padding: 3rem 5% 5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .case-study-section h2 {
-      text-align: center;
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      font-weight: 800;
-      margin-bottom: 3rem;
-      letter-spacing: -0.02em;
-    }
-
-    .case-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
-    }
-
-    .case-card {
-      background: var(--bg-secondary);
-      border: 1px solid rgba(168, 197, 240, 0.1);
-      border-radius: 16px;
-      padding: 2.25rem;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    }
-
-    .case-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(168, 197, 240, 0.35);
-      box-shadow: 0 16px 40px rgba(27, 58, 107, 0.35);
-    }
-
-.case-card h3 {
-      font-size: 1.4rem;
-      font-weight: 800;
-      margin-bottom: 0.4rem;
-      color: var(--accent);
-    }
-
-    .case-type {
-      color: rgba(26, 26, 46, 0.55);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
-
-    .case-results {
-      font-weight: 600;
-      line-height: 1.6;
-      margin-bottom: 1.25rem;
-    }
-
-    .case-services {
-      list-style: none;
-    }
-
-    .case-services li {
-      padding: 0.5rem 0;
-      border-top: 1px solid rgba(168, 197, 240, 0.08);
-      font-size: 0.92rem;
-      color: rgba(26, 26, 46, 0.85);
-    }
-
     .site-footer {
       padding: 1.5rem 5% 1.25rem;
       border-top: 1px solid rgba(168, 197, 240, 0.1);
@@ -424,7 +345,6 @@ const caseStudies = [
 
     @media (max-width: 900px) {
       .reel-grid { grid-template-columns: repeat(2, 1fr); }
-      .case-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
@@ -456,6 +376,19 @@ const caseStudies = [
         display: block;
         padding: 1rem 5%;
       }
+
+      .has-dropdown .dropdown {
+        display: flex;
+        position: static;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        background: rgba(168, 197, 240, 0.05);
+        padding: 0;
+        min-width: unset;
+      }
+
+      .dropdown li a { padding-left: 10%; }
     }
 
     @media (max-width: 600px) {

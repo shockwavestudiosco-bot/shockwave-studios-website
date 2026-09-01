@@ -1,0 +1,83 @@
+---
+const calendlyUrl = "https://calendly.com/shockwavestudios-co/30min";
+---
+<section class="call-offer-section">
+  <div class="call-offer-inner">
+    <p class="call-offer-eyebrow">Start Here</p>
+    <h2 class="call-offer-title">I Do the Homework First.</h2>
+    <p class="call-offer-text">Before we talk, I go through your social media and your Google profile. On the call I'll tell you the first thing I'd fix and why it's costing you leads. No pitch deck, no generic advice.</p>
+    <a href={calendlyUrl} target="_blank" rel="noopener noreferrer" class="call-offer-btn">Book a Free Call</a>
+    <p class="call-offer-note">Free, no commitment. Add your business name when you book so I can look you up first.</p>
+  </div>
+</section>
+
+<style>
+  .call-offer-section {
+    background: #FFFFFF;
+    padding: 4.5rem 5%;
+    text-align: center;
+  }
+
+  .call-offer-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #F4F7FC;
+    border: 2px solid #A8C5F0;
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+  }
+
+  .call-offer-eyebrow {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: #5B8FD4;
+    margin-bottom: 0.5rem;
+  }
+
+  .call-offer-title {
+    font-size: clamp(1.9rem, 5vw, 2.8rem);
+    font-weight: 800;
+    color: #1B3A6B;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+
+  .call-offer-text {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: rgba(26, 26, 46, 0.85);
+    margin-bottom: 2rem;
+  }
+
+  .call-offer-btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    border-radius: 999px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    background: #1B3A6B;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .call-offer-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(27, 58, 107, 0.3);
+  }
+
+  .call-offer-note {
+    font-size: 0.85rem;
+    color: rgba(26, 26, 46, 0.55);
+    margin-top: 1.25rem;
+  }
+
+  @media (max-width: 768px) {
+    .call-offer-inner {
+      padding: 2.25rem 1.5rem;
+    }
+  }
+</style>

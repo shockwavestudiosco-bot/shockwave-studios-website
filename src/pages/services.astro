@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BottomCTA from '../components/BottomCTA.astro';
+import ResearchedCall from '../components/ResearchedCall.astro';
 import InstagramLink from '../components/InstagramLink.astro';
 const navLinks = [
   { href: "/services", label: "Services" },
@@ -105,7 +106,7 @@ const comparisonGroups = [
   {
     label: "Automations",
     rows: [
-      { feature: "Social Media Automation flows", values: ["—", "2", "4"] },
+      { feature: "Social Media Automation flows", values: ["✗", "2", "4"] },
     ],
   },
 ];
@@ -131,8 +132,8 @@ const discountTiers = [
 ];
 ---
 <Layout
-  title="Services & Pricing | Shockwave Studios"
-  description="Social media management, video production, and Social Media Automation packages from Shockwave Studios."
+  title="Lead Generation & Social Media Management in Melbourne, FL | Shockwave Studios"
+  description="Monthly social media management, content production, and Social Media Automation packages from Shockwave Studios in Melbourne, Florida."
 >
   <header class="site-header">
     <a href="/" class="logo-link" aria-label="Shockwave Studios home">
@@ -146,8 +147,8 @@ const discountTiers = [
         <li class="has-dropdown">
           <a href="/services">Services</a>
           <ul class="dropdown">
-            <li><a href="/services">Social Media Management</a></li>
-            <li><a href="/videography">Videography</a></li>
+            <li><a href="/services">Lead Generation</a></li>
+            <li><a href="/videography">Video Production</a></li>
           </ul>
         </li>
         <li><a href="/portfolio">Portfolio</a></li>
@@ -160,8 +161,16 @@ const discountTiers = [
   <main>
     <section class="page-hero">
       <div class="page-hero-inner">
-        <h1>Social Media Management</h1>
-        <p class="subheadline">Pick the plan that fits where your business is right now.</p>
+        <h1>Lead Generation</h1>
+        <p class="subheadline">Monthly social media management built to turn your page into your #1 source of leads. Pick the plan that fits where your business is right now.</p>
+      </div>
+    </section>
+
+    <section class="stat-quote-section">
+      <div class="stat-quote-inner">
+        <p class="stat-quote-number">85%</p>
+        <p class="stat-quote-text">of marketers say video has helped them generate leads.</p>
+        <p class="stat-quote-source">Source: <a href="https://wyzowl.com/video-marketing-statistics/" target="_blank" rel="noopener noreferrer">Wyzowl, 2026 Video Marketing Report</a></p>
       </div>
     </section>
 
@@ -247,6 +256,8 @@ const discountTiers = [
         </div>
       </div>
     </section>
+    <ResearchedCall />
+
     <BottomCTA text="Not sure which plan is right for you? Let's figure it out together." />
   </main>
 
@@ -849,6 +860,44 @@ const discountTiers = [
       .dropdown li a {
         padding-left: 10%;
       }
+    }
+    .stat-quote-section {
+      background: var(--primary);
+      padding: 3.5rem 5%;
+      text-align: center;
+    }
+
+    .stat-quote-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .stat-quote-number {
+      font-size: clamp(3rem, 8vw, 4.5rem);
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-quote-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 0.75rem;
+      line-height: 1.5;
+    }
+
+    .stat-quote-source {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.55);
+      margin-top: 1.25rem;
+    }
+
+    .stat-quote-source a {
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: underline;
     }
   </style>
 </Layout>

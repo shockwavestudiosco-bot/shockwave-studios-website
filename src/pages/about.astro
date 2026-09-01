@@ -9,7 +9,7 @@ const navLinks = [
 ];
 
 const paragraphs = [
-  "Hi, I'm Ashton Shock, founder of Shockwave Studios. Born and raised on the space coast of Florida, I grew up surfing, fishing, hooping, and more but throughout all that, I've been creating content. Since the first time I figured out how to use an editing software making gaming videos, to challenge videos and middle school skits. What started as a passion turned into something bigger: a marketing agency built on the belief that great content should do more than just look good. It should get you results.",
+  "Hi, I'm Ashton Shock. I'm 18, and I'm the founder of Shockwave Studios. Born and raised on the space coast of Florida, I grew up surfing, fishing, hooping, and more but throughout all that, I've been creating content. Since the first time I figured out how to use an editing software making gaming videos, to challenge videos and middle school skits. What started as a passion turned into something bigger: a marketing agency built on the belief that great content should do more than just look good. It should get you results.",
   "I didn't get into this for the business. I got into it because I genuinely love creating. The process of taking an idea, putting a camera on it, and turning it into something people actually stop and watch, that's what drives me. Every client I work with gets that same energy. Every piece of content I make for you gets that same passion.",
   "Based out of Melbourne, Florida, Shockwave Studios helps local businesses turn their social media into their number one source of leads. Video production, content strategy, scripting, and automation, all under one roof, all handled by someone who actually cares.",
 ];
@@ -30,8 +30,8 @@ const paragraphs = [
         <li class="has-dropdown">
           <a href="/services">Services</a>
           <ul class="dropdown">
-            <li><a href="/services">Social Media Management</a></li>
-            <li><a href="/videography">Videography</a></li>
+            <li><a href="/services">Lead Generation</a></li>
+            <li><a href="/videography">Video Production</a></li>
           </ul>
         </li>
         <li><a href="/portfolio">Portfolio</a></li>
@@ -55,6 +55,7 @@ const paragraphs = [
         </div>
         <div class="about-body">
           {paragraphs.map(p => <p>{p}</p>)}
+          <p>I also document the whole thing in public. Building Shockwave is my series on the real side of growing this agency, the cold calls, the shoots, and the lessons that come with it. You can watch it on <a href="https://www.instagram.com/shockwave.studios/" target="_blank" rel="noopener noreferrer" class="about-inline-link">Instagram</a>.</p>
         </div>
         <div class="about-side-photo">
           <img src="/about/ashton-right.png" alt="Ashton Shock" />
@@ -494,6 +495,16 @@ const paragraphs = [
         display: block;
         padding: 1rem 5%;
       }
+    }
+    .about-inline-link {
+      color: var(--secondary);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .about-inline-link:hover {
+      color: var(--primary);
     }
   </style>
 </Layout>

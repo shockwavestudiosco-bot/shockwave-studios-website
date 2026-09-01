@@ -1,11 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BottomCTA from '../components/BottomCTA.astro';
+import ResearchedCall from '../components/ResearchedCall.astro';
 import InstagramLink from '../components/InstagramLink.astro';
 ---
 <Layout
-  title="Videography Services | Shockwave Studios"
-  description="Professional videography services from Shockwave Studios. Real estate, events, brand promos, sports, and more. No monthly commitment."
+  title="Video Production in Melbourne, FL | Shockwave Studios"
+  description="Professional video production from Shockwave Studios in Melbourne, Florida. Real estate, events, brand promos, sports, and more."
 >
   <header class="site-header">
     <a href="/" class="logo-link" aria-label="Shockwave Studios home">
@@ -19,8 +20,8 @@ import InstagramLink from '../components/InstagramLink.astro';
         <li class="has-dropdown">
           <a href="/services">Services</a>
           <ul class="dropdown">
-            <li><a href="/services">Social Media Management</a></li>
-            <li><a href="/videography">Videography</a></li>
+            <li><a href="/services">Lead Generation</a></li>
+            <li><a href="/videography">Video Production</a></li>
           </ul>
         </li>
         <li><a href="/portfolio">Portfolio</a></li>
@@ -33,7 +34,16 @@ import InstagramLink from '../components/InstagramLink.astro';
   <main>
     <section class="page-hero">
       <div class="page-hero-inner">
-        <h1>Videography Services</h1>
+        <h1>Video Production</h1>
+        <p class="subheadline">One-off video, no monthly commitment. Filmed and edited to make people stop scrolling.</p>
+      </div>
+    </section>
+
+    <section class="stat-quote-section">
+      <div class="stat-quote-inner">
+        <p class="stat-quote-number">85%</p>
+        <p class="stat-quote-text">of people say they have been convinced to buy a product or service by watching a video.</p>
+        <p class="stat-quote-source">Source: <a href="https://wyzowl.com/video-marketing-statistics/" target="_blank" rel="noopener noreferrer">Wyzowl, 2026 Video Marketing Report</a></p>
       </div>
     </section>
 
@@ -50,7 +60,7 @@ import InstagramLink from '../components/InstagramLink.astro';
             <h3>Real Estate Listing Video</h3>
             <p>A polished walkthrough of your property, professionally edited and ready to post. Shot handheld to capture every room and detail. Final video runs 45 to 90 seconds. Drone footage available as an add on (+$100).</p>
             <video class="pkg-video" controls preload="none">
-              <source src="/videos/real-estate-example.mp4.mp4" type="video/mp4" />
+              <source src="/videos/real-estate-example.mp4" type="video/mp4" />
             </video>
             <p class="package-price">$300</p>
             <a href="https://calendly.com/shockwavestudios-co/30min?a1=Real Estate Listing Video" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book Now</a>
@@ -59,7 +69,7 @@ import InstagramLink from '../components/InstagramLink.astro';
             <h3>Event Coverage</h3>
             <p>I show up, film the whole thing, and deliver two edits. A full recap video with everything captured, plus a short highlight reel built for social. Minimum 3 hours of on-site coverage.</p>
             <video class="pkg-video" controls preload="none">
-              <source src="/videos/event exampl.mp4.mp4" type="video/mp4" />
+              <source src="/videos/event-example.mp4" type="video/mp4" />
             </video>
             <p class="package-price">$450</p>
             <a href="https://calendly.com/shockwavestudios-co/30min?a1=Event Coverage" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book Now</a>
@@ -77,7 +87,7 @@ import InstagramLink from '../components/InstagramLink.astro';
             <h3>Sports / Action</h3>
             <p>A 2 hour shoot of you doing what you do. I capture the best moments and cut them into a music synced hype edit / mixtape that's 45 to 75 seconds of pure highlights.</p>
             <video class="pkg-video" controls preload="none">
-              <source src="/videos/sports-example.mp4.mp4" type="video/mp4" />
+              <source src="/videos/sports-example.mp4" type="video/mp4" />
             </video>
             <p class="package-price">$250</p>
             <a href="https://calendly.com/shockwavestudios-co/30min?a1=Sports%2FAction" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book Now</a>
@@ -99,6 +109,8 @@ import InstagramLink from '../components/InstagramLink.astro';
       </div>
     </section>
 
+    <ResearchedCall />
+
     <BottomCTA text="Ready to book? Let's make something great." />
   </main>
 
@@ -108,8 +120,8 @@ import InstagramLink from '../components/InstagramLink.astro';
         <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="footer-logo-img" />
       </a>
       <ul class="nav-links footer-links">
-        <li><a href="/services">Social Media Management</a></li>
-        <li><a href="/videography">Videography</a></li>
+        <li><a href="/services">Lead Generation</a></li>
+        <li><a href="/videography">Video Production</a></li>
         <li><a href="/portfolio">Portfolio</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="/contact">Contact</a></li>
@@ -478,6 +490,45 @@ import InstagramLink from '../components/InstagramLink.astro';
       }
 
       .dropdown li a { padding-left: 10%; }
+    }
+    .stat-quote-section {
+      background: var(--primary);
+      padding: 3.5rem 5%;
+      text-align: center;
+      border-top: 1px solid rgba(168, 197, 240, 0.2);
+    }
+
+    .stat-quote-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .stat-quote-number {
+      font-size: clamp(3rem, 8vw, 4.5rem);
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-quote-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 0.75rem;
+      line-height: 1.5;
+    }
+
+    .stat-quote-source {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.55);
+      margin-top: 1.25rem;
+    }
+
+    .stat-quote-source a {
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: underline;
     }
   </style>
 </Layout>

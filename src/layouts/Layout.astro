@@ -10,6 +10,38 @@ const { title, description, image = "/og-image.jpg", noindex = false } = Astro.p
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(image, Astro.site);
+
+const businessSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "https://shockwavestudios.co/#business",
+  name: "Shockwave Studios",
+  description: "Social media marketing and video production for local businesses in Melbourne, Florida.",
+  url: "https://shockwavestudios.co",
+  image: "https://shockwavestudios.co/og-image.jpg",
+  logo: "https://shockwavestudios.co/shockwave-studios/logo.svg",
+  telephone: "+1-321-391-1515",
+  email: "shockwavestudios.co@gmail.com",
+  priceRange: "$$",
+  founder: { "@type": "Person", name: "Ashton Shock" },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Melbourne",
+    addressRegion: "FL",
+    addressCountry: "US",
+  },
+  areaServed: [
+    { "@type": "City", name: "Melbourne, Florida" },
+    { "@type": "AdministrativeArea", name: "Brevard County, Florida" },
+  ],
+  knowsAbout: [
+    "Social media marketing",
+    "Short-form video production",
+    "Lead generation",
+    "Content strategy",
+  ],
+  sameAs: ["https://www.instagram.com/shockwave.studios/"],
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -17,7 +49,7 @@ const ogImageURL = new URL(image, Astro.site);
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <!-- Google tag (gtag.js) — only in production builds so dev traffic isn't counted -->
+  <!-- Google tag (gtag.js), only in production builds so dev traffic isn't counted -->
   {import.meta.env.PROD && (
     <Fragment>
       <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-KKWP3B4J4X"></script>
@@ -53,6 +85,8 @@ const ogImageURL = new URL(image, Astro.site);
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(businessSchema)} />
 </head>
 <body>
   <slot />
