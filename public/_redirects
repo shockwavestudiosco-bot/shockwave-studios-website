@@ -1,0 +1,10 @@
+# Cloudflare Pages redirects. This file is copied to the build output root and
+# is read by Cloudflare, so these are real server-side redirects, not meta
+# refresh pages.
+#
+# /services was the Social Media Management retainer page ($1,200/$2,100/$3,000
+# for 10/20/30 videos). Retired 2026-09-21 when Video Marketing replaced the
+# retainer as the monthly offer. The URL is kept and 301'd rather than deleted
+# because it has existing search ranking and inbound links, which a 301 passes
+# to the new page and a 404 would throw away.
+/services  /video-marketing  301
