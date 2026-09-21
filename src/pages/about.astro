@@ -315,6 +315,9 @@ const paragraphs = [
       width: 100%;
       height: 500px;
       object-fit: cover;
+      /* Both portraits put his face about 21% down. A centre anchor
+         pushed it outside the crop on narrow screens. */
+      object-position: center 25%;
       display: block;
     }
 
@@ -450,7 +453,8 @@ const paragraphs = [
       }
 
       .about-side-photo img {
-        height: 220px;
+        height: auto;
+        aspect-ratio: 4 / 5;
       }
 
       .gallery-feature {

@@ -69,30 +69,31 @@ const eventLabel = `book_call_${path}_mid`;
 </script>
 
 <style>
+  /* Centred, and carrying no border or fill of its own. The earlier version
+     used a left accent bar and space-between, which read as a callout stuck to
+     one side rather than a moment in the page. A hairline above and below is
+     enough separation. */
   .inline-cta {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: 1.25rem 2rem;
-    max-width: 900px;
-    margin: 3.5rem auto 0;
-    padding: 1.5rem 1.75rem;
-    background: var(--bg-secondary, #FFFFFF);
-    border: 1px solid rgba(27, 58, 107, 0.14);
-    border-left: 4px solid var(--secondary, #5B8FD4);
-    border-radius: 0 16px 16px 0;
+    gap: 1.5rem;
+    max-width: 640px;
+    margin: 4.5rem auto 0;
+    padding: 3rem 1.5rem 0;
+    border-top: 1px solid rgba(27, 58, 107, 0.14);
+    text-align: center;
   }
 
   .inline-cta-text {
     font-family: var(--font-editorial);
     font-style: italic;
     font-weight: 400;
-    font-size: clamp(1.05rem, 2vw, 1.3rem);
-    line-height: 1.45;
+    font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+    line-height: 1.4;
     color: var(--primary, #1B3A6B);
     margin: 0;
-    flex: 1 1 18rem;
+    text-wrap: balance;
   }
 
   .inline-cta-btn {
@@ -121,12 +122,9 @@ const eventLabel = `book_call_${path}_mid`;
 
   @media (max-width: 640px) {
     .inline-cta {
-      flex-direction: column;
-      align-items: stretch;
-      text-align: center;
-      padding: 1.5rem 1.25rem;
+      margin-top: 3rem;
+      padding: 2.25rem 1.25rem 0;
+      gap: 1.25rem;
     }
-
-    .inline-cta-btn { text-align: center; }
   }
 </style>
