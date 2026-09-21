@@ -9,25 +9,22 @@
  * second full-width navy section.
  *
  * `path` feeds the analytics label, suffixed `_mid`, so the mid-page and
- * closing CTAs can be compared rather than pooled.
+ * closing CTAs can be compared rather than pooled. No ?a1= prefill, see
+ * FunnelCTA.
  */
 export interface Props {
   text: string;
   path: string;
   buttonLabel?: string;
-  calendlyParam?: string;
 }
 
 const {
   text,
   path,
   buttonLabel = "Book a Free Call",
-  calendlyParam,
 } = Astro.props;
 
-const calendlyUrl = calendlyParam
-  ? `https://calendly.com/shockwavestudios-co/30min?a1=${encodeURIComponent(calendlyParam)}`
-  : "https://calendly.com/shockwavestudios-co/30min";
+const calendlyUrl = "https://calendly.com/shockwavestudios-co/30min";
 
 const eventLabel = `book_call_${path}_mid`;
 ---

@@ -6,8 +6,9 @@
  *
  * `path` becomes the analytics label (book_call_video_marketing vs
  * book_call_video_production) so the two funnel paths can be compared.
- * `calendlyParam` fills Calendly's a1 field the same way the videography
- * Book Now buttons already do, so the booking says which door they came in.
+ * No ?a1= prefill: per the brain's 2026-09-01 researched-call decision that
+ * field is where the prospect supplies their own business name. Which door
+ * they came in is captured by the analytics label instead.
  */
 export interface Props {
   path: string;
@@ -15,7 +16,6 @@ export interface Props {
   body: string;
   bullets?: string[];
   buttonLabel?: string;
-  calendlyParam?: string;
   note?: string;
 }
 
@@ -25,13 +25,10 @@ const {
   body,
   bullets = [],
   buttonLabel = "Book a Free Call",
-  calendlyParam,
   note,
 } = Astro.props;
 
-const calendlyUrl = calendlyParam
-  ? `https://calendly.com/shockwavestudios-co/30min?a1=${encodeURIComponent(calendlyParam)}`
-  : "https://calendly.com/shockwavestudios-co/30min";
+const calendlyUrl = "https://calendly.com/shockwavestudios-co/30min";
 
 const eventLabel = `book_call_${path}`;
 ---
