@@ -1,0 +1,132 @@
+---
+/**
+ * A slim mid-page booking bar.
+ *
+ * The funnel pages are long. /video-marketing runs about 10,500px, so a single
+ * CTA at the bottom means anyone already sold by the pricing has to scroll most
+ * of the page to act. This gives them somewhere to go without competing with
+ * the closing block: it is one line and one button on a light band, not a
+ * second full-width navy section.
+ *
+ * `path` feeds the analytics label, suffixed `_mid`, so the mid-page and
+ * closing CTAs can be compared rather than pooled.
+ */
+export interface Props {
+  text: string;
+  path: string;
+  buttonLabel?: string;
+  calendlyParam?: string;
+}
+
+const {
+  text,
+  path,
+  buttonLabel = "Book a Free Call",
+  calendlyParam,
+} = Astro.props;
+
+const calendlyUrl = calendlyParam
+  ? `https://calendly.com/shockwavestudios-co/30min?a1=${encodeURIComponent(calendlyParam)}`
+  : "https://calendly.com/shockwavestudios-co/30min";
+
+const eventLabel = `book_call_${path}_mid`;
+---
+<div class="inline-cta reveal">
+  <p class="inline-cta-text">{text}</p>
+  <a
+    href={calendlyUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="inline-cta-btn"
+    data-event-label={eventLabel}
+    data-funnel-path={path}
+  >{buttonLabel}</a>
+</div>
+
+<script>
+  /**
+   * Same guarded reporting as FunnelCTA. GA4 only loads in production builds
+   * and no Meta Pixel is installed yet, so both are deliberate no-ops in dev.
+   */
+  document.querySelectorAll('.inline-cta-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const label = btn.getAttribute('data-event-label') || 'book_call';
+      const funnelPath = btn.getAttribute('data-funnel-path') || '';
+
+      if (typeof window['gtag'] === 'function') {
+        window['gtag']('event', 'book_call', {
+          event_category: 'conversion',
+          event_label: label,
+          funnel_path: funnelPath,
+        });
+      }
+
+      if (typeof window['fbq'] === 'function') {
+        window['fbq']('track', 'Schedule', { content_name: label });
+      }
+    });
+  });
+</script>
+
+<style>
+  .inline-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+    max-width: 900px;
+    margin: 3.5rem auto 0;
+    padding: 1.5rem 1.75rem;
+    background: var(--bg-secondary, #FFFFFF);
+    border: 1px solid rgba(27, 58, 107, 0.14);
+    border-left: 4px solid var(--secondary, #5B8FD4);
+    border-radius: 0 16px 16px 0;
+  }
+
+  .inline-cta-text {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    line-height: 1.45;
+    color: var(--primary, #1B3A6B);
+    margin: 0;
+    flex: 1 1 18rem;
+  }
+
+  .inline-cta-btn {
+    flex: none;
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1rem;
+    background: var(--primary, #1B3A6B);
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .inline-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(27, 58, 107, 0.28);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .inline-cta-btn { transition: none; }
+    .inline-cta-btn:hover { transform: none; }
+  }
+
+  @media (max-width: 640px) {
+    .inline-cta {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+      padding: 1.5rem 1.25rem;
+    }
+
+    .inline-cta-btn { text-align: center; }
+  }
+</style>

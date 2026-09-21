@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import FunnelCTA from '../components/FunnelCTA.astro';
 import InstagramLink from '../components/InstagramLink.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
+import InlineCTA from '../components/InlineCTA.astro';
 
 // Monthly plans. Prices confirmed by Ashton 2026-09-21: 800/1400/2000.
 // Flat fee only. Rev share was considered and dropped on 2026-09-21, see
@@ -193,6 +194,12 @@ const objections = [
         <p class="plan-alt reveal">Need a single video instead of a monthly plan? That is <a href="/video-production">video production</a>.</p>
       </div>
     </section>
+
+    <InlineCTA
+      path="video_marketing"
+      calendlyParam="Video Marketing"
+      text="Seen enough? The rest of this page is how it works."
+    />
 
 
     <!-- ===== AD VS ORGANIC ===== -->
