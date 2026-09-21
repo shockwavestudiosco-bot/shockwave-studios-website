@@ -84,11 +84,54 @@ const businessSchema = {
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!--
+    Three roles, one request.
+
+      Archivo Black  impact   h1, pull statements. Ships a single weight (400),
+                              so never ask for 700/800 or the browser fakes it.
+      Newsreader     editorial h2/h3, prices, numerals, and every italic accent
+                              line. Variable optical size, so it retunes itself
+                              between a 30px heading and a 13px label.
+      Inter          body     paragraphs and UI labels.
+
+    Dropped here: Bebas Neue (loaded on every page, never used once) and
+    Playfair Display (replaced by Newsreader, whose strokes survive the video
+    compression these pages get screen-shared through). Monument Extended and
+    its local OTFs are gone too, which retires the personal-use licence.
+  -->
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400..800&family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..800&display=swap" rel="stylesheet" />
 
   <script type="application/ld+json" is:inline set:html={JSON.stringify(businessSchema)} />
 </head>
 <body>
   <slot />
 </body>
+
+<style is:global>
+  /*
+    The type system, defined once. Pages used to repeat a @font-face block each,
+    ten copies of the same thing; these three variables replace all of that.
+    Swapping a face is now a one-line change here rather than 46 edits.
+  */
+  :root {
+    --font-impact: 'Archivo Black', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-editorial: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  /* Newsreader carries an optical size axis. Letting the browser drive it is
+     what keeps a 13px eyebrow and a 30px heading both looking correct. */
+  html {
+    font-optical-sizing: auto;
+  }
+
+  /* Archivo Black has exactly one weight. Asking for a heavier one makes the
+     browser synthesise a smeared fake bold, so pin it wherever impact is used. */
+  h1,
+  .statement,
+  .fork-question,
+  .funnel-cta-heading {
+    font-weight: 400;
+  }
+</style>
 </html>

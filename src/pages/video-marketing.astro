@@ -1,0 +1,1586 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FunnelCTA from '../components/FunnelCTA.astro';
+import InstagramLink from '../components/InstagramLink.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+
+// Monthly plans. Prices confirmed by Ashton 2026-09-21: 800/1400/2000.
+// Flat fee only. Rev share was considered and dropped on 2026-09-21, see
+// the decision note in the brain. Do not reintroduce it without asking.
+//
+// The cards lead with the deliverable counts and carry the price underneath.
+// At position two on the page a bare price table makes a cold visitor judge
+// the number before they know what it buys; this order sells the volume first
+// and lets the price land as support.
+//
+// How this ladder relates to Ashton's retainer ladder in the brain
+// (2026-07-07_service-packages-and-pricing), which ran platforms 1/2/4,
+// automation flows none/2/4, filming 1/2/3, custom requests 1/2/4 and strategy
+// calls 1/1/2, with profile optimization on every tier:
+//
+//   filming 1/2/3 and flows none/2/4  match the retainer exactly
+//   platforms 2/2/3                   Basic gains one, Premium loses one
+//   custom requests none/1/2          pulled back a step
+//   strategy calls 1/2/2              Standard and Premium gain one
+//
+// Basic and Standard share a platform count on purpose. The ladder is fixed,
+// not a client pick: Facebook and Instagram first, then TikTok or YouTube on
+// Premium. The first two are the Meta pair that paid ads run across anyway, so
+// splitting them across tiers would be artificial. Confirmed 2026-09-21.
+const plans = [
+  {
+    name: "Basic",
+    price: "$800",
+    ads: 4,
+    organic: 3,
+    platforms: "2",
+    flows: null,
+    filming: "1",
+    featured: false,
+  },
+  {
+    name: "Standard",
+    price: "$1,400",
+    ads: 8,
+    organic: 6,
+    platforms: "2",
+    flows: "2",
+    filming: "2",
+    featured: true,
+  },
+  {
+    name: "Premium",
+    price: "$2,000",
+    ads: 10,
+    organic: 10,
+    platforms: "3",
+    flows: "4",
+    filming: "3",
+    featured: false,
+  },
+];
+
+// The deliverables chart.
+//
+// `count` rows carry a number and are where the tiers actually differ. `null`
+// means not included on that tier. Everything else is yes across the board,
+// which is true and worth showing rather than inventing fake tier gates.
+//
+// The first group is what changes between tiers, the second is what every
+// client gets regardless. Ordering them that way means a prospect scanning
+// the chart sees the decision they have to make before the boilerplate.
+const included = [
+  { group: "What changes between plans" },
+  { row: "Paid ads, finished and ready to run", basic: "4", standard: "8", premium: "10", count: true },
+  { row: "Organic videos", basic: "3", standard: "6", premium: "10", count: true },
+  { row: "Platforms posted to", basic: "2", standard: "2", premium: "3", count: true },
+  { row: "Filming sessions per month", basic: "1", standard: "2", premium: "3", count: true },
+  { row: "DM automation flows", basic: null, standard: "2", premium: "4", count: true },
+  { row: "Custom video requests per month", basic: null, standard: "1", premium: "2", count: true },
+  { row: "Strategy calls per month", basic: "1", standard: "2", premium: "2", count: true },
+
+  { group: "In every plan" },
+  { row: "Full profile revamp at onboarding", basic: true, standard: true, premium: true },
+  { row: "Competitor audit of your niche", basic: true, standard: true, premium: true },
+  { row: "Audit of your own account", basic: true, standard: true, premium: true },
+  { row: "Content pillars built from both audits", basic: true, standard: true, premium: true },
+  { row: "Scripting, every video", basic: true, standard: true, premium: true },
+  { row: "Editing", basic: true, standard: true, premium: true },
+  { row: "Ad copy and angle for each ad", basic: true, standard: true, premium: true },
+  { row: "Scheduling and posting", basic: true, standard: true, premium: true },
+  { row: "Raw files, yours to keep", basic: true, standard: true, premium: true },
+];
+
+const objections = [
+  {
+    q: "Why run ads at all? Can't I just post more?",
+    a: "Posting more only reaches people who already follow you or happen to get served your video. That is a slow way to find buyers. Ads let you put a sales message in front of people who have never heard of you, today, in the amount you choose. Organic reach is something you earn over months. Paid reach is something you buy this afternoon.",
+  },
+  {
+    q: "If ads are the point, why does organic matter?",
+    a: "Because almost nobody buys straight off an ad. They tap your profile first. If that profile is empty or last posted in March, the ad just paid to show someone that you are not a serious business. The organic content is what makes the ad believable.",
+  },
+  {
+    q: "Why pillars instead of just posting good videos?",
+    a: "A good video with no job attached is a lottery ticket. Pillars give every post a role, so the month covers proof, objections, and personality instead of three versions of the same idea. It also means we are never sitting there on a shoot day wondering what to film.",
+  },
+  {
+    q: "What do I actually get each month?",
+    a: "Finished videos, ready to run. The ads come with the copy and the angle they are built for, the organic posts come scheduled. You get the files too, they are yours.",
+  },
+];
+---
+<Layout
+  title="Video Marketing in Melbourne, FL | Shockwave Studios"
+  description="How Shockwave Studios runs video marketing: paid ads that sell, organic content that makes you credible, and a content strategy built from real competitor data."
+>
+  <header class="site-header">
+    <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+      <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
+    </a>
+    <nav class="nav">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li class="has-dropdown">
+          <a href="/video-marketing">Services</a>
+          <ul class="dropdown">
+            <li><a href="/video-marketing">Video Marketing</a></li>
+            <li><a href="/video-production">Video Production</a></li>
+          </ul>
+        </li>
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="page-hero-inner">
+        <p class="hero-eyebrow">Video Marketing</p>
+        <h1>Ads That Sell. Content That Makes Them Believe You.</h1>
+        <p class="subheadline">Most agencies will talk to you about a content calendar. That is the last thing that matters. Here is the actual strategy, in the order it matters.</p>
+      </div>
+    </section>
+
+    <!-- ===== THE OFFER, UP FRONT =====
+         Second on the page by design. Everything below this point exists to
+         justify these three cards, so the visitor knows what is being sold
+         before they are asked to care about how it works. -->
+    <section class="sec sec-light" id="offer">
+      <div class="sec-inner">
+        <p class="sec-eyebrow reveal">The offer</p>
+        <h2 class="reveal">Finished Videos, Every Month</h2>
+        <p class="sec-lead reveal">Ads that sell and organic that makes them believable. The strategy behind all three is identical. What changes is the volume, how many platforms you run on, and how much automation is catching leads while you sleep.</p>
+
+        <div class="plan-grid reveal">
+          {plans.map(plan => (
+            <div class={`plan-card ${plan.featured ? "plan-featured" : ""}`}>
+              {plan.featured && <p class="plan-badge">Most Popular</p>}
+              <p class="plan-name">{plan.name}</p>
+
+              <p class="plan-headline">
+                <span class="ph-pair"><strong>{plan.ads}</strong> <span>ads</span></span>
+                <em>+</em>
+                <span class="ph-pair"><strong>{plan.organic}</strong> <span>organic</span></span>
+              </p>
+              <p class="plan-sub">finished and ready to run, every month</p>
+
+              <p class="plan-price">{plan.price}<span>/mo</span></p>
+
+              <!-- The same four rows on every card, so the tiers compare at a
+                   glance without anyone having to scroll to the chart. -->
+              <dl class="plan-spec">
+                <div><dt>Platforms</dt><dd>{plan.platforms}</dd></div>
+                <div><dt>Filming sessions</dt><dd>{plan.filming}<span> / mo</span></dd></div>
+                <div><dt>DM automation flows</dt><dd>{plan.flows ? plan.flows : <em class="spec-none">Not included</em>}</dd></div>
+                <div><dt>Profile revamp</dt><dd><span class="spec-yes" aria-label="Included">&#10003;</span></dd></div>
+              </dl>
+            </div>
+          ))}
+        </div>
+
+        <!-- Confirmed by Ashton 2026-09-20: ad spend is billed separately,
+             straight to the client's own Meta Ads Manager. -->
+        <div class="plan-note reveal">
+          <p class="plan-note-title">Ad spend is separate</p>
+          <p>The prices above are what you pay me. Your ad budget is billed straight to your own Meta Ads Manager, so you set it, you can see every dollar of it, and the ad account stays yours.</p>
+        </div>
+
+        <p class="plan-alt reveal">Need a single video instead of a monthly plan? That is <a href="/video-production">video production</a>.</p>
+      </div>
+    </section>
+
+
+    <!-- ===== AD VS ORGANIC ===== -->
+    <section class="sec sec-white" id="examples">
+      <div class="sec-inner">
+        <h2 class="h2-minor reveal">An Ad and an Organic Post, Side by Side</h2>
+        <p class="sec-lead reveal">Two videos doing two completely different jobs. One is built to sell. The other is built to make the first one believable.</p>
+
+        <!--
+          Both sourced from Ashton 2026-09-21 and re-encoded from 2160x3840 4K
+          masters down to 1080x1920 (CRF 26, faststart) for the 25MB Cloudflare
+          per-file limit. preload="none" so neither downloads until played.
+        -->
+        <div class="example-grid reveal">
+          <figure class="example-item">
+            <video class="example-video" controls preload="none" playsinline poster="/videos/ad-example.jpg">
+              <source src="/videos/ad-example.mp4" type="video/mp4" />
+            </video>
+            <figcaption>
+              <h3>The Ad</h3>
+            </figcaption>
+          </figure>
+
+          <figure class="example-item">
+            <video class="example-video" controls preload="none" playsinline poster="/videos/organic-example.jpg">
+              <source src="/videos/organic-example.mp4" type="video/mp4" />
+            </video>
+            <figcaption>
+              <h3>The Organic Post</h3>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== THE PROSPECT JOURNEY ===== -->
+    <section class="sec sec-light" id="journey">
+      <div class="sec-inner">
+        <p class="sec-eyebrow reveal">The prospect journey</p>
+        <h2 class="reveal">Two Ways Someone Becomes a Client</h2>
+        <p class="sec-lead reveal">Every step below is coloured by what drives it. Look at how often the two swap over. That is why they run together.</p>
+
+        <div class="legend reveal">
+          <span class="legend-item"><span class="dot dot-paid"></span>Paid ad doing the work</span>
+          <span class="legend-item"><span class="dot dot-organic"></span>Organic doing the work</span>
+          <span class="legend-item"><span class="dot dot-both"></span>Both at once</span>
+        </div>
+
+        <div class="routes">
+
+          <article class="route reveal">
+            <header class="route-head">
+              <p class="route-tag">Route 1</p>
+              <h3>The Warm Path</h3>
+              <p class="route-note">Slower. Ends in your best clients.</p>
+            </header>
+
+            <ol class="route-steps">
+              <li class="rs rs-organic">
+                <span class="rs-dot"></span>
+                <span class="rs-tag">Organic</span>
+                <p>They find your content and actually engage with it.</p>
+              </li>
+              <li class="rs rs-organic">
+                <span class="rs-dot"></span>
+                <span class="rs-tag">Organic</span>
+                <p>They keep seeing you. Trust builds over weeks, not minutes.</p>
+              </li>
+              <li class="rs rs-paid">
+                <span class="rs-dot"></span>
+                <span class="rs-tag">Paid</span>
+                <p>A targeted ad puts the offer in front of someone who already knows you.</p>
+              </li>
+              <li class="rs rs-none">
+                <span class="rs-dot"></span>
+                <span class="rs-tag">Neither</span>
+                <p>They do not buy. Almost nobody buys the first time they see an offer.</p>
+              </li>
+              <li class="rs rs-both">
+                <span class="rs-dot"></span>
+                <span class="rs-tag">Both</span>
+                <p>Retargeting brings the offer back while the organic keeps proving you out.</p>
+              </li>
+            </ol>
+
+            <p class="route-out">They come in as a top paying client</p>
+          </article>
+
+          <article class="route reveal">
+            <header class="route-head">
+              <p class="route-tag">Route 2</p>
+              <h3>The Cold Close</h3>
+              <p class="route-note">Faster. For people who need it now.</p>
+            </header>
+
+            <ol class="route-steps">
+              <li class="rs rs-paid">
+                <span class="rs-dot"></span>
+                <span class="rs-tag">Paid</span>
+                <p>An ad reaches someone in your target audience who has never heard of you.</p>
+              </li>
+              <li class="rs rs-none">
+                <span class="rs-dot"></span>
+                <span class="rs-tag">Neither</span>
+                <p>Before they call anyone, they go looking for proof.</p>
+              </li>
+              <li class="rs rs-organic">
+                <span class="rs-dot"></span>
+                <span class="rs-tag">Organic</span>
+                <p>Your profile is active and real. You check out.</p>
+              </li>
+            </ol>
+
+            <p class="route-out">They book a call</p>
+          </article>
+
+        </div>
+
+        <div class="route-close reveal">
+          <p><strong>Ads without organic get checked, and fail the check.</strong> You pay to send a stranger to a profile that hands them a reason to hesitate.</p>
+          <p><strong>Organic without ads never reaches anyone new.</strong> Content only your existing followers see is not a growth channel, it is a hobby.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CREATIVE STRATEGY =====
+         One panel, no vertical sequence. Inputs on the left, output on the
+         right, the calendar underneath as proof. This used to be four stacked
+         nodes plus a separate cadence block, which was a lot of scrolling for
+         a method that is genuinely two steps. -->
+    <section class="sec sec-mist" id="strategy">
+      <div class="sec-inner">
+        <p class="sec-eyebrow reveal">The creative strategy</p>
+        <h2 class="reveal">Two Audits In, Your Pillars Out</h2>
+        <p class="sec-lead reveal">Not a brainstorm, and not asking you what you feel like filming. This is the whole method.</p>
+
+        <div class="sp reveal">
+          <div class="sp-side sp-in">
+            <p class="sp-label">What goes in</p>
+
+            <div class="sp-item">
+              <h3>Your competitors</h3>
+              <p>What is already winning in your market. Not what looks nice, what actually pulled reach and comments. Someone in your niche has already paid for the lesson.</p>
+            </div>
+
+            <div class="sp-item">
+              <h3>Your own account</h3>
+              <p>What performed, what flopped, what you have never tried. Most accounts already have a winner nobody ever asked about.</p>
+            </div>
+          </div>
+
+          <div class="sp-join" aria-hidden="true">
+            <svg viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg">
+              <line x1="2" y1="12" x2="30" y2="12" />
+              <path d="M 24 5 L 33 12 L 24 19" />
+            </svg>
+          </div>
+
+          <div class="sp-side sp-out">
+            <p class="sp-label">What comes out</p>
+
+            <div class="sp-item sp-item-hero">
+              <h3>Your content pillars</h3>
+              <p>Repeatable video types, each with a job. Built from evidence rather than a whiteboard, so they hold up when one video underperforms. We can always point at why it existed.</p>
+            </div>
+
+            <div class="sp-cadence">
+              <p class="sp-cadence-label">Every slot assigned before anything is filmed</p>
+              <div class="cadence-grid">
+                <div class="cadence-cell cadence-paid"><span>Pillar A</span><em>Ad</em></div>
+                <div class="cadence-cell cadence-organic"><span>Pillar C</span><em>Organic</em></div>
+                <div class="cadence-cell cadence-paid"><span>Pillar B</span><em>Ad</em></div>
+                <div class="cadence-cell cadence-paid"><span>Pillar A</span><em>Ad</em></div>
+                <div class="cadence-cell cadence-organic"><span>Pillar D</span><em>Organic</em></div>
+                <div class="cadence-cell cadence-paid"><span>Pillar B</span><em>Ad</em></div>
+              </div>
+              <p class="sp-cadence-note">Your pillars get named after the audits, so this fills with your categories, not placeholders.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ===== WHAT YOU GET =====
+         Was "The Easy Part, Already Handled" as four cards. Now the chart. -->
+    <section class="sec sec-white" id="included">
+      <div class="sec-inner">
+        <p class="sec-eyebrow reveal">Every month</p>
+        <h2 class="reveal">Exactly What You Get</h2>
+        <p class="sec-lead reveal">Shooting, editing, scheduling and posting are in every plan. They are the easy part and they are already handled.</p>
+
+        <div class="chart-wrap reveal">
+          <table class="chart">
+            <caption class="visually-hidden">What is included in each monthly plan</caption>
+            <thead>
+              <tr>
+                <th scope="col" class="chart-rowhead">Included</th>
+                {plans.map(p => (
+                  <th scope="col" class={p.featured ? "chart-featured" : ""}>
+                    <span class="chart-tier">{p.name}</span>
+                    <span class="chart-price">{p.price}</span>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {included.map(item => (
+                item.group ? (
+                  <tr class="chart-grouprow">
+                    <th scope="colgroup" colspan="4">{item.group}</th>
+                  </tr>
+                ) : (
+                  <tr class={item.count ? "chart-countrow" : ""}>
+                    <th scope="row" class="chart-rowhead">{item.row}</th>
+                    <td>
+                      {item.count
+                        ? (item.basic ? <span class="chart-num">{item.basic}</span> : <span class="chart-no">Not included</span>)
+                        : <span class="chart-yes" aria-label="Included">&#10003;</span>}
+                    </td>
+                    <td class="chart-featured">
+                      {item.count
+                        ? (item.standard ? <span class="chart-num">{item.standard}</span> : <span class="chart-no">Not included</span>)
+                        : <span class="chart-yes" aria-label="Included">&#10003;</span>}
+                    </td>
+                    <td>
+                      {item.count
+                        ? (item.premium ? <span class="chart-num">{item.premium}</span> : <span class="chart-no">Not included</span>)
+                        : <span class="chart-yes" aria-label="Included">&#10003;</span>}
+                    </td>
+                  </tr>
+                )
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ROI LOGIC ===== -->
+    <section class="sec sec-mist sec-statement" id="roi">
+      <div class="sec-inner sec-inner-narrow">
+        <p class="statement reveal">I am not going to throw a number at you that I made up.</p>
+        <p class="statement-sub reveal">Run your own instead. It takes about a minute.</p>
+
+        <ol class="roi-steps">
+          <li class="reveal">
+            <span class="roi-num">1</span>
+            <div>
+              <h3>What is one customer worth to you?</h3>
+              <p>Not just the first job. Everything they spend over the years.</p>
+            </div>
+          </li>
+          <li class="reveal">
+            <span class="roi-num">2</span>
+            <div>
+              <h3>How many do you need to cover this?</h3>
+              <p>Divide the monthly fee by that number. For a lot of the businesses I work with, the answer is one. Sometimes it is less than one.</p>
+            </div>
+          </li>
+          <li class="reveal">
+            <span class="roi-num">3</span>
+            <div>
+              <h3>Now ask what happens past that.</h3>
+              <p>Everything above break even is the actual return. And the content does not expire at the end of the month. The ads that worked keep running, the organic stays on the profile doing its job for whoever finds it next.</p>
+            </div>
+          </li>
+        </ol>
+
+        <p class="roi-close reveal">If you need a dozen new customers a month just to break even, tell me on the call and I will tell you honestly whether this is the right spend for you right now.</p>
+      </div>
+    </section>
+
+    <!-- ===== QUESTIONS, AT THE BOTTOM ===== -->
+    <section class="sec sec-white" id="questions">
+      <div class="sec-inner sec-inner-narrow">
+        <h2 class="h2-minor reveal">The Questions You Are Probably Holding</h2>
+
+        <div class="qa-list">
+          {objections.map((o, i) => (
+            <div class="qa reveal">
+              <p class="qa-num">{String(i + 1).padStart(2, "0")}</p>
+              <div>
+                <h3>{o.q}</h3>
+                <p>{o.a}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <FunnelCTA
+      path="video_marketing"
+      calendlyParam="Video Marketing"
+      heading="Let's Build Your Engine"
+      body="Book a call. Before we talk I go through your account and the accounts of the people you compete with, so I show up with something specific instead of a pitch deck."
+      bullets={[
+        "What your competitors are already winning with",
+        "The pillars I would build your month around",
+        "The first ad angle I would put money behind",
+      ]}
+      buttonLabel="Book Your Call"
+      note="Free, no commitment. Add your business name when you book so I can look you up first."
+    />
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+        <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="footer-logo-img" />
+      </a>
+      <ul class="nav-links footer-links">
+        <li><a href="/video-marketing">Video Marketing</a></li>
+        <li><a href="/video-production">Video Production</a></li>
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <InstagramLink />
+    </div>
+    <p class="copyright">&copy; {new Date().getFullYear()} Shockwave Studios. Melbourne, Florida.</p>
+  </footer>
+
+  <ScrollReveal />
+
+  <style>
+    /* Navy is punctuation on this page, not alternation. It appears twice, the
+       hero and the closing CTA. Everything between lives in a narrow light band
+       (--bg 0.91 luminance, white 1.0, --mist 0.84) so scrolling never swings
+       the whole viewport from near-black to near-white. */
+    :root {
+      --bg: #F4F7FC;
+      --bg-secondary: #FFFFFF;
+      --mist: #E7EEF9;
+      --accent: #A8C5F0;
+      --primary: #1B3A6B;
+      --primary-deep: #0F2145;
+      --secondary: #5B8FD4;
+      --label: #3A67AC;
+      --text: #1A1A2E;
+      --rule: rgba(27, 58, 107, 0.14);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 600;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    h1 {
+      font-family: var(--font-impact);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      color: var(--primary);
+    }
+
+    h2, h3 {
+      font-family: var(--font-editorial);
+      font-weight: 700;
+      letter-spacing: -0.005em;
+      color: var(--primary);
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ---------- header / nav ---------- */
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 88px;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(168, 197, 240, 0.1);
+    }
+
+    .logo-link { display: flex; align-items: center; height: 100%; overflow: hidden; }
+    .logo-img { height: 192px; width: auto; display: block; }
+    .footer-logo-img { height: 160px; width: auto; display: block; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--label); }
+
+    .has-dropdown { position: relative; }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-secondary);
+      border: 1px solid rgba(168, 197, 240, 0.15);
+      border-radius: 10px;
+      min-width: 220px;
+      box-shadow: 0 8px 24px rgba(27, 58, 107, 0.12);
+      padding: 0.5rem 0;
+      list-style: none;
+      flex-direction: column;
+      z-index: 200;
+    }
+
+    .has-dropdown:hover .dropdown { display: flex; }
+
+    .dropdown li a {
+      display: block;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .dropdown li a:hover {
+      background: rgba(168, 197, 240, 0.12);
+      color: var(--primary);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--text); }
+
+    /* ---------- hero (dark moment 1 of 2) ----------
+
+       --primary-deep stays as the colour underneath so a missing or slow image
+       never leaves white text on white, and the gradient below is dark enough
+       that white type clears 7.8:1 over even a pure white photo.
+
+       The source (2032, the pool shoot) is a 3024x4032 iPhone portrait,
+       pre-cropped to 3:2 around its subject and shipped at 1920x1280 / ~180KB.
+       Cropping here rather than letting CSS guess is why background-position is
+       just 'center'. Do not add a second background-image layer as a fallback:
+       browsers fetch every layer, so an unused one is a silent download.
+
+       TO SWAP: replace public/hero-video-marketing.jpg, same aspect, keep it
+       under ~400KB. */
+
+    .page-hero {
+      position: relative;
+      background-color: var(--primary-deep);
+      background-image: url('/hero-video-marketing.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10, 20, 45, 0.74) 0%, rgba(10, 20, 45, 0.88) 100%);
+      z-index: 0;
+    }
+
+    .page-hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 7rem 5% 6rem;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4.4rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.75rem;
+      color: #ffffff;
+    }
+
+    .subheadline {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.72);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* ---------- section shell ---------- */
+
+    .sec { padding: 7rem 5%; }
+    .sec-light { background: var(--bg); }
+    .sec-white { background: var(--bg-secondary); }
+    .sec-mist { background: var(--mist); }
+
+    .sec-inner { max-width: 1150px; margin: 0 auto; }
+    .sec-inner-narrow { max-width: 860px; }
+
+    .sec-eyebrow {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--label);
+      margin-bottom: 1.25rem;
+    }
+
+    .sec h2 {
+      font-size: clamp(2rem, 4.6vw, 3.2rem);
+      line-height: 1.12;
+      margin-bottom: 1.5rem;
+    }
+
+    .sec h2.h2-minor {
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      margin-bottom: 1.25rem;
+    }
+
+    .sec-lead {
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      line-height: 1.6;
+      color: rgba(26, 26, 46, 0.7);
+      max-width: 760px;
+      margin-bottom: 4rem;
+    }
+
+    /* ---------- the offer cards ----------
+       Counts first, price second. See the note on `plans` above. */
+
+    .plan-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .plan-card {
+      position: relative;
+      background: var(--bg-secondary);
+      border: 1px solid var(--rule);
+      border-radius: 20px;
+      padding: 2.25rem 1.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .plan-featured {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 20px 50px rgba(27, 58, 107, 0.22);
+    }
+
+    /* Taken out of the flow on purpose. In the flow it pushed the featured
+       card's content down, so its price sat lower than the other two and the
+       card ran ~39px taller for no design reason. Absolute keeps all three
+       cards identical in height with their prices on the same line. */
+    .plan-badge {
+      position: absolute;
+      top: 2.1rem;
+      right: 1.85rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--primary-deep);
+      background: var(--accent);
+      border-radius: 999px;
+      padding: 0.35rem 0.9rem;
+    }
+
+    .plan-name {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--label);
+    }
+
+    .plan-featured .plan-name { color: var(--accent); }
+
+    /* the loudest thing in the card */
+    .plan-headline {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.45rem;
+      font-family: var(--font-editorial);
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    /* keeps "4 ads" and "2 organic" welded, so a narrow card wraps between
+       the pairs rather than orphaning the word from its number */
+    .ph-pair {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .plan-headline strong {
+      font-weight: 800;
+      font-size: clamp(2.4rem, 5vw, 3.2rem);
+      letter-spacing: -0.02em;
+    }
+
+    .plan-headline span {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--label);
+    }
+
+    .plan-headline em {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1.5rem;
+      color: var(--secondary);
+      padding: 0 0.15rem;
+    }
+
+    .plan-featured .plan-headline { color: #ffffff; }
+    .plan-featured .plan-headline span { color: var(--accent); }
+    .plan-featured .plan-headline em { color: var(--accent); }
+
+    .plan-sub {
+      font-size: 0.95rem;
+      color: rgba(26, 26, 46, 0.68);
+      margin-bottom: 0.85rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .plan-featured .plan-sub {
+      color: rgba(255, 255, 255, 0.7);
+      border-bottom-color: rgba(168, 197, 240, 0.3);
+    }
+
+    .plan-price {
+      font-family: var(--font-editorial);
+      font-weight: 800;
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--primary);
+    }
+
+    .plan-price span {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: rgba(26, 26, 46, 0.66);
+    }
+
+    .plan-featured .plan-price { color: #ffffff; }
+    .plan-featured .plan-price span { color: rgba(255, 255, 255, 0.62); }
+
+    /* the four rows that let the cards be compared without the chart */
+    .plan-spec {
+      margin: 1.1rem 0 0.35rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .plan-featured .plan-spec { border-top-color: rgba(168, 197, 240, 0.3); }
+
+    .plan-spec > div {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .plan-spec dt {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: rgba(26, 26, 46, 0.68);
+    }
+
+    .plan-spec dd {
+      margin: 0;
+      font-family: var(--font-editorial);
+      font-weight: 800;
+      font-size: 1.15rem;
+      line-height: 1;
+      color: var(--primary);
+    }
+
+    .plan-spec dd span {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: rgba(26, 26, 46, 0.62);
+    }
+
+    .plan-featured .plan-spec dt { color: rgba(255, 255, 255, 0.72); }
+    .plan-featured .plan-spec dd { color: #ffffff; }
+    .plan-featured .plan-spec dd span { color: rgba(255, 255, 255, 0.6); }
+
+    .spec-none {
+      font-family: var(--font-body);
+      font-style: normal;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: rgba(26, 26, 46, 0.62);
+    }
+
+    .plan-featured .spec-none { color: rgba(255, 255, 255, 0.58); }
+
+    .spec-yes { color: var(--label); font-size: 1.05rem; }
+    .plan-featured .spec-yes { color: var(--accent); }
+
+    .plan-note {
+      max-width: 700px;
+      margin: 2.5rem auto 0;
+      background: var(--mist);
+      border-left: 4px solid var(--secondary);
+      border-radius: 0 14px 14px 0;
+      padding: 1.5rem 1.75rem;
+    }
+
+    .plan-note-title {
+      font-family: var(--font-editorial);
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--primary);
+      margin-bottom: 0.6rem;
+    }
+
+    .plan-note p:last-child {
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: rgba(26, 26, 46, 0.72);
+    }
+
+    .plan-alt {
+      margin-top: 2.5rem;
+      text-align: center;
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(26, 26, 46, 0.68);
+    }
+
+    .plan-alt a {
+      color: var(--label);
+      font-weight: 700;
+      font-family: var(--font-body);
+      font-style: normal;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    /* ---------- the prospect journey ---------- */
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 2rem;
+      margin: -2.5rem 0 3rem;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: rgba(26, 26, 46, 0.7);
+    }
+
+    .dot { width: 14px; height: 14px; border-radius: 50%; flex: none; }
+    .dot-paid { background: var(--primary); }
+    .dot-organic { background: var(--bg-secondary); border: 2px solid var(--secondary); }
+    .dot-both { background: linear-gradient(135deg, var(--primary) 0 50%, var(--secondary) 50% 100%); }
+
+    .routes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .route {
+      background: var(--bg-secondary);
+      border: 1px solid var(--rule);
+      border-radius: 20px;
+      padding: 2.25rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .route-head { margin-bottom: 1.75rem; }
+
+    .route-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--label);
+      margin-bottom: 0.6rem;
+    }
+
+    .route-head h3 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+    }
+
+    .route-note {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.1rem;
+      color: var(--label);
+    }
+
+    .route-steps {
+      list-style: none;
+      position: relative;
+      margin: 0 0 1.75rem;
+      padding: 0;
+      flex-grow: 1;
+    }
+
+    .route-steps::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      background: rgba(91, 143, 212, 0.3);
+    }
+
+    .rs {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-areas: "dot tag" "dot text";
+      column-gap: 1.1rem;
+      row-gap: 0.3rem;
+      padding-bottom: 1.6rem;
+    }
+
+    .rs:last-child { padding-bottom: 0; }
+
+    .rs-dot {
+      grid-area: dot;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      margin-top: 0.15rem;
+      z-index: 1;
+      box-shadow: 0 0 0 4px var(--bg-secondary);
+    }
+
+    .rs-tag {
+      grid-area: tag;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .rs p {
+      grid-area: text;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: rgba(26, 26, 46, 0.75);
+      margin: 0;
+    }
+
+    .rs-paid .rs-dot { background: var(--primary); }
+    .rs-paid .rs-tag { color: var(--primary); }
+
+    .rs-organic .rs-dot { background: var(--bg-secondary); border: 3px solid var(--secondary); }
+    .rs-organic .rs-tag { color: var(--label); }
+
+    .rs-both .rs-dot { background: linear-gradient(135deg, var(--primary) 0 50%, var(--secondary) 50% 100%); }
+    .rs-both .rs-tag { color: var(--primary); }
+
+    .rs-none .rs-dot { background: var(--mist); border: 2px solid rgba(27, 58, 107, 0.2); }
+    .rs-none .rs-tag { color: rgba(26, 26, 46, 0.7); }
+    .rs-none p { color: rgba(26, 26, 46, 0.68); }
+
+    .route-out {
+      background: var(--primary);
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 1.1rem 1.4rem;
+      font-family: var(--font-editorial);
+      font-weight: 700;
+      font-size: clamp(1.1rem, 2.1vw, 1.35rem);
+      line-height: 1.25;
+      text-align: center;
+    }
+
+    .route-close {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .route-close p {
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: rgba(26, 26, 46, 0.72);
+    }
+
+    .route-close strong {
+      font-weight: 700;
+      color: var(--primary);
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    /* ---------- creative strategy panel ---------- */
+
+    .sp {
+      display: grid;
+      grid-template-columns: 1fr 56px 1.15fr;
+      align-items: stretch;
+    }
+
+    .sp-side {
+      background: var(--bg-secondary);
+      border: 1px solid var(--rule);
+      border-radius: 20px;
+      padding: 2rem 1.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .sp-out { border-color: var(--secondary); }
+
+    .sp-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--label);
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .sp-item h3 {
+      font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+
+    .sp-item p {
+      font-size: 1.02rem;
+      line-height: 1.6;
+      color: rgba(26, 26, 46, 0.74);
+    }
+
+    .sp-join { display: flex; align-items: center; justify-content: center; }
+    .sp-join svg { width: 40px; height: 24px; }
+    .sp-join line, .sp-join path {
+      stroke: var(--secondary);
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .sp-cadence {
+      margin-top: auto;
+      background: var(--mist);
+      border-radius: 14px;
+      padding: 1.25rem 1.1rem;
+    }
+
+    .sp-cadence-label {
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--label);
+      margin-bottom: 0.9rem;
+    }
+
+    .cadence-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+    }
+
+    .cadence-cell {
+      border-radius: 8px;
+      padding: 0.6rem 0.25rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .cadence-cell span { font-weight: 700; font-size: 0.72rem; }
+
+    .cadence-cell em {
+      font-style: normal;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .cadence-paid { background: var(--primary); }
+    .cadence-paid span { color: #ffffff; }
+    .cadence-paid em { color: var(--accent); }
+
+    .cadence-organic { background: var(--bg-secondary); border: 1px dashed var(--secondary); }
+    .cadence-organic span { color: var(--primary); }
+    .cadence-organic em { color: var(--label); }
+
+    .sp-cadence-note {
+      text-align: center;
+      margin-top: 0.9rem;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: rgba(26, 26, 46, 0.68);
+    }
+
+    /* ---------- ad vs organic ---------- */
+
+    .example-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .example-item { display: flex; flex-direction: column; gap: 1rem; }
+
+    .example-video {
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      border-radius: 16px;
+      background: #000;
+      display: block;
+      object-fit: cover;
+    }
+
+    .example-item figcaption h3 {
+      font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+      margin-bottom: 0;
+    }
+
+    /* ---------- the deliverables chart ---------- */
+
+    .chart-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    .chart {
+      width: 100%;
+      min-width: 620px;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .chart th, .chart td { padding: 0.9rem 1rem; }
+
+    .chart thead th {
+      vertical-align: bottom;
+      text-align: center;
+      border-bottom: 2px solid var(--rule);
+      padding-bottom: 1.1rem;
+    }
+
+    .chart thead th.chart-rowhead { text-align: left; }
+
+    .chart-tier {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--label);
+      margin-bottom: 0.3rem;
+    }
+
+    .chart-price {
+      display: block;
+      font-family: var(--font-editorial);
+      font-weight: 800;
+      font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+      letter-spacing: -0.02em;
+      color: var(--primary);
+    }
+
+    .chart tbody th.chart-rowhead {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1rem;
+      color: rgba(26, 26, 46, 0.82);
+      width: 46%;
+    }
+
+    .chart tbody td { text-align: center; }
+
+    .chart tbody tr { border-bottom: 1px solid var(--rule); }
+    .chart tbody tr:last-child { border-bottom: 0; }
+
+    /* the two rows that actually differ get the weight */
+    .chart-countrow { background: rgba(168, 197, 240, 0.16); }
+    .chart-countrow th.chart-rowhead { color: var(--primary); font-weight: 700; }
+
+    .chart-num {
+      font-family: var(--font-editorial);
+      font-weight: 800;
+      font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+      letter-spacing: -0.02em;
+      color: var(--primary);
+    }
+
+    .chart-yes { color: var(--label); font-size: 1.15rem; font-weight: 700; }
+
+    .chart-no {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(26, 26, 46, 0.62);
+    }
+
+    /* splits the chart into what differs and what everyone gets, so the part
+       that carries a decision is not buried in the boilerplate */
+    .chart-grouprow th {
+      padding-top: 1.9rem;
+      padding-bottom: 0.6rem;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--label);
+      text-align: left;
+      background: transparent;
+    }
+
+    .chart-grouprow { border-bottom: 2px solid var(--rule) !important; }
+    .chart tbody tr.chart-grouprow:first-child th { padding-top: 0.6rem; }
+
+    /* a quiet vertical band marking the featured tier down the whole chart */
+    .chart-featured { background: rgba(27, 58, 107, 0.05); }
+    .chart-countrow .chart-featured { background: rgba(27, 58, 107, 0.1); }
+
+    /* ---------- roi ---------- */
+
+    .sec-statement { padding-top: 8rem; padding-bottom: 8rem; }
+
+    .statement {
+      font-family: var(--font-impact);
+      font-weight: 400;
+      font-size: clamp(1.75rem, 4.4vw, 3.1rem);
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .statement-sub {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+      color: var(--label);
+      margin-bottom: 4rem;
+    }
+
+    .roi-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2.75rem;
+      margin-bottom: 3rem;
+    }
+
+    .roi-steps li { display: flex; gap: 1.75rem; align-items: flex-start; }
+
+    .roi-num {
+      font-family: var(--font-editorial);
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #ffffff;
+      background: var(--primary);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .roi-steps h3 {
+      font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+      margin-bottom: 0.65rem;
+    }
+
+    .roi-steps p {
+      font-size: clamp(1.02rem, 1.8vw, 1.15rem);
+      line-height: 1.7;
+      color: rgba(26, 26, 46, 0.74);
+    }
+
+    .roi-close {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+      line-height: 1.6;
+      color: var(--primary);
+      border-left: 3px solid var(--secondary);
+      padding-left: 1.75rem;
+    }
+
+    /* ---------- questions ---------- */
+
+    .qa-list { border-top: 1px solid var(--rule); }
+
+    .qa {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 1.5rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .qa-num {
+      font-family: var(--font-editorial);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--label);
+      padding-top: 0.2rem;
+    }
+
+    .qa h3 {
+      font-size: clamp(1.15rem, 2.3vw, 1.5rem);
+      line-height: 1.25;
+      margin-bottom: 0.9rem;
+    }
+
+    .qa p {
+      font-size: clamp(1.02rem, 1.8vw, 1.15rem);
+      line-height: 1.7;
+      color: rgba(26, 26, 46, 0.74);
+    }
+
+    /* ---------- footer ---------- */
+
+    .site-footer {
+      padding: 1.5rem 5% 1.25rem;
+      border-top: 1px solid rgba(168, 197, 240, 0.1);
+      text-align: center;
+      background: var(--bg);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 1.5rem 2rem; }
+
+    .copyright { color: rgba(26, 26, 46, 0.55); font-size: 0.85rem; }
+
+    /* ---------- responsive ---------- */
+
+    @media (max-width: 1000px) {
+      .plan-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+      .sp { grid-template-columns: 1fr; gap: 1.25rem; }
+      .sp-join { transform: rotate(90deg); height: 40px; }
+    }
+
+    @media (max-width: 768px) {
+      .logo-img { height: 144px; }
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .nav-links.open { max-height: 500px; }
+
+      .nav-links li { width: 100%; border-top: 1px solid rgba(168, 197, 240, 0.1); }
+
+      .nav-links a { display: block; padding: 1rem 5%; }
+
+      .has-dropdown .dropdown {
+        display: flex;
+        position: static;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        background: rgba(168, 197, 240, 0.06);
+        padding: 0;
+        min-width: unset;
+      }
+
+      .dropdown li a { padding-left: 10%; }
+
+      .sec { padding: 4.5rem 5%; }
+      .sec-statement { padding-top: 5rem; padding-bottom: 5rem; }
+      .page-hero-inner { padding: 4.5rem 5% 4rem; }
+      .sec-lead { margin-bottom: 2.5rem; }
+      .statement-sub { margin-bottom: 2.5rem; }
+
+      .routes { grid-template-columns: 1fr; gap: 1.5rem; }
+      .route { padding: 1.75rem 1.5rem 1.5rem; }
+      .legend { margin: -1.25rem 0 2rem; gap: 0.6rem 1.25rem; }
+      .legend-item { font-size: 0.9rem; }
+      .route-close { grid-template-columns: 1fr; gap: 1.5rem; margin-top: 2rem; padding-top: 2rem; }
+
+      .sp-side { padding: 1.5rem 1.25rem; }
+      .cadence-grid { grid-template-columns: repeat(3, 1fr); }
+
+      .example-grid { grid-template-columns: 1fr; gap: 2.5rem; max-width: 380px; }
+      .qa { grid-template-columns: 1fr; gap: 0.5rem; padding: 2rem 0; }
+      .roi-steps li { gap: 1rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-links { transition: none; }
+      .nav-links a { transition: none; }
+    }
+  </style>
+</Layout>

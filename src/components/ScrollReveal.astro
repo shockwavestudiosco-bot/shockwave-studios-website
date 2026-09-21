@@ -1,0 +1,53 @@
+---
+/**
+ * Fades and lifts any element marked `.reveal` as it scrolls into view.
+ *
+ * Elements are only hidden after the script confirms it can observe them, so a
+ * blocked script or a browser without IntersectionObserver leaves the page
+ * fully readable rather than blank. Nothing here is required to understand the
+ * page, it only softens the entrance.
+ *
+ * prefers-reduced-motion skips the arming step entirely, so those visitors get
+ * the finished layout with no transition at all.
+ */
+---
+<script>
+  const items = [...document.querySelectorAll('.reveal')];
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (items.length && !reduced && 'IntersectionObserver' in window) {
+    items.forEach(el => el.classList.add('reveal-armed'));
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('reveal-in');
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+
+    items.forEach(el => observer.observe(el));
+  }
+</script>
+
+<style is:global>
+  .reveal-armed {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+
+  .reveal-armed.reveal-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-armed,
+    .reveal-armed.reveal-in {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,869 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FunnelCTA from '../components/FunnelCTA.astro';
+import InstagramLink from '../components/InstagramLink.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+
+// The six steps, in order. One short paragraph each: the process is simple and
+// the copy should not make it look otherwise. They render as one continuous
+// timeline rather than six alternating full-width bands, which kept the page
+// from flipping between near-black and near-white six times on the way down.
+const steps = [
+  {
+    num: "01",
+    title: "Discovery Call",
+    lead: "We work out what the video is actually for.",
+    body: [
+      "Not what you want filmed, what you need it to do. Close a sale, fill an event, move a listing. Then where it lives, because a website video and an Instagram video are different builds.",
+    ],
+  },
+  {
+    num: "02",
+    title: "Proposal and Plan Call",
+    lead: "I build the plan, then walk you through it live.",
+    body: [
+      "Concept, shot list, scope, timeline, cost. All of it worked out before you see any of it, and presented on a call instead of emailed as a PDF you have to decode alone. Anything you want changed gets changed right there.",
+    ],
+    pull: "What you approve is the thing that actually gets made.",
+  },
+  {
+    num: "03",
+    title: "Lock the Shoot Date",
+    lead: "Plan approved, calendar locked.",
+    body: [
+      "You know when I am showing up and how long I need. Locations, permissions, and anyone who has to be on camera get sorted now, not the morning of.",
+    ],
+  },
+  {
+    num: "04",
+    title: "Shoot",
+    lead: "Execution, not invention.",
+    body: [
+      "We work the shot list we already agreed on, so nobody is standing around deciding what to film. Half a day, up to four hours on site. You do not have to be good on camera, directing you is part of the job.",
+    ],
+  },
+  {
+    num: "05",
+    title: "Edit",
+    lead: "Cut against the plan, then refined with you.",
+    body: [
+      "You get the first cut and two rounds of changes. Send notes as timestamps. Tell me what is wrong at 0:14 and I fix 0:14.",
+    ],
+  },
+  {
+    num: "06",
+    title: "Deliver",
+    lead: "Final files, yours to keep.",
+    body: [
+      "Delivered through Google Drive, usually within five business days of the shoot. Need a different aspect ratio for another platform, ask while we are still in it and it comes with the delivery.",
+    ],
+  },
+];
+
+const specs = [
+  { value: "Half day", label: "Shoot length", note: "Up to four hours on site as standard. Anything longer gets scoped and priced in the proposal." },
+  { value: "2 rounds", label: "Revisions included", note: "Two rounds of changes after the first cut. Send notes as timestamps and they get handled." },
+  { value: "Under 5 days", label: "Typical turnaround", note: "Most projects are delivered within five business days of the shoot. Bigger builds take longer, and you will know that upfront." },
+  { value: "Google Drive", label: "How you get it", note: "Final files delivered through Drive. Download them and they are yours to keep and reuse." },
+];
+
+// Example videos already in the repo. These three are the same files and the
+// same labels the /videography package cards use, so the labels are not being
+// invented here.
+const examples = [
+  { src: "/videos/real-estate-example.mp4", label: "Real Estate Listing" },
+  { src: "/videos/event-example.mp4", label: "Event Coverage" },
+  { src: "/videos/brandexample.mp4", label: "Brand and Promo" },
+];
+---
+<Layout
+  title="Video Production in Melbourne, FL | Shockwave Studios"
+  description="How a Shockwave Studios video gets made: discovery call, a proposal presented live, a locked shoot date, the shoot, the edit, and delivery. The plan is settled before the camera comes out."
+>
+  <header class="site-header">
+    <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+      <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
+    </a>
+    <nav class="nav">
+      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li class="has-dropdown">
+          <a href="/video-marketing">Services</a>
+          <ul class="dropdown">
+            <li><a href="/video-marketing">Video Marketing</a></li>
+            <li><a href="/video-production">Video Production</a></li>
+          </ul>
+        </li>
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="page-hero-inner">
+        <p class="hero-eyebrow">Video Production</p>
+        <h1>Nothing Gets Filmed Until the Plan Is Settled.</h1>
+        <p class="subheadline">One video, no monthly commitment. Six steps, and by the time a camera comes out, every decision has already been made.</p>
+      </div>
+    </section>
+
+    <!-- ===== THE THROUGH-LINE =====
+         No eyebrow, no lead paragraph. Just a statement at display size, so
+         the page opens on a different shape than every section that follows. -->
+    <section class="sec sec-light sec-statement" id="why">
+      <div class="sec-inner sec-inner-narrow">
+        <p class="statement reveal">A shoot that goes wrong almost never goes wrong because of the camera.</p>
+        <div class="statement-body reveal">
+          <p>It goes wrong because nobody decided what the video was for, so the day gets spent improvising and the edit turns into guesswork.</p>
+          <p>Two calls up front fix that. One to find out what you actually need, one to show you the plan before you commit to it. Everything after that is execution.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== THE SIX STEPS, AS ONE TIMELINE ===== -->
+    <section class="sec sec-white steps" id="process">
+      <div class="sec-inner">
+        <div class="steps-head reveal">
+          <p class="sec-eyebrow">The process</p>
+          <h2>Six Steps, In Order</h2>
+        </div>
+
+        <ol class="timeline">
+          {steps.map((step, i) => (
+            <li class="tl-step reveal" id={`step-${step.num}`}>
+              <div class="tl-rail">
+                <span class="tl-num">{step.num}</span>
+              </div>
+              <div class="tl-card">
+                <p class="tl-of">Step {i + 1} of {steps.length}</p>
+                <h3>{step.title}</h3>
+                <p class="tl-lead">{step.lead}</p>
+                {step.body.map(p => <p class="tl-para">{p}</p>)}
+                {step.pull && <p class="tl-pull">{step.pull}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== WHAT YOU GET =====
+         Mid-tone band. Runs as a list rather than four boxes, so it does not
+         repeat the card grid the examples section uses below it. -->
+    <section class="sec sec-mist" id="specs">
+      <div class="sec-inner">
+        <h2 class="h2-minor reveal">What You Get</h2>
+
+        <dl class="spec-list">
+          {specs.map(s => (
+            <div class="spec-row reveal">
+              <dt>{s.value}</dt>
+              <dd>
+                <span class="spec-label">{s.label}</span>
+                <span class="spec-note">{s.note}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    <!-- ===== EXAMPLES ===== -->
+    <section class="sec sec-white" id="examples">
+      <div class="sec-inner">
+        <h2 class="h2-minor reveal">Recent Projects</h2>
+        <p class="sec-lead reveal">Three different jobs, three different builds. Same process behind all of them.</p>
+
+        <div class="example-grid reveal">
+          {examples.map(ex => (
+            <figure class="example-item">
+              <video class="example-video" controls preload="none">
+                <source src={ex.src} type="video/mp4" />
+              </video>
+              <figcaption>{ex.label}</figcaption>
+            </figure>
+          ))}
+        </div>
+
+        <!--
+          EXTRA VIDEO SLOTS. To fill one: drop the .mp4 in public/videos/ (keep
+          it under 25MB for Cloudflare Pages, compress with
+          ffmpeg -i in.mp4 -c:v libx264 -b:v 4M -vf scale=-2:1080 out.mp4 if
+          needed) and replace the whole .example-placeholder figure with the
+          same <figure class="example-item"> shape used above.
+        -->
+        <div class="example-grid example-grid-slots reveal">
+          <figure class="example-item">
+            <div class="example-placeholder" data-slot="production-example-4">
+              <span class="ph-badge">Video slot</span>
+              <span class="ph-name">Open slot</span>
+              <span class="ph-spec">16:9, under 25MB</span>
+            </div>
+            <figcaption>Label this one</figcaption>
+          </figure>
+          <figure class="example-item">
+            <div class="example-placeholder" data-slot="production-example-5">
+              <span class="ph-badge">Video slot</span>
+              <span class="ph-name">Open slot</span>
+              <span class="ph-spec">16:9, under 25MB</span>
+            </div>
+            <figcaption>Label this one</figcaption>
+          </figure>
+          <figure class="example-item">
+            <div class="example-placeholder" data-slot="production-example-6">
+              <span class="ph-badge">Video slot</span>
+              <span class="ph-name">Open slot</span>
+              <span class="ph-spec">16:9, under 25MB</span>
+            </div>
+            <figcaption>Label this one</figcaption>
+          </figure>
+        </div>
+
+        <p class="example-note reveal">Want packages and prices instead? They are on the <a href="/videography">packages page</a>.</p>
+      </div>
+    </section>
+
+    <FunnelCTA
+      path="video_production"
+      calendlyParam="Video Production"
+      heading="Let's Plan Your Shoot"
+      body="Book the discovery call. We work out what the video has to do and where it needs to live, then I build the plan and walk you through it live on call two."
+      bullets={[
+        "What the video actually needs to accomplish",
+        "Where it is going to live and how that changes the build",
+        "What it takes to shoot it, and what it costs",
+      ]}
+      buttonLabel="Book Your Call"
+      note="Free, no commitment. Tell me what you have in mind when you book."
+    />
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="/" class="logo-link" aria-label="Shockwave Studios home">
+        <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="footer-logo-img" />
+      </a>
+      <ul class="nav-links footer-links">
+        <li><a href="/video-marketing">Video Marketing</a></li>
+        <li><a href="/video-production">Video Production</a></li>
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <InstagramLink />
+    </div>
+    <p class="copyright">&copy; {new Date().getFullYear()} Shockwave Studios. Melbourne, Florida.</p>
+  </footer>
+
+  <ScrollReveal />
+
+  <style>
+    /* Navy is punctuation on this page, not alternation. It appears twice:
+       the hero and the closing CTA. Everything between lives in a narrow
+       light band (--bg 0.91 luminance, white 1.0, --mist 0.84) so scrolling
+       never swings the whole viewport from near-black to near-white. */
+    :root {
+      --bg: #F4F7FC;
+      --bg-secondary: #FFFFFF;
+      --mist: #E7EEF9;
+      --accent: #A8C5F0;
+      --primary: #1B3A6B;
+      --primary-deep: #0F2145;
+      --secondary: #5B8FD4;
+      --label: #3A67AC;
+      --text: #1A1A2E;
+      --rule: rgba(27, 58, 107, 0.14);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 600;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    h1 {
+      font-family: var(--font-impact);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      color: var(--primary);
+    }
+
+    h2, h3 {
+      font-family: var(--font-editorial);
+      font-weight: 700;
+      letter-spacing: -0.005em;
+      color: var(--primary);
+    }
+
+    /* ---------- header / nav (shared pattern) ---------- */
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 88px;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(168, 197, 240, 0.1);
+    }
+
+    .logo-link { display: flex; align-items: center; height: 100%; overflow: hidden; }
+    .logo-img { height: 192px; width: auto; display: block; }
+    .footer-logo-img { height: 160px; width: auto; display: block; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--label); }
+
+    .has-dropdown { position: relative; }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-secondary);
+      border: 1px solid rgba(168, 197, 240, 0.15);
+      border-radius: 10px;
+      min-width: 220px;
+      box-shadow: 0 8px 24px rgba(27, 58, 107, 0.12);
+      padding: 0.5rem 0;
+      list-style: none;
+      flex-direction: column;
+      z-index: 200;
+    }
+
+    .has-dropdown:hover .dropdown { display: flex; }
+
+    .dropdown li a {
+      display: block;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .dropdown li a:hover {
+      background: rgba(168, 197, 240, 0.12);
+      color: var(--primary);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--text); }
+
+    /* ---------- hero (dark moment 1 of 2) ---------- */
+
+    /* Photographic hero, same treatment as the homepage. The gradient is a
+       little heavier here because these heroes carry more type than the
+       homepage one does. --primary-deep stays as the colour underneath so a
+       missing or slow image never leaves white text on white, and the gradient
+       is dark enough that white type clears 7.8:1 over even a pure white photo.
+
+       The source (1884, the beach shoot) is a 3024x4032 iPhone portrait, pre-cropped to 3:2
+       around its subject and shipped at 1920x1280 / ~180KB. Cropping here
+       rather than letting CSS guess is why background-position is just
+       'center'. Do not add a second background-image layer as a fallback:
+       browsers fetch every layer, so an unused one is a silent download.
+
+       TO SWAP: replace public/hero-video-production.jpg, same aspect, keep it under ~400KB. */
+    .page-hero {
+      position: relative;
+      background-color: var(--primary-deep);
+      background-image: url('/hero-video-production.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10, 20, 45, 0.74) 0%, rgba(10, 20, 45, 0.88) 100%);
+      z-index: 0;
+    }
+
+    .page-hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 7rem 5% 6rem;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4.4rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.75rem;
+      color: #ffffff;
+    }
+
+    .subheadline {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.72);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* ---------- section shell ---------- */
+
+    .sec { padding: 7rem 5%; }
+    .sec-light { background: var(--bg); }
+    .sec-white { background: var(--bg-secondary); }
+    .sec-mist { background: var(--mist); }
+
+    .sec-inner { max-width: 1150px; margin: 0 auto; }
+    .sec-inner-narrow { max-width: 860px; }
+
+    .sec-eyebrow {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--label);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Two heading scales, not one. Major for act breaks, minor for the
+       sub-beats, so the page has a hierarchy instead of ten equal shouts. */
+    .sec h2 {
+      font-size: clamp(2rem, 4.6vw, 3.2rem);
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+    }
+
+    .sec h2.h2-minor {
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      margin-bottom: 2.5rem;
+    }
+
+    .sec-lead {
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      line-height: 1.6;
+      color: rgba(26, 26, 46, 0.7);
+      max-width: 760px;
+      margin: -1.5rem 0 3.5rem;
+    }
+
+    /* ---------- opening statement ---------- */
+
+    .sec-statement { padding-top: 8rem; padding-bottom: 8rem; }
+
+    .statement {
+      font-family: var(--font-impact);
+      font-weight: 400;
+      font-size: clamp(1.75rem, 4.4vw, 3.1rem);
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      color: var(--primary);
+      margin-bottom: 2.5rem;
+    }
+
+    .statement-body {
+      max-width: 660px;
+      padding-left: 1.75rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    .statement-body p {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      line-height: 1.7;
+      color: rgba(26, 26, 46, 0.72);
+    }
+
+    .statement-body p + p { margin-top: 1.25rem; }
+
+    /* ---------- the timeline ----------
+       One continuous section. The rail runs behind the numbers so the six
+       steps read as a single sequence, and each step still gets enough height
+       to hold the screen during a live walkthrough. */
+
+    .steps-head { margin-bottom: 4rem; }
+    .steps-head h2 { margin-bottom: 0; }
+
+    .timeline {
+      list-style: none;
+      position: relative;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* the rail itself, drawn once behind every node */
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 39px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(
+        to bottom,
+        var(--accent) 0%,
+        var(--accent) 88%,
+        rgba(168, 197, 240, 0) 100%
+      );
+    }
+
+    .tl-step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      padding-bottom: 5rem;
+    }
+
+    .tl-step:last-child { padding-bottom: 0; }
+
+    .tl-rail { position: sticky; top: 132px; }
+
+    .tl-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      border: 2px solid var(--accent);
+      font-family: var(--font-editorial);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--primary);
+    }
+
+    .tl-card { padding-top: 0.5rem; max-width: 760px; }
+
+    .tl-of {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--label);
+      margin-bottom: 0.9rem;
+    }
+
+    .tl-card h3 {
+      font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+
+    .tl-lead {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.15rem, 2.3vw, 1.5rem);
+      line-height: 1.5;
+      color: var(--label);
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.75rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .tl-para {
+      font-size: clamp(1.02rem, 1.8vw, 1.15rem);
+      line-height: 1.75;
+      color: rgba(26, 26, 46, 0.74);
+    }
+
+    .tl-para + .tl-para { margin-top: 1.25rem; }
+
+    /* Only step 2 carries one. It is the differentiator, so it gets a beat
+       the other five do not, which also breaks the six-in-a-row sameness. */
+    .tl-pull {
+      margin-top: 2rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--mist);
+      border-radius: 0 16px 16px 0;
+      border-left: 4px solid var(--secondary);
+      font-family: var(--font-editorial);
+      font-weight: 800;
+      font-size: clamp(1.05rem, 2.1vw, 1.35rem);
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--primary);
+    }
+
+    /* ---------- specs, as a list not a card grid ---------- */
+
+    .spec-list { border-top: 1px solid var(--rule); }
+
+    .spec-row {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2.5rem;
+      align-items: baseline;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .spec-row dt {
+      font-family: var(--font-editorial);
+      font-weight: 800;
+      font-size: clamp(1.3rem, 2.6vw, 1.75rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--primary);
+    }
+
+    .spec-row dd { margin: 0; }
+
+    .spec-label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--label);
+      margin-bottom: 0.5rem;
+    }
+
+    .spec-note {
+      display: block;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: rgba(26, 26, 46, 0.72);
+      max-width: 640px;
+    }
+
+    /* ---------- examples ---------- */
+
+    .example-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .example-grid-slots { margin-top: 2rem; }
+
+    .example-item { display: flex; flex-direction: column; gap: 1rem; }
+
+    .example-video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 14px;
+      background: #000;
+      display: block;
+      object-fit: cover;
+    }
+
+    .example-placeholder {
+      aspect-ratio: 16 / 9;
+      border-radius: 14px;
+      border: 2px dashed rgba(91, 143, 212, 0.55);
+      background: rgba(91, 143, 212, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      text-align: center;
+      padding: 1.25rem;
+    }
+
+    .ph-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--label);
+      border: 1px solid rgba(91, 143, 212, 0.55);
+      border-radius: 999px;
+      padding: 0.3rem 0.85rem;
+    }
+
+    .ph-name {
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+
+    .ph-spec { font-size: 0.85rem; color: rgba(26, 26, 46, 0.62); }
+
+    .example-item figcaption {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+
+    .example-note {
+      margin-top: 3rem;
+      text-align: center;
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(26, 26, 46, 0.68);
+    }
+
+    .example-note a {
+      color: var(--label);
+      font-weight: 700;
+      font-family: var(--font-body);
+      font-style: normal;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    /* ---------- footer ---------- */
+
+    .site-footer {
+      padding: 1.5rem 5% 1.25rem;
+      border-top: 1px solid rgba(168, 197, 240, 0.1);
+      text-align: center;
+      background: var(--bg);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem 2rem;
+    }
+
+    .copyright {
+      color: rgba(26, 26, 46, 0.4);
+      font-size: 0.85rem;
+    }
+
+    /* ---------- responsive ---------- */
+
+    @media (max-width: 1000px) {
+      .example-grid { grid-template-columns: repeat(2, 1fr); }
+      .spec-row { grid-template-columns: 200px 1fr; gap: 1.75rem; }
+    }
+
+    @media (max-width: 768px) {
+      .logo-img { height: 144px; }
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .nav-links.open { max-height: 500px; }
+
+      .nav-links li {
+        width: 100%;
+        border-top: 1px solid rgba(168, 197, 240, 0.1);
+      }
+
+      .nav-links a { display: block; padding: 1rem 5%; }
+
+      .has-dropdown .dropdown {
+        display: flex;
+        position: static;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        background: rgba(168, 197, 240, 0.06);
+        padding: 0;
+        min-width: unset;
+      }
+
+      .dropdown li a { padding-left: 10%; }
+
+      .sec { padding: 4.5rem 5%; }
+      .sec-statement { padding-top: 5rem; padding-bottom: 5rem; }
+      .page-hero-inner { padding: 4.5rem 5% 4rem; }
+      .sec-lead { margin: -0.75rem 0 2.5rem; }
+
+      .statement-body { padding-left: 1.25rem; }
+
+      /* the rail moves in to line up with the smaller nodes */
+      .timeline::before { left: 27px; }
+
+      .tl-step {
+        grid-template-columns: 56px 1fr;
+        gap: 1.25rem;
+        padding-bottom: 3.5rem;
+      }
+
+      .tl-rail { position: static; }
+
+      .tl-num { width: 56px; height: 56px; font-size: 1.05rem; }
+
+      .tl-card { padding-top: 0.35rem; }
+
+      .tl-lead { margin-bottom: 1.25rem; padding-bottom: 1.25rem; }
+
+      .spec-row { grid-template-columns: 1fr; gap: 0.75rem; padding: 1.5rem 0; }
+
+      .example-grid { grid-template-columns: 1fr; }
+      .example-grid-slots { margin-top: 2rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-links { transition: none; }
+      .nav-links a { transition: none; }
+    }
+  </style>
+</Layout>

@@ -5,7 +5,7 @@ import ResearchedCall from '../components/ResearchedCall.astro';
 import InstagramLink from '../components/InstagramLink.astro';
 ---
 <Layout
-  title="Video Production in Melbourne, FL | Shockwave Studios"
+  title="Video Production Packages & Pricing in Melbourne, FL | Shockwave Studios"
   description="Professional video production from Shockwave Studios in Melbourne, Florida. Real estate, events, brand promos, sports, and more."
 >
   <header class="site-header">
@@ -18,10 +18,10 @@ import InstagramLink from '../components/InstagramLink.astro';
       </button>
       <ul class="nav-links">
         <li class="has-dropdown">
-          <a href="/services">Services</a>
+          <a href="/video-marketing">Services</a>
           <ul class="dropdown">
-            <li><a href="/services">Lead Generation</a></li>
-            <li><a href="/videography">Video Production</a></li>
+            <li><a href="/video-marketing">Video Marketing</a></li>
+            <li><a href="/video-production">Video Production</a></li>
           </ul>
         </li>
         <li><a href="/portfolio">Portfolio</a></li>
@@ -112,8 +112,8 @@ import InstagramLink from '../components/InstagramLink.astro';
         <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="footer-logo-img" />
       </a>
       <ul class="nav-links footer-links">
-        <li><a href="/services">Lead Generation</a></li>
-        <li><a href="/videography">Video Production</a></li>
+        <li><a href="/video-marketing">Video Marketing</a></li>
+        <li><a href="/video-production">Video Production</a></li>
         <li><a href="/portfolio">Portfolio</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="/contact">Contact</a></li>
@@ -133,41 +133,33 @@ import InstagramLink from '../components/InstagramLink.astro';
       --text: #1A1A2E;
     }
 
-    @font-face {
-      font-family: 'Monument Extended';
-      src: url('/fonts/MonumentExtended-Regular.otf') format('opentype');
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    @font-face {
-      font-family: 'Monument Extended';
-      src: url('/fonts/MonumentExtended-Ultrabold.otf') format('opentype');
-      font-weight: 800;
-      font-style: normal;
-      font-display: swap;
-    }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: var(--font-body);
+      font-weight: 600;
     }
 
     a { color: inherit; text-decoration: none; }
 
-    h1, h2, h3 {
-      font-family: 'Monument Extended', sans-serif;
-      font-weight: 800;
-      letter-spacing: 0.02em;
+    h1 {
+      font-family: var(--font-impact);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      color: var(--primary);
+    }
+
+    h2, h3 {
+      font-family: var(--font-editorial);
+      font-weight: 700;
+      letter-spacing: -0.005em;
       color: var(--primary);
     }
 
     .subheadline {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-editorial);
     }
 
     .site-header {
@@ -269,8 +261,9 @@ import InstagramLink from '../components/InstagramLink.astro';
     .subheadline {
       font-size: 1.25rem;
       color: rgba(255, 255, 255, 0.7);
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-editorial);
       font-style: italic;
+      font-weight: 400;
     }
 
     .packages-section {
@@ -406,8 +399,9 @@ import InstagramLink from '../components/InstagramLink.astro';
       margin-top: 2.5rem;
       font-size: clamp(1rem, 2vw, 1.25rem);
       color: rgba(26, 26, 46, 0.6);
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-editorial);
       font-style: italic;
+      font-weight: 400;
     }
 
     .video-cta-note a {

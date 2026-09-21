@@ -1,0 +1,197 @@
+---
+/**
+ * The conversion block that closes both funnel pages.
+ *
+ * One primary action only. Do not add a secondary button beside it.
+ *
+ * `path` becomes the analytics label (book_call_video_marketing vs
+ * book_call_video_production) so the two funnel paths can be compared.
+ * `calendlyParam` fills Calendly's a1 field the same way the videography
+ * Book Now buttons already do, so the booking says which door they came in.
+ */
+export interface Props {
+  path: string;
+  heading: string;
+  body: string;
+  bullets?: string[];
+  buttonLabel?: string;
+  calendlyParam?: string;
+  note?: string;
+}
+
+const {
+  path,
+  heading,
+  body,
+  bullets = [],
+  buttonLabel = "Book a Free Call",
+  calendlyParam,
+  note,
+} = Astro.props;
+
+const calendlyUrl = calendlyParam
+  ? `https://calendly.com/shockwavestudios-co/30min?a1=${encodeURIComponent(calendlyParam)}`
+  : "https://calendly.com/shockwavestudios-co/30min";
+
+const eventLabel = `book_call_${path}`;
+---
+<section class="funnel-cta">
+  <div class="funnel-cta-inner reveal">
+    <h2 class="funnel-cta-heading">{heading}</h2>
+    <p class="funnel-cta-body">{body}</p>
+
+    {bullets.length > 0 && (
+      <ul class="funnel-cta-list">
+        {bullets.map(b => (
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>{b}</span>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <a
+      href={calendlyUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="funnel-cta-btn"
+      data-event-label={eventLabel}
+      data-funnel-path={path}
+    >{buttonLabel}</a>
+
+    {note && <p class="funnel-cta-note">{note}</p>}
+  </div>
+</section>
+
+<script>
+  /**
+   * Reports a booking click to GA4 and, once a Meta Pixel exists, to Meta.
+   *
+   * Both calls are guarded. The GA4 tag in Layout.astro only loads in
+   * production builds, and no Meta Pixel is installed on the site yet, so in
+   * dev and on Meta's side these are deliberate no-ops. Adding a base pixel to
+   * Layout.astro is all it takes to switch the Meta half on.
+   */
+  document.querySelectorAll('.funnel-cta-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const label = btn.getAttribute('data-event-label') || 'book_call';
+      const funnelPath = btn.getAttribute('data-funnel-path') || '';
+
+      if (typeof window['gtag'] === 'function') {
+        window['gtag']('event', 'book_call', {
+          event_category: 'conversion',
+          event_label: label,
+          funnel_path: funnelPath,
+        });
+      }
+
+      if (typeof window['fbq'] === 'function') {
+        window['fbq']('track', 'Schedule', { content_name: label });
+      }
+    });
+  });
+</script>
+
+<style>
+  .funnel-cta {
+    background: #0F2145;
+    padding: 7rem 5%;
+  }
+
+  .funnel-cta-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .funnel-cta-heading {
+    font-family: var(--font-impact);
+    font-weight: 400;
+    font-size: clamp(2.1rem, 5vw, 3.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+    margin-bottom: 1.5rem;
+  }
+
+  .funnel-cta-body {
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.78);
+    max-width: 640px;
+    margin-bottom: 2.5rem;
+  }
+
+  .funnel-cta-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0 0 2.75rem;
+    padding: 0;
+    text-align: left;
+  }
+
+  .funnel-cta-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    font-size: clamp(1rem, 1.7vw, 1.15rem);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .funnel-cta-list svg {
+    color: #A8C5F0;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .funnel-cta-btn {
+    display: inline-block;
+    padding: 1.25rem 3.25rem;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    background: #A8C5F0;
+    color: #0F2145;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .funnel-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(168, 197, 240, 0.35);
+  }
+
+  .funnel-cta-note {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .funnel-cta-btn {
+      transition: none;
+    }
+
+    .funnel-cta-btn:hover {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .funnel-cta {
+      padding: 4.5rem 5%;
+    }
+
+    .funnel-cta-btn {
+      padding: 1.1rem 2.25rem;
+    }
+  }
+</style>
