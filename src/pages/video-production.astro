@@ -67,13 +67,19 @@ const specs = [
   { value: "Google Drive", label: "How you get it", note: "Final files delivered through Drive. Download them and they are yours to keep and reuse." },
 ];
 
-// Example videos already in the repo. These three are the same files and the
-// same labels the /videography package cards use, so the labels are not being
-// invented here.
+// Six examples, all already compressed and in the repo so nothing is
+// re-encoded. All six are 1080x1920, which matters: the display box is 9/16
+// with object-fit cover, so a landscape clip would be cropped to a sliver.
+// driftline-roofing, g37, fca-* and marlo are 1920x1080 and deliberately not
+// used here for that reason. The first three carry the same labels the
+// /videography package cards use, so those labels are not invented.
 const examples = [
   { src: "/videos/real-estate-example.mp4", label: "Real Estate Listing" },
   { src: "/videos/event-example.mp4", label: "Event Coverage" },
   { src: "/videos/brandexample.mp4", label: "Brand and Promo" },
+  { src: "/videos/portfolio/93-f250.mp4", poster: "/videos/portfolio/93-f250.jpg", label: "Vehicle Feature" },
+  { src: "/videos/portfolio/markle.mp4", poster: "/videos/portfolio/markle.jpg", label: "Construction Showcase" },
+  { src: "/videos/portfolio/pwo.mp4", poster: "/videos/portfolio/pwo.jpg", label: "Gym Promo" },
 ];
 ---
 <Layout
@@ -182,46 +188,12 @@ const examples = [
         <div class="example-grid reveal">
           {examples.map(ex => (
             <figure class="example-item">
-              <video class="example-video" controls preload="none">
+              <video class="example-video" controls preload="none" playsinline poster={ex.poster}>
                 <source src={ex.src} type="video/mp4" />
               </video>
               <figcaption>{ex.label}</figcaption>
             </figure>
           ))}
-        </div>
-
-        <!--
-          EXTRA VIDEO SLOTS. To fill one: drop the .mp4 in public/videos/ (keep
-          it under 25MB for Cloudflare Pages, compress with
-          ffmpeg -i in.mp4 -c:v libx264 -b:v 4M -vf scale=-2:1080 out.mp4 if
-          needed) and replace the whole .example-placeholder figure with the
-          same <figure class="example-item"> shape used above.
-        -->
-        <div class="example-grid example-grid-slots reveal">
-          <figure class="example-item">
-            <div class="example-placeholder" data-slot="production-example-4">
-              <span class="ph-badge">Video slot</span>
-              <span class="ph-name">Open slot</span>
-              <span class="ph-spec">16:9, under 25MB</span>
-            </div>
-            <figcaption>Label this one</figcaption>
-          </figure>
-          <figure class="example-item">
-            <div class="example-placeholder" data-slot="production-example-5">
-              <span class="ph-badge">Video slot</span>
-              <span class="ph-name">Open slot</span>
-              <span class="ph-spec">16:9, under 25MB</span>
-            </div>
-            <figcaption>Label this one</figcaption>
-          </figure>
-          <figure class="example-item">
-            <div class="example-placeholder" data-slot="production-example-6">
-              <span class="ph-badge">Video slot</span>
-              <span class="ph-name">Open slot</span>
-              <span class="ph-spec">16:9, under 25MB</span>
-            </div>
-            <figcaption>Label this one</figcaption>
-          </figure>
         </div>
 
         <p class="example-note reveal">Want packages and prices instead? They are on the <a href="/videography">packages page</a>.</p>
@@ -685,52 +657,16 @@ const examples = [
       gap: 2rem;
     }
 
-    .example-grid-slots { margin-top: 2rem; }
-
     .example-item { display: flex; flex-direction: column; gap: 1rem; }
 
     .example-video {
       width: 100%;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 9 / 16;
       border-radius: 14px;
       background: #000;
       display: block;
       object-fit: cover;
     }
-
-    .example-placeholder {
-      aspect-ratio: 16 / 9;
-      border-radius: 14px;
-      border: 2px dashed rgba(91, 143, 212, 0.55);
-      background: rgba(91, 143, 212, 0.05);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      text-align: center;
-      padding: 1.25rem;
-    }
-
-    .ph-badge {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--label);
-      border: 1px solid rgba(91, 143, 212, 0.55);
-      border-radius: 999px;
-      padding: 0.3rem 0.85rem;
-    }
-
-    .ph-name {
-      font-family: var(--font-body);
-      font-weight: 800;
-      font-size: 1.05rem;
-      color: var(--primary);
-    }
-
-    .ph-spec { font-size: 0.85rem; color: rgba(26, 26, 46, 0.62); }
 
     .example-item figcaption {
       font-weight: 700;
@@ -858,7 +794,6 @@ const examples = [
       .spec-row { grid-template-columns: 1fr; gap: 0.75rem; padding: 1.5rem 0; }
 
       .example-grid { grid-template-columns: 1fr; }
-      .example-grid-slots { margin-top: 2rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
