@@ -22,14 +22,35 @@ const steps = [
 // stabilized shots on every shoot, drone as an upgrade with no price shown
 // (2026-09-23), plus directing, two revision rounds, the turnaround and Drive
 // delivery. Shoot length is Mini / Half / Full day with no hours, by choice.
-const specs = [
-  { value: "Mini, half or full day", label: "Shoot length", note: "As long as the job needs. We pick the right length on the confirmation call." },
-  { value: "Pro setup", label: "On every shoot", note: "Professional lighting, pro audio, 4K cameras and stabilized shots." },
-  { value: "Drone", label: "Available upgrade", note: "Add aerial shots to any shoot." },
-  { value: "Directed", label: "On camera", note: "You don't have to be good on camera. Directing you is part of the job." },
-  { value: "2 rounds", label: "Revisions included", note: "Two rounds of changes after the first cut." },
-  { value: "Under 5 days", label: "Typical turnaround", note: "Most projects are delivered within five business days of the shoot." },
-  { value: "Google Drive", label: "How you get it", note: "Final files are yours to keep and reuse." },
+// Two levels on purpose (Ashton 2026-09-23: "make the more important things
+// stand out"). The three that decide whether someone books get cards; the
+// rest sit in a compact row underneath.
+const features = [
+  {
+    title: "Shoot Length",
+    chips: ["Mini", "Half day", "Full day"],
+    note: "As long as the job needs. We pick the right length on the confirmation call.",
+    icon: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  },
+  {
+    title: "Pro Setup, Every Shoot",
+    chips: ["Pro lighting", "Pro audio", "4K", "Stabilized shots"],
+    note: "The same kit comes to every job, big or small.",
+    icon: '<path d="m16 13 5.2 3.5a.5.5 0 0 0 .8-.4V7.9a.5.5 0 0 0-.8-.4L16 11"/><rect x="2" y="6" width="14" height="12" rx="2"/>',
+  },
+  {
+    title: "Under 5 Days",
+    chips: [],
+    note: "Most projects are delivered within five business days of the shoot.",
+    icon: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
+  },
+];
+
+const details = [
+  { text: "Directed on camera", icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>' },
+  { text: "2 rounds of revisions", icon: '<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>' },
+  { text: "Files via Google Drive, yours to keep", icon: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>' },
+  { text: "Drone shots", tag: "Upgrade", icon: '<path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/><circle cx="12" cy="12" r="3"/>' },
 ];
 
 // Six examples, all already compressed and in the repo so nothing is
@@ -85,23 +106,38 @@ const examples = [
     </section>
 
     <!-- ===== WHAT YOU GET =====
-         Mid-tone band. Runs as a list rather than four boxes, so it does not
-         repeat the card grid the examples section uses below it. -->
+         Three feature cards for what matters most, then one compact row of
+         the smaller details, instead of one long equal-weight list. -->
     <section class="sec sec-mist" id="specs">
       <div class="sec-inner">
         <h2 class="h2-minor reveal">What You Get</h2>
 
-        <dl class="spec-list">
-          {specs.map(s => (
-            <div class="spec-row reveal">
-              <dt>{s.value}</dt>
-              <dd>
-                <span class="spec-label">{s.label}</span>
-                <span class="spec-note">{s.note}</span>
-              </dd>
+        <div class="feature-grid reveal">
+          {features.map(ft => (
+            <div class="feature-card">
+              <span class="feature-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={ft.icon} />
+              </span>
+              <h3>{ft.title}</h3>
+              {ft.chips.length > 0 && (
+                <ul class="feature-chips">
+                  {ft.chips.map(c => <li>{c}</li>)}
+                </ul>
+              )}
+              <p>{ft.note}</p>
             </div>
           ))}
-        </dl>
+        </div>
+
+        <ul class="detail-row reveal">
+          {details.map(d => (
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={d.icon} />
+              <span>{d.text}</span>
+              {d.tag && <em class="detail-tag">{d.tag}</em>}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
 
@@ -445,46 +481,99 @@ const examples = [
       color: var(--primary);
     }
 
-    /* ---------- specs, as a list not a card grid ---------- */
+    /* ---------- what you get: feature cards + detail row ---------- */
 
-    .spec-list { border-top: 1px solid var(--rule); }
-
-    .spec-row {
+    .feature-grid {
       display: grid;
-      grid-template-columns: 260px 1fr;
-      gap: 2.5rem;
-      align-items: baseline;
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--rule);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
     }
 
-    .spec-row dt {
-      font-family: var(--font-editorial);
-      font-weight: 800;
-      font-size: clamp(1.3rem, 2.6vw, 1.75rem);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+    .feature-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      padding: 1.9rem 1.75rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--rule);
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(15, 33, 69, 0.04), 0 12px 32px rgba(15, 33, 69, 0.07);
+    }
+
+    .feature-icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      color: #ffffff;
+      background: var(--primary);
+    }
+
+    .feature-card h3 {
+      font-size: clamp(1.3rem, 2.2vw, 1.55rem);
+      line-height: 1.15;
       color: var(--primary);
     }
 
-    .spec-row dd { margin: 0; }
-
-    .spec-label {
-      display: block;
-      font-weight: 700;
-      font-size: 0.78rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--label);
-      margin-bottom: 0.5rem;
+    .feature-chips {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
     }
 
-    .spec-note {
-      display: block;
-      font-size: 1.05rem;
-      line-height: 1.65;
-      color: rgba(26, 26, 46, 0.72);
-      max-width: 640px;
+    .feature-chips li {
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--mist);
+      border: 1px solid rgba(91, 143, 212, 0.25);
+    }
+
+    .feature-card p {
+      margin-top: auto;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: rgba(26, 26, 46, 0.65);
+    }
+
+    .detail-row {
+      list-style: none;
+      padding: 1.25rem 0 0;
+      margin: 1.5rem 0 0;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem 2rem;
+    }
+
+    .detail-row li {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: rgba(26, 26, 46, 0.75);
+    }
+
+    .detail-row svg { color: var(--secondary); flex-shrink: 0; }
+
+    .detail-tag {
+      font-style: normal;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      color: #0F2145;
+      background: var(--accent);
     }
 
     /* ---------- examples ---------- */
@@ -565,7 +654,7 @@ const examples = [
       .step-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 2rem; }
       .step-grid::before { display: none; }
       .example-grid { grid-template-columns: repeat(2, 1fr); }
-      .spec-row { grid-template-columns: 200px 1fr; gap: 1.75rem; }
+      .feature-grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
     }
 
     @media (max-width: 768px) {
@@ -617,7 +706,8 @@ const examples = [
       .step-icon { width: 50px; height: 50px; }
       .step h3 { font-size: 0.98rem; }
 
-      .spec-row { grid-template-columns: 1fr; gap: 0.75rem; padding: 1.5rem 0; }
+      .feature-card { padding: 1.5rem 1.35rem; }
+      .detail-row { display: grid; grid-template-columns: 1fr; justify-items: start; gap: 0.7rem; }
 
       .example-grid { grid-template-columns: 1fr; }
     }
