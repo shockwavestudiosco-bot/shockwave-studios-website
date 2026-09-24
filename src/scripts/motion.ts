@@ -3,117 +3,38 @@
  *
  *   data-reveal            fade and lift into view (data-reveal-delay="0.2")
  *   data-stagger           the element's children cascade in one after another
- *   data-split             headline reveals word by word from behind a mask
+ *   data-split             headline rises word by word from behind a mask
  *   data-count="1400"      counts up from 0 (data-count-prefix / -suffix);
  *                          only ever use a number already approved in the brain
- *   data-magnetic          pulls toward the cursor on hover (fine pointers only)
- *   data-parallax="0.15"   drifts at a fraction of scroll speed
+ *   data-magnetic          pulls toward the cursor (desktop only, see below)
+ *   data-parallax="0.15"   drifts at a fraction of scroll speed (desktop only)
+ *
+ * Built for phones first (rewritten 2026-09-24 after a PageSpeed audit). The
+ * old version ran GSAP on every element at load, which cost ~2.9s of main
+ * thread on a throttled phone and kept the hero headline invisible until it
+ * finished. Now:
+ *   - The work is CSS. This file only adds classes, so there are no inline
+ *     transforms left behind to fight hover styles, and no layout reads.
+ *   - IntersectionObserver decides when things enter, plus a cheap check
+ *     every 250ms while scrolling that catches anything flung past.
+ *   - GSAP and Lenis (smooth scroll, magnetic buttons, parallax) load only on
+ *     desktop with a mouse, after the page is idle: ./motion-desktop.ts.
+ *   - Above-the-fold hero content does not use these attributes at all; it
+ *     animates in pure CSS so the headline paints immediately.
  *
  * Safety: nothing is hidden until this file runs. An inline script in
  * Layout.astro adds `motion` to <html> before paint (skipped for reduced
- * motion), CSS hides the opt-in elements only under that class, and a 2.5s
- * failsafe there removes the class if this module never arrives. So a blocked
- * or broken script leaves a finished, readable page, never a blank one.
- *
- * The older `.reveal` class (ScrollReveal.astro) still runs on the funnel
- * pages and is untouched by this file.
+ * motion), the CSS hides opt-in elements only under that class, and a 2.5s
+ * failsafe there removes the class if this module never marks itself ready.
  */
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from 'lenis';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const root = document.documentElement;
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+export const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-const EASE = 'expo.out';
 
-/**
- * Runs `fn` once `el` peeks in at the bottom of the viewport, or is already
- * above that line. Measured live on every scroll frame instead of from cached
- * trigger positions: cached positions went stale when the page height shifted
- * on phones and left sections permanently invisible, and a fast fling past an
- * element could skip it. Checking "is it above the line yet?" cannot miss.
- */
-const pending = new Map<Element, () => void>();
-let ticking = false;
-
-function checkPending() {
-  ticking = false;
-  // Start as soon as the element peeks in, so nothing looks late.
-  const line = window.innerHeight * 0.98;
-  for (const [el, fn] of pending) {
-    if (el.getBoundingClientRect().top < line) { pending.delete(el); fn(); }
-  }
-}
-
-const schedule = () => { if (!ticking) { ticking = true; requestAnimationFrame(checkPending); } };
-window.addEventListener('scroll', schedule, { passive: true });
-window.addEventListener('resize', schedule);
-window.addEventListener('load', schedule);
-
-(window as any).__motionReady = true;
-
-if (reduced) {
-  root.classList.remove('motion');
-} else {
-  try {
-    initSmoothScroll();
-    initSplit();
-    initReveal();
-    initStagger();
-    initCount();
-    initParallax();
-    if (finePointer) initMagnetic();
-    root.classList.add('motion-ready');
-    // Fonts can shift layout after first measure; recalc trigger positions.
-    document.fonts?.ready.then(() => { ScrollTrigger.refresh(); schedule(); });
-  } catch (err) {
-    // Any setup failure: show the finished page rather than hidden sections.
-    console.error('motion init failed', err);
-    root.classList.remove('motion');
-    gsap.set('[data-reveal], [data-split], [data-split] .split-word, [data-stagger] > *', { clearProps: 'all' });
-  }
-}
-
-function initSmoothScroll() {
-  if (!finePointer) return; // touch devices keep native momentum scrolling
-  const lenis = new Lenis({ duration: 1.1, anchors: true, prevent: (node: HTMLElement) => node.closest?.('[data-lenis-prevent]') != null });
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((t) => lenis.raf(t * 1000));
-  gsap.ticker.lagSmoothing(0);
-  window.addEventListener('scroll-lock', () => lenis.stop());
-  window.addEventListener('scroll-unlock', () => lenis.start());
-  document.addEventListener('fullscreenchange', () => (document.fullscreenElement ? lenis.stop() : lenis.start()));
-  (window as any).__lenis = lenis;
-}
-
-function onEnter(el: Element, fn: () => void) {
-  pending.set(el, fn);
-  schedule();
-}
-
-function initReveal() {
-  gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((el) => {
-    gsap.set(el, { autoAlpha: 0, y: 20 });
-    onEnter(el, () =>
-      gsap.to(el, { autoAlpha: 1, y: 0, duration: 0.7, ease: EASE, delay: parseFloat(el.dataset.revealDelay || '0') })
-    );
-  });
-}
-
-function initStagger() {
-  gsap.utils.toArray<HTMLElement>('[data-stagger]').forEach((wrap) => {
-    const kids = [...wrap.children] as HTMLElement[];
-    gsap.set(kids, { autoAlpha: 0, y: 24 });
-    gsap.set(wrap, { autoAlpha: 1 });
-    onEnter(wrap, () => gsap.to(kids, { autoAlpha: 1, y: 0, duration: 0.7, ease: EASE, stagger: 0.05 }));
-  });
-}
-
-/** Wraps every word in a mask so it can rise into place. Keeps inner markup
- *  (like the highlight span) by splitting text nodes only. */
+/** Wraps each word in a mask so it can rise into place. Splits text nodes
+ *  only, so inner markup (the hero highlight span) survives. Words stay real
+ *  text, so screen readers read the sentence normally. */
 function splitWords(el: HTMLElement) {
   const words: HTMLElement[] = [];
   const walk = (node: Node) => {
@@ -143,54 +64,87 @@ function splitWords(el: HTMLElement) {
   return words;
 }
 
-function initSplit() {
-  gsap.utils.toArray<HTMLElement>('[data-split]').forEach((el) => {
-    el.setAttribute('aria-label', el.textContent?.replace(/\s+/g, ' ').trim() || '');
-    const words = splitWords(el);
-    words.forEach((w) => w.setAttribute('aria-hidden', 'true'));
-    gsap.set(words, { yPercent: 115 });
-    gsap.set(el, { autoAlpha: 1 });
-    const play = () => gsap.to(words, { yPercent: 0, duration: 0.8, ease: EASE, stagger: 0.035, delay: parseFloat(el.dataset.splitDelay || '0') });
-    onEnter(el, play);
-  });
+function countUp(el: HTMLElement) {
+  const target = parseFloat(el.dataset.count || '0');
+  const prefix = el.dataset.countPrefix || '';
+  const suffix = el.dataset.countSuffix || '';
+  const fmt = (n: number) => prefix + Math.round(n).toLocaleString('en-US') + suffix;
+  const t0 = performance.now();
+  const step = (now: number) => {
+    const t = Math.min(1, (now - t0) / 1600);
+    el.textContent = fmt(target * (1 - Math.pow(1 - t, 3)));
+    if (t < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
 }
 
-function initCount() {
-  gsap.utils.toArray<HTMLElement>('[data-count]').forEach((el) => {
-    const target = parseFloat(el.dataset.count || '0');
-    const prefix = el.dataset.countPrefix || '';
-    const suffix = el.dataset.countSuffix || '';
-    const fmt = (n: number) => prefix + Math.round(n).toLocaleString('en-US') + suffix;
-    const obj = { n: 0 };
-    el.textContent = fmt(0);
-    onEnter(el, () => gsap.to(obj, { n: target, duration: 1.6, ease: 'power3.out', onUpdate: () => (el.textContent = fmt(obj.n)) }));
-  });
-}
+function init() {
+  const pending = new Set<HTMLElement>();
 
-function initParallax() {
-  gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((el) => {
-    const amount = parseFloat(el.dataset.parallax || '0.15');
-    gsap.to(el, {
-      yPercent: amount * 100,
-      ease: 'none',
-      scrollTrigger: { trigger: el.parentElement || el, start: 'top top', end: 'bottom top', scrub: true },
+  document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
+    if (el.dataset.revealDelay) el.style.setProperty('--d', `${el.dataset.revealDelay}s`);
+    pending.add(el);
+  });
+  document.querySelectorAll<HTMLElement>('[data-stagger]').forEach((wrap) => {
+    [...wrap.children].forEach((kid, i) => (kid as HTMLElement).style.setProperty('--d', `${i * 0.06}s`));
+    pending.add(wrap);
+  });
+  document.querySelectorAll<HTMLElement>('[data-split]').forEach((el) => {
+    splitWords(el).forEach((w, i) => w.style.setProperty('--i', String(i)));
+    el.classList.add('is-split');
+    pending.add(el);
+  });
+  document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
+    el.textContent = (el.dataset.countPrefix || '') + '0' + (el.dataset.countSuffix || '');
+    pending.add(el);
+  });
+
+  const reveal = (el: HTMLElement) => {
+    if (!pending.delete(el)) return;
+    io.unobserve(el);
+    el.classList.add('is-in');
+    if (el.dataset.count) countUp(el);
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      // Entering, or already above the viewport (a fling skipped past it).
+      if (e.isIntersecting || e.boundingClientRect.top < 0) reveal(e.target as HTMLElement);
     });
-  });
+  }, { rootMargin: '0px 0px -4% 0px' });
+  pending.forEach((el) => io.observe(el));
+
+  // Belt and braces for fast flings: while scrolling, every 250ms reveal
+  // anything whose top is already above the bottom of the screen. Reads only,
+  // so it never forces a layout mid-frame; stops once everything is in.
+  let timer = 0;
+  const sweep = () => {
+    timer = 0;
+    const line = window.innerHeight;
+    [...pending].forEach((el) => { if (el.getBoundingClientRect().top < line) reveal(el); });
+    if (!pending.size) window.removeEventListener('scroll', onScroll);
+  };
+  const onScroll = () => { if (!timer) timer = window.setTimeout(sweep, 250); };
+  window.addEventListener('scroll', onScroll, { passive: true });
 }
 
-function initMagnetic() {
-  gsap.utils.toArray<HTMLElement>('[data-magnetic]').forEach((el) => {
-    const xTo = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power3.out' });
-    const yTo = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power3.out' });
-    el.addEventListener('pointermove', (e) => {
-      const r = el.getBoundingClientRect();
-      xTo((e.clientX - (r.left + r.width / 2)) * 0.25);
-      yTo((e.clientY - (r.top + r.height / 2)) * 0.35);
-    });
-    el.addEventListener('pointerleave', () => {
-      gsap.to(el, { x: 0, y: 0, duration: 0.9, ease: 'elastic.out(1, 0.4)' });
-    });
-  });
-}
+if (reduced || !('IntersectionObserver' in window)) {
+  root.classList.remove('motion');
+} else {
+  try {
+    init();
+    (window as any).__motionReady = true;
+    root.classList.add('motion-ready');
+  } catch (err) {
+    console.error('motion init failed', err);
+    root.classList.remove('motion');
+  }
 
-export { gsap, ScrollTrigger, reduced };
+  // Desktop extras, after the page is idle so they never compete with first paint.
+  if (finePointer) {
+    const load = () => import('./motion-desktop').catch(() => {});
+    const idle = (window as any).requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1200));
+    if (document.readyState === 'complete') idle(load);
+    else window.addEventListener('load', () => idle(load), { once: true });
+  }
+}

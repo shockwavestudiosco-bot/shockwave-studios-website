@@ -90,23 +90,34 @@ const { after = '[data-sticky-after]' } = Astro.props;
     }
 
     /* A small live dot: reads as "available now" without making a claim. */
+    /* The ring is a pseudo-element scaled and faded with transform/opacity,
+       which the GPU runs on its own; animating box-shadow repainted every
+       frame and was flagged by PageSpeed. */
     .dot {
+      position: relative;
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: #5BD49A;
-      box-shadow: 0 0 0 0 rgba(91, 212, 154, 0.6);
+    }
+
+    .dot::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgba(91, 212, 154, 0.55);
       animation: pulse 2s ease-out infinite;
     }
 
     @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(91, 212, 154, 0.55); }
-      100% { box-shadow: 0 0 0 10px rgba(91, 212, 154, 0); }
+      from { transform: scale(1); opacity: 1; }
+      to { transform: scale(3.5); opacity: 0; }
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .sticky-cta { transition: none; }
-    .dot { animation: none; }
+    .dot::after { animation: none; }
   }
 </style>

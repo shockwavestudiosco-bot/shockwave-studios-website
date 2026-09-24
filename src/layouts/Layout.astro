@@ -1,4 +1,15 @@
 ---
+// Fonts are self-hosted (fontsource) rather than loaded from Google Fonts:
+// the Google stylesheet blocked first paint by ~0.8s on mobile. Newsreader
+// uses the weight-axis files (58KB + 65KB) instead of the optical-size ones
+// (132KB + 147KB). The two faces the hero needs first are preloaded.
+import '@fontsource/archivo-black/400.css';
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource-variable/newsreader/wght.css';
+import '@fontsource-variable/newsreader/wght-italic.css';
+import archivoWoff2 from '@fontsource/archivo-black/files/archivo-black-latin-400-normal.woff2?url';
+import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+
 export interface Props {
   title: string;
   description: string;
@@ -64,19 +75,31 @@ const businessSchema = {
     })();
   </script>
 
-  <!-- Google tag (gtag.js), only in production builds so dev traffic isn't counted -->
-  {import.meta.env.PROD && (
-    <Fragment>
-      <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-KKWP3B4J4X"></script>
-      <script is:inline>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-KKWP3B4J4X');
-      </script>
-    </Fragment>
-  )}
+  <script is:inline define:vars={{ gaOn: import.meta.env.PROD }}>
+    // Google tag, production only. The dataLayer queue exists immediately, so
+    // the pageview and click events are never lost; the 172KB gtag.js loads on
+    // the first scroll, tap or key press, or 10s after load. Loaded up front it blocked a
+    // phone main thread for ~580ms (PageSpeed, 2026-09-24).
+    if (gaOn) {
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', 'G-KKWP3B4J4X');
+      var gaLoaded = false;
+      var gaEvents = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+      var loadGa = function () {
+        if (gaLoaded) return;
+        gaLoaded = true;
+        gaEvents.forEach(function (e) { removeEventListener(e, loadGa); });
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-KKWP3B4J4X';
+        document.head.appendChild(s);
+      };
+      gaEvents.forEach(function (e) { addEventListener(e, loadGa, { passive: true }); });
+      addEventListener('load', function () { setTimeout(loadGa, 10000); });
+    }
+  </script>
   <title>{title}</title>
   <meta name="description" content={description} />
   {noindex && <meta name="robots" content="noindex" />}
@@ -97,24 +120,16 @@ const businessSchema = {
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <!--
-    Three roles, one request.
+    Three roles, all self-hosted (see the imports at the top of this file).
 
-      Archivo Black  impact   h1, pull statements. Ships a single weight (400),
-                              so never ask for 700/800 or the browser fakes it.
-      Newsreader     editorial h2/h3, prices, numerals, and every italic accent
-                              line. Variable optical size, so it retunes itself
-                              between a 30px heading and a 13px label.
-      Inter          body     paragraphs and UI labels.
-
-    Dropped here: Bebas Neue (loaded on every page, never used once) and
-    Playfair Display (replaced by Newsreader, whose strokes survive the video
-    compression these pages get screen-shared through). Monument Extended and
-    its local OTFs are gone too, which retires the personal-use licence.
+      Archivo Black  impact    h1, pull statements. Ships a single weight (400),
+                               so never ask for 700/800 or the browser fakes it.
+      Newsreader     editorial h2/h3, prices, numerals, every italic accent line.
+      Inter          body      paragraphs and UI labels.
   -->
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400..800&family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..800&display=swap" rel="stylesheet" />
+  <link rel="preload" href={archivoWoff2} as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
 
   <script type="application/ld+json" is:inline set:html={JSON.stringify(businessSchema)} />
 </head>
@@ -133,9 +148,9 @@ const businessSchema = {
     Swapping a face is now a one-line change here rather than 46 edits.
   */
   :root {
-    --font-impact: 'Archivo Black', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --font-editorial: 'Newsreader', Georgia, 'Times New Roman', serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-impact: 'Archivo Black', 'Inter Variable', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-editorial: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
+    --font-body: 'Inter Variable', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
     /*
       Design tokens. Pages still carry their own older variables (--primary,
@@ -169,10 +184,38 @@ const businessSchema = {
   }
 
   /* ----- motion system (see src/scripts/motion.ts) ----- */
-  .motion [data-reveal],
-  .motion [data-stagger] > *,
-  .motion [data-split] {
-    visibility: hidden;
+  /*
+    Hidden until revealed, then a one-shot CSS animation. fill-mode
+    `backwards` applies the start frame during the delay but lets go at the
+    end, so the element falls back to its own styles (hover lifts, button
+    transforms) instead of being pinned by leftover inline transforms.
+  */
+  .motion [data-reveal]:not(.is-in),
+  .motion [data-stagger]:not(.is-in) > *,
+  .motion [data-count]:not(.is-in) {
+    opacity: 0;
+  }
+
+  .motion [data-reveal].is-in,
+  .motion [data-stagger].is-in > * {
+    animation: reveal-up 0.7s var(--ease-out) var(--d, 0s) backwards;
+  }
+
+  /* A split headline stays hidden only until its words are wrapped. */
+  .motion [data-split]:not(.is-split) { visibility: hidden; }
+  .motion [data-split]:not(.is-in) .split-word { transform: translate3d(0, 115%, 0); }
+  .motion [data-split].is-in .split-word {
+    animation: word-up 0.8s var(--ease-out) calc(var(--i, 0) * 35ms) backwards;
+  }
+
+  @keyframes reveal-up {
+    from { opacity: 0; transform: translate3d(0, 22px, 0); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes word-up {
+    from { transform: translate3d(0, 115%, 0); }
+    to { transform: none; }
   }
 
   .split-mask {
@@ -184,7 +227,26 @@ const businessSchema = {
     margin-bottom: -0.12em;
   }
 
-  .split-word { display: inline-block; will-change: transform; }
+  .split-word { display: inline-block; }
+
+  /*
+    Above-the-fold hero content animates in pure CSS (class="hero-in",
+    style="--d: 0.2s"), so it needs no JavaScript and the headline, the page's
+    largest element, paints on the first frame instead of waiting for a script.
+  */
+  .hero-in { animation: reveal-up 0.8s var(--ease-out) var(--d, 0s) backwards; }
+  /* The headline is the largest thing on the first screen, so it only rises and
+     never starts invisible: an element counts as painted (LCP) only once it is
+     visible, and a fade from 0 pushed that moment back. */
+  h1.hero-in { animation-name: rise-only; }
+  @keyframes rise-only {
+    from { transform: translate3d(0, 18px, 0); }
+    to { transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-in, .motion [data-reveal].is-in, .motion [data-stagger].is-in > *, .motion [data-split].is-in .split-word { animation: none; }
+  }
 
   html.menu-locked { overflow: hidden; }
 

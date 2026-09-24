@@ -64,26 +64,26 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
          No background-image fallback: browsers download every layer. -->
     <section class="hero navy-texture">
       <div class="hero-media" data-parallax="0.18">
-        <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="/videos/showreel-landscape.jpg" aria-hidden="true" tabindex="-1" data-hero-video>
+        <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1" data-hero-video>
           <source src="/videos/showreel-portrait.mp4" type="video/mp4" media="(max-width: 768px) and (orientation: portrait)" />
           <source src="/videos/showreel-landscape.mp4" type="video/mp4" />
         </video>
         <script is:inline>
-          // Phones held upright get the vertical cut, so give them its poster too
-          // instead of a cropped wide frame while the video loads.
-          if (matchMedia("(max-width: 768px) and (orientation: portrait)").matches) {
-            document.querySelector("[data-hero-video]").poster = "/videos/showreel-portrait.jpg";
-          }
+          // Pick the poster that matches the cut this screen will play, so a
+          // phone never downloads the wide one (and vice versa).
+          document.querySelector("[data-hero-video]").poster =
+            matchMedia("(max-width: 768px) and (orientation: portrait)").matches
+              ? "/videos/showreel-portrait.webp" : "/videos/showreel-landscape.webp";
         </script>
       </div>
       <div class="hero-scrim" aria-hidden="true"></div>
 
       <div class="hero-inner">
-        <p class="eyebrow" data-reveal>Melbourne, Florida</p>
-        <h1 data-split>Make Social Media Your <span class="highlight">#1 Source of Leads</span>.</h1>
-        <p class="subheadline" data-reveal data-reveal-delay="0.15">We handle the content, strategy, and automation so your social media works for you around the clock.</p>
+        <p class="eyebrow hero-in">Melbourne, Florida</p>
+        <h1 class="hero-in">Make Social Media Your <span class="highlight">#1 Source of Leads</span>.</h1>
+        <p class="subheadline hero-in" style="--d: 0.12s">We handle the content, strategy, and automation so your social media works for you around the clock.</p>
 
-        <div class="hero-actions" data-reveal data-reveal-delay="0.25" data-sticky-after>
+        <div class="hero-actions hero-in" style="--d: 0.22s" data-sticky-after>
           <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" class="btn btn-hero sheen" data-magnetic data-book="book_call_home_hero">
             Book a Free Call
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -94,7 +94,7 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
         <!-- Proof at the point of decision. Verbatim from Charlie Murray's
              review below. No star count or review total on purpose: the
              "5.0 stars from 4 reviews" line was removed on 2026-09-03. -->
-        <figure class="hero-proof" data-reveal data-reveal-delay="0.35">
+        <figure class="hero-proof hero-in" style="--d: 0.32s">
           <div class="hero-avatars" aria-hidden="true">
             {reviews.map(r => <span>{initials(r.name)}</span>)}
           </div>
@@ -114,7 +114,7 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
          landing cold should know which door is theirs before they scroll. -->
     <section class="fork-section" id="fork">
       <div class="fork-inner">
-        <p class="fork-question" data-split>Are you here for video marketing, or video production?</p>
+        <h2 class="fork-question" data-split>Are you here for video marketing, or video production?</h2>
         <p class="fork-sub" data-reveal data-reveal-delay="0.15">Two different doors. Pick the one that sounds like you.</p>
 
         <div class="fork-grid" data-stagger>
@@ -163,7 +163,7 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
                    (480x600, no audio). The full clip, 8-17MB, only loads when
                    the tile is tapped. The page script plays previews only
                    while on screen. -->
-              <video muted loop playsinline preload="none" data-lazy-play poster={`/videos/previews/${v.slug}.jpg`}>
+              <video muted loop playsinline preload="none" data-lazy-play data-poster={`/videos/previews/${v.slug}.webp`}>
                 <source src={`/videos/previews/${v.slug}.mp4`} type="video/mp4" />
               </video>
               <span class="work-expand" aria-hidden="true">
@@ -329,9 +329,11 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
         linear-gradient(to bottom, rgba(10, 20, 45, 0.7) 0%, rgba(10, 20, 45, 0.35) 30%, rgba(10, 20, 45, 0.45) 65%, rgba(10, 20, 45, 0.92) 100%);
     }
 
-    /* The texture glow sits above the video but under the text. */
-    .hero.navy-texture::before { z-index: -1; opacity: 0.6; }
-    .hero.navy-texture::after { z-index: -1; }
+    /* No grain or drifting glow over the video: blended layers on top of a
+       playing video forced a full repaint every frame and froze phones for
+       seconds (measured 2026-09-24). The footage carries its own texture. */
+    .hero.navy-texture::before,
+    .hero.navy-texture::after { display: none; }
 
     .hero-inner {
       position: relative;
@@ -417,10 +419,9 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
       margin-top: 2.75rem;
       padding: 0.75rem 1.25rem 0.75rem 0.75rem;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
+      /* Solid tint rather than a live blur, which re-rendered on every video frame. */
+      background: rgba(10, 20, 45, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       text-align: left;
     }
 
@@ -689,11 +690,11 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
     .fork-note {
       margin-top: 2.5rem;
       font-size: 0.98rem;
-      color: rgba(26, 26, 46, 0.55);
+      color: rgba(26, 26, 46, 0.72);
     }
 
     .fork-note a {
-      color: var(--secondary);
+      color: var(--c-heading);
       font-weight: 700;
       text-decoration: underline;
       text-underline-offset: 4px;
@@ -763,6 +764,7 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
       background: none;
       cursor: pointer;
       line-height: 0;
+      background: var(--c-band);
       border-radius: var(--r-md);
       overflow: hidden;
       box-shadow: var(--shadow-md);
@@ -1182,6 +1184,22 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
     // clip is near the viewport (preload="none" in the markup).
     const lazyVideos = [...document.querySelectorAll<HTMLVideoElement>('video[data-lazy-play]')];
     const heroVideo = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+
+    // Tile posters load as the grid approaches, not with the page: the grid
+    // sits well below the fold and nine posters were competing with the hero.
+    if ('IntersectionObserver' in window) {
+      const posterIO = new IntersectionObserver((entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+          if (!isIntersecting) return;
+          const v = target as HTMLVideoElement;
+          if (v.dataset.poster) v.poster = v.dataset.poster;
+          posterIO.unobserve(v);
+        });
+      }, { rootMargin: '900px 0px' });
+      lazyVideos.forEach(v => posterIO.observe(v));
+    } else {
+      lazyVideos.forEach(v => { if (v.dataset.poster) v.poster = v.dataset.poster; });
+    }
 
     // Which videos are on screen right now. Only these play: phones start
     // refusing or stuttering when many videos decode at once.

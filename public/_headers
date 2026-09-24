@@ -1,0 +1,31 @@
+# Cloudflare cache rules. Copied to the build root, read by Cloudflare.
+#
+# Without this file every asset was served "max-age=0, must-revalidate", so
+# phones re-checked each video and image on every visit (flagged by PageSpeed
+# on 2026-09-24).
+#
+# /_astro/* files have a content hash in their names, so they can be cached
+# forever: a changed file gets a new name.
+#
+# Videos and images keep their names when replaced, so they get 30 days.
+# IMPORTANT: when you replace a video or image with new content, give it a
+# new filename (or add ?v=2 where the page references it). Otherwise returning
+# visitors can keep seeing the old one for up to 30 days.
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/videos/*
+  Cache-Control: public, max-age=2592000
+
+/about/*
+  Cache-Control: public, max-age=2592000
+
+/shockwave-studios/*
+  Cache-Control: public, max-age=2592000
+
+/*.jpg
+  Cache-Control: public, max-age=2592000
+
+/favicon.*
+  Cache-Control: public, max-age=2592000

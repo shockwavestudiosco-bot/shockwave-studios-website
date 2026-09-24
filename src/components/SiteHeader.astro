@@ -85,7 +85,9 @@ const servicesActive = SERVICE_LINKS.some(l => isActive(l.href));
 
   if (header) {
     // Scrolled and hidden states. rAF-throttled, passive listener.
-    let lastY = window.scrollY;
+    // First read waits a frame: reading scrollY while the page is still being
+    // parsed forced an early full layout (~250ms on a phone, PageSpeed).
+    let lastY = 0;
     let ticking = false;
     const update = () => {
       const y = window.scrollY;
@@ -97,7 +99,7 @@ const servicesActive = SERVICE_LINKS.some(l => isActive(l.href));
       lastY = y;
       ticking = false;
     };
-    update();
+    requestAnimationFrame(() => { lastY = window.scrollY; update(); });
     window.addEventListener('scroll', () => {
       if (!ticking) { ticking = true; requestAnimationFrame(update); }
     }, { passive: true });
@@ -156,10 +158,18 @@ const servicesActive = SERVICE_LINKS.some(l => isActive(l.href));
 
   .site-header.is-scrolled {
     --ink: var(--c-text);
-    background: rgba(244, 247, 252, 0.82);
-    -webkit-backdrop-filter: saturate(160%) blur(14px);
-    backdrop-filter: saturate(160%) blur(14px);
+    background: rgba(244, 247, 252, 0.96);
     box-shadow: 0 1px 0 rgba(27, 58, 107, 0.08), 0 8px 30px rgba(15, 33, 69, 0.06);
+  }
+
+  /* Frosted glass on desktop only. On phones the live blur re-rendered over
+     the playing hero video every frame; a near-solid bar looks the same. */
+  @media (hover: hover) and (pointer: fine) {
+    .site-header.is-scrolled {
+      background: rgba(244, 247, 252, 0.82);
+      -webkit-backdrop-filter: saturate(160%) blur(14px);
+      backdrop-filter: saturate(160%) blur(14px);
+    }
   }
 
   .site-header.is-hidden { transform: translateY(-100%); }
