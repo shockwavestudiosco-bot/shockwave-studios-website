@@ -6,60 +6,17 @@ import FunnelCTA from '../components/FunnelCTA.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import InlineCTA from '../components/InlineCTA.astro';
 
-// The six steps, in order. One short paragraph each: the process is simple and
-// the copy should not make it look otherwise. They render as one continuous
-// timeline rather than six alternating full-width bands, which kept the page
-// from flipping between near-black and near-white six times on the way down.
+// The six steps. Kept to a word or two each on purpose (Ashton 2026-09-23):
+// the process is simple and the page should not over-explain it. Facts
+// (half day, two rounds, under five days) match the specs list below.
+// Icons are Lucide-style strokes, 24px grid.
 const steps = [
-  {
-    num: "01",
-    title: "Discovery Call",
-    lead: "We work out what the video is actually for.",
-    body: [
-      "Not what you want filmed, what you need it to do. Close a sale, fill an event, move a listing. Then where it lives, because a website video and an Instagram video are different builds.",
-    ],
-  },
-  {
-    num: "02",
-    title: "Proposal and Plan Call",
-    lead: "I build the plan, then walk you through it live.",
-    body: [
-      "Concept, shot list, scope, timeline, cost. All of it worked out before you see any of it, and presented on a call instead of emailed as a PDF you have to decode alone. Anything you want changed gets changed right there.",
-    ],
-    pull: "What you approve is the thing that actually gets made.",
-  },
-  {
-    num: "03",
-    title: "Lock the Shoot Date",
-    lead: "Plan approved, calendar locked.",
-    body: [
-      "You know when I am showing up and how long I need. Locations, permissions, and anyone who has to be on camera get sorted now, not the morning of.",
-    ],
-  },
-  {
-    num: "04",
-    title: "Shoot",
-    lead: "Execution, not invention.",
-    body: [
-      "We work the shot list we already agreed on, so nobody is standing around deciding what to film. Half a day, up to four hours on site. You do not have to be good on camera, directing you is part of the job.",
-    ],
-  },
-  {
-    num: "05",
-    title: "Edit",
-    lead: "Cut against the plan, then refined with you.",
-    body: [
-      "You get the first cut and two rounds of changes. Send notes as timestamps. Tell me what is wrong at 0:14 and I fix 0:14.",
-    ],
-  },
-  {
-    num: "06",
-    title: "Deliver",
-    lead: "Final files, yours to keep.",
-    body: [
-      "Delivered through Google Drive, usually within five business days of the shoot. Need a different aspect ratio for another platform, ask while we are still in it and it comes with the delivery.",
-    ],
-  },
+  { title: "Discovery Call", note: "What the video is for", icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>' },
+  { title: "Plan Call", note: "See the plan and price", icon: '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>' },
+  { title: "Book the Date", note: "Date locked in", icon: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>' },
+  { title: "Shoot", note: "Half a day on site", icon: '<path d="m16 13 5.2 3.5a.5.5 0 0 0 .8-.4V7.9a.5.5 0 0 0-.8-.4L16 11"/><rect x="2" y="6" width="14" height="12" rx="2"/>' },
+  { title: "Edit", note: "Two rounds of changes", icon: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>' },
+  { title: "Deliver", note: "Usually within 5 days", icon: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>' },
 ];
 
 const specs = [
@@ -86,7 +43,7 @@ const examples = [
 ---
 <Layout
   title="Video Production in Melbourne, FL | Shockwave Studios"
-  description="How a Shockwave Studios video gets made: discovery call, a proposal presented live, a locked shoot date, the shoot, the edit, and delivery. The plan is settled before the camera comes out."
+  description="High-quality video production in Melbourne, FL. Two quick calls to plan it, half a day to shoot it, and final files usually within five business days."
 >
   <SiteHeader />
 
@@ -94,45 +51,30 @@ const examples = [
     <section class="page-hero">
       <div class="page-hero-inner">
         <p class="hero-eyebrow">Video Production</p>
-        <h1>Nothing Gets Filmed Until the Plan Is Settled.</h1>
-        <p class="subheadline">One video, no monthly commitment. Six steps, and by the time a camera comes out, every decision has already been made.</p>
+        <h1>High-Quality Video Production.</h1>
+        <p class="subheadline">Made by people who care how it turns out. One video, no monthly commitment.</p>
       </div>
     </section>
 
-    <!-- ===== THE THROUGH-LINE =====
-         No eyebrow, no lead paragraph. Just a statement at display size, so
-         the page opens on a different shape than every section that follows. -->
-    <section class="sec sec-light sec-statement" id="why">
-      <div class="sec-inner sec-inner-narrow">
-        <p class="statement reveal">A shoot that goes wrong almost never goes wrong because of the camera.</p>
-        <div class="statement-body reveal">
-          <p>It goes wrong because nobody decided what the video was for, so the day gets spent improvising and the edit turns into guesswork.</p>
-          <p>Two calls up front fix that. One to find out what you actually need, one to show you the plan before you commit to it. Everything after that is execution.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== THE SIX STEPS, AS ONE TIMELINE ===== -->
+    <!-- ===== THE PROCESS =====
+         One short line and six icon steps. Replaces the long "a shoot that
+         goes wrong..." statement and the six-card timeline, which took
+         several screens to scroll on a phone. -->
     <section class="sec sec-white steps" id="process">
       <div class="sec-inner">
-        <div class="steps-head reveal">
-          <p class="sec-eyebrow">The process</p>
-          <h2>Six Steps, In Order</h2>
-        </div>
+        <p class="sec-eyebrow reveal">How it works</p>
+        <h2 class="h2-minor reveal">Plan It, Shoot It, Deliver It</h2>
+        <p class="steps-lead reveal">Two quick calls up front so we both know what the video is for. After that, it's just getting it done.</p>
 
-        <ol class="timeline">
+        <ol class="step-grid reveal">
           {steps.map((step, i) => (
-            <li class="tl-step reveal" id={`step-${step.num}`}>
-              <div class="tl-rail">
-                <span class="tl-num">{step.num}</span>
-              </div>
-              <div class="tl-card">
-                <p class="tl-of">Step {i + 1} of {steps.length}</p>
-                <h3>{step.title}</h3>
-                <p class="tl-lead">{step.lead}</p>
-                {step.body.map(p => <p class="tl-para">{p}</p>)}
-                {step.pull && <p class="tl-pull">{step.pull}</p>}
-              </div>
+            <li class="step">
+              <span class="step-icon" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={step.icon} />
+              </span>
+              <span class="step-num">{String(i + 1).padStart(2, "0")}</span>
+              <h3>{step.title}</h3>
+              <p>{step.note}</p>
             </li>
           ))}
         </ol>
@@ -161,7 +103,7 @@ const examples = [
     </section>
 
     <InlineCTA
-      path="video_production"
+      path="video_production"
       text="That is the whole process. Ready to talk about yours?"
     />
 
@@ -437,145 +379,81 @@ const examples = [
       margin: -1.5rem 0 3.5rem;
     }
 
-    /* ---------- opening statement ---------- */
+    /* ---------- the process: six icon steps ---------- */
 
-    .sec-statement { padding-top: 8rem; padding-bottom: 8rem; }
+    .steps { text-align: center; }
+    .steps .sec-eyebrow { margin-bottom: 0.75rem; }
+    .steps h2.h2-minor { margin-bottom: 0.9rem; }
 
-    .statement {
-      font-family: var(--font-impact);
-      font-weight: 400;
-      font-size: clamp(1.75rem, 4.4vw, 3.1rem);
-      line-height: 1.15;
-      letter-spacing: -0.015em;
-      color: var(--primary);
-      margin-bottom: 2.5rem;
+    .steps-lead {
+      max-width: 560px;
+      margin: 0 auto 3rem;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: rgba(26, 26, 46, 0.7);
     }
 
-    .statement-body {
-      max-width: 660px;
-      padding-left: 1.75rem;
-      border-left: 3px solid var(--accent);
-    }
-
-    .statement-body p {
-      font-size: clamp(1.1rem, 2vw, 1.3rem);
-      line-height: 1.7;
-      color: rgba(26, 26, 46, 0.72);
-    }
-
-    .statement-body p + p { margin-top: 1.25rem; }
-
-    /* ---------- the timeline ----------
-       One continuous section. The rail runs behind the numbers so the six
-       steps read as a single sequence, and each step still gets enough height
-       to hold the screen during a live walkthrough. */
-
-    .steps-head { margin-bottom: 4rem; }
-    .steps-head h2 { margin-bottom: 0; }
-
-    .timeline {
+    .step-grid {
       list-style: none;
-      position: relative;
       padding: 0;
       margin: 0;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 1rem;
+      position: relative;
     }
 
-    /* the rail itself, drawn once behind every node */
-    .timeline::before {
+    /* a thin line joining the six icons */
+    .step-grid::before {
       content: "";
       position: absolute;
-      left: 39px;
-      top: 8px;
-      bottom: 8px;
-      width: 2px;
-      background: linear-gradient(
-        to bottom,
-        var(--accent) 0%,
-        var(--accent) 88%,
-        rgba(168, 197, 240, 0) 100%
-      );
+      top: 28px;
+      left: 8%;
+      right: 8%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent) 12%, var(--accent) 88%, transparent);
+      z-index: 0;
     }
 
-    .tl-step {
-      display: grid;
-      grid-template-columns: 80px 1fr;
-      gap: 2.5rem;
-      align-items: start;
-      padding-bottom: 5rem;
-    }
-
-    .tl-step:last-child { padding-bottom: 0; }
-
-    .tl-rail { position: sticky; top: 132px; }
-
-    .tl-num {
+    .step {
+      position: relative;
+      z-index: 1;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      width: 80px;
-      height: 80px;
+      gap: 0.35rem;
+    }
+
+    .step-icon {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      margin-bottom: 0.4rem;
       border-radius: 50%;
-      background: var(--bg-secondary);
+      color: var(--primary);
+      background: var(--bg);
       border: 2px solid var(--accent);
-      font-family: var(--font-editorial);
-      font-weight: 800;
-      font-size: 1.35rem;
-      letter-spacing: -0.02em;
-      color: var(--primary);
+      box-shadow: 0 0 0 6px var(--bg-secondary);
     }
 
-    .tl-card { padding-top: 0.5rem; max-width: 760px; }
-
-    .tl-of {
-      font-size: 0.78rem;
+    .step-num {
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
+      letter-spacing: 0.16em;
       color: var(--label);
-      margin-bottom: 0.9rem;
     }
 
-    .tl-card h3 {
-      font-size: clamp(1.6rem, 3.4vw, 2.4rem);
-      line-height: 1.12;
-      letter-spacing: -0.01em;
-      margin-bottom: 1rem;
-    }
-
-    .tl-lead {
-      font-family: var(--font-editorial);
-      font-style: italic;
-      font-weight: 400;
-      font-size: clamp(1.15rem, 2.3vw, 1.5rem);
-      line-height: 1.5;
-      color: var(--label);
-      margin-bottom: 1.75rem;
-      padding-bottom: 1.75rem;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .tl-para {
-      font-size: clamp(1.02rem, 1.8vw, 1.15rem);
-      line-height: 1.75;
-      color: rgba(26, 26, 46, 0.74);
-    }
-
-    .tl-para + .tl-para { margin-top: 1.25rem; }
-
-    /* Only step 2 carries one. It is the differentiator, so it gets a beat
-       the other five do not, which also breaks the six-in-a-row sameness. */
-    .tl-pull {
-      margin-top: 2rem;
-      padding: 1.5rem 1.75rem;
-      background: var(--mist);
-      border-radius: 0 16px 16px 0;
-      border-left: 4px solid var(--secondary);
-      font-family: var(--font-editorial);
-      font-weight: 800;
-      font-size: clamp(1.05rem, 2.1vw, 1.35rem);
-      line-height: 1.35;
-      letter-spacing: -0.01em;
+    .step h3 {
+      font-size: 1.1rem;
+      line-height: 1.2;
       color: var(--primary);
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: rgba(26, 26, 46, 0.62);
     }
 
     /* ---------- specs, as a list not a card grid ---------- */
@@ -695,6 +573,8 @@ const examples = [
     /* ---------- responsive ---------- */
 
     @media (max-width: 1000px) {
+      .step-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 2rem; }
+      .step-grid::before { display: none; }
       .example-grid { grid-template-columns: repeat(2, 1fr); }
       .spec-row { grid-template-columns: 200px 1fr; gap: 1.75rem; }
     }
@@ -739,28 +619,16 @@ const examples = [
       .dropdown li a { padding-left: 10%; }
 
       .sec { padding: 4.5rem 5%; }
-      .sec-statement { padding-top: 5rem; padding-bottom: 5rem; }
       .page-hero-inner { padding: 4.5rem 5% 4rem; }
       .sec-lead { margin: -0.75rem 0 2.5rem; }
 
-      .statement-body { padding-left: 1.25rem; }
-
-      /* the rail moves in to line up with the smaller nodes */
-      .timeline::before { left: 27px; }
-
-      .tl-step {
-        grid-template-columns: 56px 1fr;
-        gap: 1.25rem;
-        padding-bottom: 3.5rem;
-      }
-
-      .tl-rail { position: static; }
-
-      .tl-num { width: 56px; height: 56px; font-size: 1.05rem; }
-
-      .tl-card { padding-top: 0.35rem; }
-
-      .tl-lead { margin-bottom: 1.25rem; padding-bottom: 1.25rem; }
+      /* phones: two rows of three, no joining line */
+      .step-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.75rem 0.5rem; }
+      .step-grid::before { display: none; }
+      .step-icon { width: 50px; height: 50px; }
+      .step h3 { font-size: 0.98rem; }
+      .step p { font-size: 0.8rem; }
+      .steps-lead { margin-bottom: 2.25rem; font-size: 1rem; }
 
       .spec-row { grid-template-columns: 1fr; gap: 0.75rem; padding: 1.5rem 0; }
 
