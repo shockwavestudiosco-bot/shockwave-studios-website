@@ -85,7 +85,7 @@ const servicesActive = SERVICE_LINKS.some(l => isActive(l.href));
 
   if (header) {
     // Scrolled and hidden states. rAF-throttled, passive listener.
-    // First read waits a frame: reading scrollY while the page is still being
+    // First read is deferred: reading scrollY while the page is still being
     // parsed forced an early full layout (~250ms on a phone, PageSpeed).
     let lastY = 0;
     let ticking = false;
@@ -99,7 +99,11 @@ const servicesActive = SERVICE_LINKS.some(l => isActive(l.href));
       lastY = y;
       ticking = false;
     };
-    requestAnimationFrame(() => { lastY = window.scrollY; update(); });
+    // Wait for load so the read never forces the first layout early. Scroll
+    // events before then are handled by the listener below as normal.
+    const first = () => requestAnimationFrame(() => { lastY = window.scrollY; update(); });
+    if (document.readyState === 'complete') first();
+    else window.addEventListener('load', first, { once: true });
     window.addEventListener('scroll', () => {
       if (!ticking) { ticking = true; requestAnimationFrame(update); }
     }, { passive: true });
