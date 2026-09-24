@@ -20,14 +20,18 @@ import { CALENDLY_URL } from '../lib/site';
 //
 // Every plan includes full strategy, scripts, and scheduling and posting.
 // Standard and Premium add comment-to-DM automation and custom videos.
+// On-site filming per month is 1+ / 2+ / 3+ (Ashton 2026-09-24: same counts
+// as before, shown with a plus). Added to every plan the same day: monthly
+// strategy call, hook and caption writing, posting to Reels/TikTok/Shorts,
+// monthly performance report. [ASK Ashton: should any of those be tiered?]
 //
 // The cards lead with the video count and carry the price underneath. At
 // position two on the page a bare price makes a cold visitor judge the number
 // before they know what it buys; this order sells the volume first.
 const plans = [
-  { name: "Basic",    price: "$650",   videos: 8,  dm: false, custom: null, adsAddon: "$300", featured: false },
-  { name: "Standard", price: "$1,200", videos: 14, dm: true,  custom: 1,    adsAddon: "$200", featured: true },
-  { name: "Premium",  price: "$1,750", videos: 20, dm: true,  custom: 2,    adsAddon: "$200", featured: false },
+  { name: "Basic",    price: "$650",   videos: 8,  filming: "1+", dm: false, custom: null, adsAddon: "$300", featured: false },
+  { name: "Standard", price: "$1,200", videos: 14, filming: "2+", dm: true,  custom: 1,    adsAddon: "$200", featured: true },
+  { name: "Premium",  price: "$1,750", videos: 20, filming: "3+", dm: true,  custom: 2,    adsAddon: "$200", featured: false },
 ];
 
 // The deliverables chart.
@@ -39,6 +43,7 @@ const plans = [
 const included = [
   { group: "What changes between plans" },
   { row: "Finished videos per month", basic: "8", standard: "14", premium: "20", count: true },
+  { row: "On-site filming sessions per month", basic: "1+", standard: "2+", premium: "3+", count: true },
   { row: "Comment-to-DM automation", basic: null, standard: true, premium: true, count: true },
   { row: "Custom videos per month", basic: null, standard: "1", premium: "2", count: true },
   { row: "Ads management (optional add-on)", basic: "+$300/mo", standard: "+$200/mo", premium: "+$200/mo", count: true },
@@ -50,29 +55,59 @@ const included = [
   { row: "Audit of your own account", basic: true, standard: true, premium: true },
   { row: "Content pillars built from both audits", basic: true, standard: true, premium: true },
   { row: "Scripts for every video", basic: true, standard: true, premium: true },
+  { row: "Hook and caption written for every post", basic: true, standard: true, premium: true },
   { row: "Editing", basic: true, standard: true, premium: true },
   { row: "Scheduling and posting", basic: true, standard: true, premium: true },
+  { row: "Posted to Reels, TikTok and Shorts", basic: true, standard: true, premium: true },
+  { row: "Monthly strategy call", basic: true, standard: true, premium: true },
+  { row: "Monthly performance report", basic: true, standard: true, premium: true },
   { row: "Raw files, yours to keep", basic: true, standard: true, premium: true },
 ];
 
-const objections = [
+// Questions, grouped into tabs so the section is one compact panel rather
+// than a long list. Facts come from Ashton: month to month, one round of
+// changes a month ("we make it work if there's a problem"), the final month's
+// videos are theirs to keep (2026-09-24). [ASK Ashton: how soon does the
+// first content go live after signing? Not answered yet, so not asked here.]
+const faqGroups = [
   {
-    q: "Why run ads at all? Can't I just post more?",
-    a: "Posting more only reaches people who already follow you or happen to get served your video. That is a slow way to find buyers. Ads let you put a sales message in front of people who have never heard of you, today, in the amount you choose. Organic reach is something you earn over months. Paid reach is something you buy this afternoon.",
+    name: "The Basics",
+    items: [
+      { q: "Is there a contract?", a: "No. It's month to month. You stay because it's working, not because you signed something." },
+      { q: "Is my ad budget included?", a: "No. Your ad budget goes straight to your own Meta Ads Manager, so you set it, see every dollar, and keep the account. Ads management itself is an optional add-on to any plan." },
+      { q: "Why run ads at all? Can't I just post more?", a: "Posting more only reaches people who already follow you or happen to get served your video. Ads put your offer in front of people who have never heard of you, today, in the amount you choose. Organic reach is earned over months. Paid reach is bought this afternoon." },
+      { q: "Why content pillars instead of just good videos?", a: "A good video with no job is a lottery ticket. Pillars give every post a role, so the month covers proof, objections and personality instead of three versions of the same idea. It also means nobody is standing around on shoot day wondering what to film." },
+    ],
   },
   {
-    q: "If ads are the point, why does organic matter?",
-    a: "Because almost nobody buys straight off an ad. They tap your profile first. If that profile is empty or last posted in March, the ad just paid to show someone that you are not a serious business. The organic content is what makes the ad believable.",
+    name: "Filming",
+    items: [
+      { q: "How often do you come out to film?", a: "Every plan includes on-site filming: 1+, 2+ or 3+ shoots a month depending on the plan. If the month needs another one, we make it happen." },
+      { q: "Where do you film?", a: "On site, wherever your business actually happens. Your shop, your job site, your office." },
+      { q: "Do I have to be on camera?", a: "You don't have to be good on camera. Directing you is part of the job." },
+      { q: "What gear do you bring?", a: "Professional lighting, pro audio, 4K cameras and stabilized shots, every time." },
+    ],
   },
   {
-    q: "Why pillars instead of just posting good videos?",
-    a: "A good video with no job attached is a lottery ticket. Pillars give every post a role, so the month covers proof, objections, and personality instead of three versions of the same idea. It also means we are never sitting there on a shoot day wondering what to film.",
+    name: "Scripts & Editing",
+    items: [
+      { q: "Who writes the scripts?", a: "We do. Every video gets a script built from your content pillars, plus the hook and caption that go with it." },
+      { q: "Can I pitch my own ideas?", a: "Always. Standard and Premium also include custom videos every month where you pick the idea." },
+      { q: "Do I see the videos before they go out?", a: "Yes. Each month includes a round of changes, and if something still isn't right after that, we sort it out." },
+      { q: "What kind of videos are they?", a: "Short-form video built for Reels, TikTok and Shorts. Every one is tied to a content pillar, so it has a job to do." },
+    ],
   },
   {
-    q: "What do I actually get each month?",
-    a: "Finished videos, scripted, edited, scheduled and posted for you. Add ads management and the ads go out with the copy and the angle they are built for. You get the files too, they are yours.",
+    name: "Posting & Results",
+    items: [
+      { q: "Do you post them for me?", a: "Yes. Scheduling and posting are in every plan, across Reels, TikTok and Shorts." },
+      { q: "What is comment-to-DM automation?", a: "When someone comments a keyword on your post, they automatically get a DM with your offer or booking link. The lead gets caught while they're interested, even at 2am." },
+      { q: "How do I know it's working?", a: "You get a performance report every month showing what worked, plus a strategy call to plan the next month around it." },
+      { q: "Do I keep the videos if I cancel?", a: "Yes. The videos from your final month are yours to keep." },
+    ],
   },
 ];
+
 ---
 <Layout
   title="Video Marketing in Melbourne, FL | Shockwave Studios"
@@ -118,6 +153,7 @@ const objections = [
               <dl class="plan-spec">
                 <div><dt>Strategy, scripts, posting</dt><dd><span class="spec-yes" aria-label="Included">&#10003;</span></dd></div>
                 <div><dt>Profile revamp</dt><dd><span class="spec-yes" aria-label="Included">&#10003;</span></dd></div>
+                <div><dt>On-site filming</dt><dd>{plan.filming}<span> / mo</span></dd></div>
                 <div><dt>Comment-to-DM automation</dt><dd>{plan.dm ? <span class="spec-yes" aria-label="Included">&#10003;</span> : <em class="spec-none">Not included</em>}</dd></div>
                 <div><dt>Custom videos</dt><dd>{plan.custom ? <>{plan.custom}<span> / mo</span></> : <em class="spec-none">Not included</em>}</dd></div>
                 <div><dt>Ads management</dt><dd>+{plan.adsAddon}<span> / mo</span></dd></div>
@@ -167,7 +203,7 @@ const objections = [
         -->
         <div class="example-grid reveal">
           <figure class="example-item">
-            <video class="example-video" controls preload="none" playsinline poster="/videos/ad-example.jpg">
+            <video class="example-video" controls preload="none" playsinline poster="/videos/ad-example.webp">
               <source src="/videos/ad-example.mp4" type="video/mp4" />
             </video>
             <figcaption>
@@ -176,7 +212,7 @@ const objections = [
           </figure>
 
           <figure class="example-item">
-            <video class="example-video" controls preload="none" playsinline poster="/videos/organic-example.jpg">
+            <video class="example-video" controls preload="none" playsinline poster="/videos/organic-example.webp">
               <source src="/videos/organic-example.mp4" type="video/mp4" />
             </video>
             <figcaption>
@@ -187,12 +223,15 @@ const objections = [
       </div>
     </section>
 
-    <!-- ===== THE PROSPECT JOURNEY ===== -->
+    <!-- ===== THE PROSPECT JOURNEY =====
+         Two closes with the same shape (five steps and an outcome). The ad
+         close has a shortcut branch for the people who see one ad, check the
+         profile and buy on the spot. Rewritten 2026-09-24. -->
     <section class="sec sec-light" id="journey">
       <div class="sec-inner">
         <p class="sec-eyebrow reveal">The prospect journey</p>
         <h2 class="reveal">Two Ways Someone Becomes a Client</h2>
-        <p class="sec-lead reveal">Every step below is coloured by what drives it. Look at how often the two swap over. That is why they run together.</p>
+        <p class="sec-lead reveal">Every step is coloured by what's doing the work. Most clients come in through one of these two.</p>
 
         <div class="legend reveal">
           <span class="legend-item"><span class="dot dot-paid"></span>Paid ad doing the work</span>
@@ -205,45 +244,45 @@ const objections = [
           <article class="route reveal">
             <header class="route-head">
               <p class="route-tag">Route 1</p>
-              <h3>The Warm Path</h3>
-              <p class="route-note">Slower. Ends in your best clients.</p>
+              <h3>The Organic Close</h3>
+              <p class="route-note">Slower. Ends in your most loyal clients.</p>
             </header>
 
             <ol class="route-steps">
               <li class="rs rs-organic">
                 <span class="rs-dot"></span>
                 <span class="rs-tag">Organic</span>
-                <p>They find your content and actually engage with it.</p>
+                <p>They come across your content and follow or engage with it.</p>
               </li>
               <li class="rs rs-organic">
                 <span class="rs-dot"></span>
                 <span class="rs-tag">Organic</span>
                 <p>They keep seeing you. Trust builds over weeks, not minutes.</p>
               </li>
-              <li class="rs rs-paid">
-                <span class="rs-dot"></span>
-                <span class="rs-tag">Paid</span>
-                <p>A targeted ad puts the offer in front of someone who already knows you.</p>
-              </li>
               <li class="rs rs-none">
                 <span class="rs-dot"></span>
                 <span class="rs-tag">Neither</span>
-                <p>They do not buy. Almost nobody buys the first time they see an offer.</p>
+                <p>The day they need what you sell, they go looking for more.</p>
               </li>
-              <li class="rs rs-both">
+              <li class="rs rs-organic">
                 <span class="rs-dot"></span>
-                <span class="rs-tag">Both</span>
-                <p>Retargeting brings the offer back while the organic keeps proving you out.</p>
+                <span class="rs-tag">Organic</span>
+                <p>Your page answers their questions before they have to ask.</p>
+              </li>
+              <li class="rs rs-organic">
+                <span class="rs-dot"></span>
+                <span class="rs-tag">Organic</span>
+                <p>They reach out already sold on you.</p>
               </li>
             </ol>
 
-            <p class="route-out">They come in as a top paying client</p>
+            <p class="route-out">They come in as a warm lead</p>
           </article>
 
           <article class="route reveal">
             <header class="route-head">
               <p class="route-tag">Route 2</p>
-              <h3>The Cold Close</h3>
+              <h3>The Ad Close</h3>
               <p class="route-note">Faster. For people who need it now.</p>
             </header>
 
@@ -251,17 +290,31 @@ const objections = [
               <li class="rs rs-paid">
                 <span class="rs-dot"></span>
                 <span class="rs-tag">Paid</span>
-                <p>An ad reaches someone in your target audience who has never heard of you.</p>
+                <p>An ad puts your offer in front of someone who has never heard of you.</p>
+                <div class="rs-branch">
+                  <p class="rs-branch-tag">Shortcut</p>
+                  <p>Some see one ad, check your profile, and buy on the spot.</p>
+                </div>
               </li>
               <li class="rs rs-none">
                 <span class="rs-dot"></span>
                 <span class="rs-tag">Neither</span>
-                <p>Before they call anyone, they go looking for proof.</p>
+                <p>Most don't buy the first time. Almost nobody does.</p>
               </li>
               <li class="rs rs-organic">
                 <span class="rs-dot"></span>
                 <span class="rs-tag">Organic</span>
-                <p>Your profile is active and real. You check out.</p>
+                <p>They check your profile. It's active and real, so you pass.</p>
+              </li>
+              <li class="rs rs-paid">
+                <span class="rs-dot"></span>
+                <span class="rs-tag">Paid</span>
+                <p>Retargeting brings the offer back while they're still thinking.</p>
+              </li>
+              <li class="rs rs-both">
+                <span class="rs-dot"></span>
+                <span class="rs-tag">Both</span>
+                <p>Your ads and your content land together, and they're ready.</p>
               </li>
             </ol>
 
@@ -269,78 +322,59 @@ const objections = [
           </article>
 
         </div>
-
-        <div class="route-close reveal">
-          <p><strong>Ads without organic get checked, and fail the check.</strong> You pay to send a stranger to a profile that hands them a reason to hesitate.</p>
-          <p><strong>Organic without ads never reaches anyone new.</strong> Content only your existing followers see is not a growth channel, it is a hobby.</p>
-        </div>
       </div>
     </section>
 
     <!-- ===== CREATIVE STRATEGY =====
-         One panel, no vertical sequence. Inputs on the left, output on the
-         right, the calendar underneath as proof. This used to be four stacked
-         nodes plus a separate cadence block, which was a lot of scrolling for
-         a method that is genuinely two steps. -->
+         A four-band funnel, research at the wide end, pillars at the narrow
+         end. Bands build down one after another as it scrolls in. Replaces the
+         two-panel audits layout and the ad/organic slot grid (2026-09-24). -->
     <section class="sec sec-mist" id="strategy">
       <div class="sec-inner">
         <p class="sec-eyebrow reveal">The creative strategy</p>
-        <h2 class="reveal">Two Audits In, Your Pillars Out</h2>
-        <p class="sec-lead reveal">Not a brainstorm, and not asking you what you feel like filming. This is the whole method.</p>
+        <h2 class="h2-minor reveal">From Research to Content Pillars</h2>
 
-        <div class="sp reveal">
-          <div class="sp-side sp-in">
-            <p class="sp-label">What goes in</p>
-
-            <div class="sp-item">
-              <h3>Your competitors</h3>
-              <p>What is already winning in your market. Not what looks nice, what actually pulled reach and comments. Someone in your niche has already paid for the lesson.</p>
+        <ol class="funnel reveal">
+          <li class="fn" style="--i: 0">
+            <span class="fn-num">01</span>
+            <div class="fn-body">
+              <h3>Research</h3>
+              <p>Your competitors, your niche and your own profile.</p>
             </div>
-
-            <div class="sp-item">
-              <h3>Your own account</h3>
-              <p>What performed, what flopped, what you have never tried. Most accounts already have a winner nobody ever asked about.</p>
+          </li>
+          <li class="fn" style="--i: 1">
+            <span class="fn-num">02</span>
+            <div class="fn-body">
+              <h3>Profile Rebuild</h3>
+              <p>Your page answers every question a lead has in the first 5 seconds.</p>
             </div>
-          </div>
-
-          <div class="sp-join" aria-hidden="true">
-            <svg viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg">
-              <line x1="2" y1="12" x2="30" y2="12" />
-              <path d="M 24 5 L 33 12 L 24 19" />
-            </svg>
-          </div>
-
-          <div class="sp-side sp-out">
-            <p class="sp-label">What comes out</p>
-
-            <div class="sp-item sp-item-hero">
-              <h3>Your content pillars</h3>
-              <p>Repeatable video types, each with a job. Built from evidence rather than a whiteboard, so they hold up when one video underperforms. We can always point at why it existed.</p>
+          </li>
+          <li class="fn" style="--i: 2">
+            <span class="fn-num">03</span>
+            <div class="fn-body">
+              <h3>Strategy</h3>
+              <p>Who we're talking to, what they need to hear, and where.</p>
             </div>
-
-            <div class="sp-cadence">
-              <p class="sp-cadence-label">Every slot assigned before anything is filmed</p>
-              <div class="cadence-grid">
-                <div class="cadence-cell cadence-paid"><span>Pillar A</span><em>Ad</em></div>
-                <div class="cadence-cell cadence-organic"><span>Pillar C</span><em>Organic</em></div>
-                <div class="cadence-cell cadence-paid"><span>Pillar B</span><em>Ad</em></div>
-                <div class="cadence-cell cadence-paid"><span>Pillar A</span><em>Ad</em></div>
-                <div class="cadence-cell cadence-organic"><span>Pillar D</span><em>Organic</em></div>
-                <div class="cadence-cell cadence-paid"><span>Pillar B</span><em>Ad</em></div>
-              </div>
-              <p class="sp-cadence-note">Your pillars get named after the audits, so this fills with your categories, not placeholders.</p>
+          </li>
+          <li class="fn" style="--i: 3">
+            <span class="fn-num">04</span>
+            <div class="fn-body">
+              <h3>Content Pillars</h3>
+              <p>Repeatable video types, each with a job.</p>
             </div>
-          </div>
-        </div>
+          </li>
+        </ol>
+        <p class="funnel-out reveal">Every video has a job before a camera comes out.</p>
       </div>
     </section>
+
     <!-- ===== WHAT YOU GET =====
          Was "The Easy Part, Already Handled" as four cards. Now the chart. -->
     <section class="sec sec-white" id="included">
       <div class="sec-inner">
         <p class="sec-eyebrow reveal">Every month</p>
         <h2 class="reveal">Exactly What You Get</h2>
-        <p class="sec-lead reveal">Shooting, editing, scheduling and posting are in every plan. They are the easy part and they are already handled.</p>
+        <p class="sec-lead reveal">On-site filming, scripts, editing, posting and a monthly report are in every plan. The table shows what grows as you move up.</p>
 
         <div class="chart-wrap reveal">
           <table class="chart">
@@ -389,53 +423,81 @@ const objections = [
       </div>
     </section>
 
-    <!-- ===== ROI LOGIC ===== -->
-    <section class="sec sec-mist sec-statement" id="roi">
-      <div class="sec-inner sec-inner-narrow">
-        <p class="statement reveal">I am not going to throw a number at you that I made up.</p>
-        <p class="statement-sub reveal">Run your own instead. It takes about a minute.</p>
+    <!-- ===== ROI CALCULATOR =====
+         The visitor's own numbers, no invented results. Defaults are an
+         example only and say so. Rewritten from the static "I am not going to
+         throw a number at you" steps on 2026-09-24. -->
+    <section class="sec sec-mist" id="roi">
+      <div class="sec-inner">
+        <p class="sec-eyebrow reveal">The math</p>
+        <h2 class="h2-minor reveal">Will It Pay for Itself?</h2>
+        <p class="calc-sub reveal">Plug in your numbers. Nothing here is a promise, it's just math.</p>
 
-        <ol class="roi-steps">
-          <li class="reveal">
-            <span class="roi-num">1</span>
-            <div>
-              <h3>What is one customer worth to you?</h3>
-              <p>Not just the first job. Everything they spend over the years.</p>
-            </div>
-          </li>
-          <li class="reveal">
-            <span class="roi-num">2</span>
-            <div>
-              <h3>How many do you need to cover this?</h3>
-              <p>Divide the monthly fee by that number. For a lot of the businesses I work with, the answer is one. Sometimes it is less than one.</p>
-            </div>
-          </li>
-          <li class="reveal">
-            <span class="roi-num">3</span>
-            <div>
-              <h3>Now ask what happens past that.</h3>
-              <p>Everything above break even is the actual return. And the content does not expire at the end of the month. The ads that worked keep running, the organic stays on the profile doing its job for whoever finds it next.</p>
-            </div>
-          </li>
-        </ol>
+        <div class="calc reveal" data-calc>
+          <div class="calc-in">
+            <label class="calc-field">
+              <span class="calc-label">What's one new customer worth to you?</span>
+              <span class="calc-hint">Everything they'd spend with you, not just the first job.</span>
+              <span class="calc-money"><span aria-hidden="true">$</span><input type="number" inputmode="numeric" min="0" step="50" value="500" data-calc-value aria-label="Value of one new customer in dollars" /></span>
+            </label>
 
-        <p class="roi-close reveal">If you need a dozen new customers a month just to break even, tell me on the call and I will tell you honestly whether this is the right spend for you right now.</p>
+            <fieldset class="calc-field">
+              <legend class="calc-label">Pick a plan</legend>
+              <div class="calc-plans">
+                {plans.map(p => (
+                  <label class="calc-plan">
+                    <input type="radio" name="calc-plan" value={p.price.replace(/[$,]/g, "")} data-ads={p.adsAddon.replace(/[$,]/g, "")} checked={p.featured} />
+                    <span>{p.name}<small>{p.price}/mo</small></span>
+                  </label>
+                ))}
+              </div>
+              <label class="calc-check"><input type="checkbox" data-calc-ads /> Add ads management</label>
+            </fieldset>
+
+            <label class="calc-field">
+              <span class="calc-label">New customers a month from your videos: <strong data-calc-n-label>3</strong></span>
+              <input type="range" min="0" max="20" step="1" value="3" data-calc-n aria-label="New customers per month" />
+            </label>
+          </div>
+
+          <div class="calc-out" aria-live="polite">
+            <p class="calc-kicker">You break even at</p>
+            <p class="calc-big"><span data-calc-break>3</span><small data-calc-break-unit>customers a month</small></p>
+            <p class="calc-quip" data-calc-quip></p>
+            <div class="calc-result">
+              <p data-calc-result-label>At 3 new customers a month you'd be up</p>
+              <p class="calc-money-out" data-calc-up>$300</p>
+              <p class="calc-multiple" data-calc-multiple></p>
+            </div>
+          </div>
+        </div>
+
+        <p class="calc-note reveal">Doesn't include your ad budget, which goes straight to your own Meta account. Plan prices are starting prices.</p>
       </div>
     </section>
 
-    <!-- ===== QUESTIONS, AT THE BOTTOM ===== -->
+    <!-- ===== QUESTIONS =====
+         Tabs by topic, each an accordion, so the section stays one panel
+         tall. Without JavaScript every group shows, stacked. -->
     <section class="sec sec-white" id="questions">
       <div class="sec-inner sec-inner-narrow">
-        <h2 class="h2-minor reveal">The Questions You Are Probably Holding</h2>
+        <h2 class="h2-minor reveal">Questions You're Probably Asking</h2>
 
-        <div class="qa-list">
-          {objections.map((o, i) => (
-            <div class="qa reveal">
-              <p class="qa-num">{String(i + 1).padStart(2, "0")}</p>
-              <div>
-                <h3>{o.q}</h3>
-                <p>{o.a}</p>
-              </div>
+        <div class="faq reveal" data-faq>
+          <div class="faq-tabs" role="tablist" aria-label="Question topics">
+            {faqGroups.map((g, i) => (
+              <button type="button" role="tab" class="faq-tab" id={`faq-tab-${i}`} aria-controls={`faq-panel-${i}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1}>{g.name}</button>
+            ))}
+          </div>
+          {faqGroups.map((g, i) => (
+            <div class="faq-panel" role="tabpanel" id={`faq-panel-${i}`} aria-labelledby={`faq-tab-${i}`} data-faq-panel>
+              <p class="faq-group-name">{g.name}</p>
+              {g.items.map((item, j) => (
+                <details class="faq-item" open={i === 0 && j === 0}>
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
+              ))}
             </div>
           ))}
         </div>
@@ -460,6 +522,88 @@ const objections = [
   <SiteFooter />
 
   <ScrollReveal />
+
+  <script>
+    // ----- ROI calculator. All inputs are the visitor's; nothing is claimed.
+    const calc = document.querySelector<HTMLElement>('[data-calc]');
+    if (calc) {
+      const money = (n: number) => '$' + Math.round(Math.abs(n)).toLocaleString('en-US');
+      const $ = <T extends Element>(sel: string) => calc.querySelector<T>(sel)!;
+      const valueIn = $<HTMLInputElement>('[data-calc-value]');
+      const adsIn = $<HTMLInputElement>('[data-calc-ads]');
+      const nIn = $<HTMLInputElement>('[data-calc-n]');
+
+      const render = () => {
+        const plan = calc.querySelector<HTMLInputElement>('input[name="calc-plan"]:checked');
+        const fee = (plan ? +plan.value : 0) + (adsIn.checked && plan ? +(plan.dataset.ads || 0) : 0);
+        const value = Math.max(0, +valueIn.value || 0);
+        const n = +nIn.value;
+        $('[data-calc-n-label]').textContent = String(n);
+
+        const breakEven = value > 0 ? Math.ceil(fee / value) : Infinity;
+        $('[data-calc-break]').textContent = Number.isFinite(breakEven) ? String(breakEven) : '?';
+        $('[data-calc-break-unit]').textContent = breakEven === 1 ? 'customer a month' : 'customers a month';
+
+        let quip = 'Pop in what a customer is worth and I\'ll do the math.';
+        if (Number.isFinite(breakEven)) {
+          if (breakEven <= 1) quip = 'One customer covers it. Everything after that is gravy.';
+          else if (breakEven <= 2) quip = 'Two customers. Roughly one every couple of weeks.';
+          else if (breakEven <= 4) quip = `${breakEven} a month. About one every ${Math.round(30 / breakEven)} days.`;
+          else quip = `That's ${breakEven} a month. Tell me on the call and I'll be straight with you about whether now's the time.`;
+        }
+        $('[data-calc-quip]').textContent = quip;
+
+        if (value <= 0) {
+          $('[data-calc-result-label]').textContent = 'Your monthly result';
+          $('[data-calc-up]').textContent = '$0/mo';
+          $('[data-calc-multiple]').textContent = 'Add what a customer is worth above to see this.';
+          return;
+        }
+        const up = n * value - fee;
+        $('[data-calc-result-label]').textContent =
+          `At ${n} new customer${n === 1 ? '' : 's'} a month you'd be ${up >= 0 ? 'up' : 'down'}`;
+        const out = $('[data-calc-up]');
+        out.textContent = money(up) + '/mo';
+        out.classList.toggle('is-down', up < 0);
+        const multiple = fee > 0 ? (n * value) / fee : 0;
+        $('[data-calc-multiple]').textContent = up > 0
+          ? multiple >= 1.5
+            ? `That's $${multiple.toFixed(2)} back for every $1 you spend. Your accountant would like a word, a nice one.`
+            : `That's $${multiple.toFixed(2)} back for every $1. In the green, and every extra customer widens it.`
+          : up === 0 ? 'Right at break even. Every customer after this one is profit.'
+          : 'Below break even at that pace. Worth a conversation before you spend a dime.';
+      };
+
+      calc.addEventListener('input', render);
+      calc.addEventListener('change', render);
+      render();
+    }
+
+    // ----- Question tabs. Arrow keys move between tabs, per the tabs pattern.
+    const faq = document.querySelector<HTMLElement>('[data-faq]');
+    if (faq) {
+      const tabs = [...faq.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+      const panels = [...faq.querySelectorAll<HTMLElement>('[data-faq-panel]')];
+      faq.classList.add('is-tabbed');
+      const select = (i: number, focus = false) => {
+        tabs.forEach((t, k) => {
+          const on = k === i;
+          t.setAttribute('aria-selected', String(on));
+          t.tabIndex = on ? 0 : -1;
+          panels[k].hidden = !on;
+        });
+        if (focus) tabs[i].focus();
+      };
+      tabs.forEach((t, i) => {
+        t.addEventListener('click', () => select(i));
+        t.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight') { e.preventDefault(); select((i + 1) % tabs.length, true); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); select((i - 1 + tabs.length) % tabs.length, true); }
+        });
+      });
+      select(0);
+    }
+  </script>
 
   <style>
     /* Navy is punctuation on this page, not alternation. It appears twice, the
@@ -607,13 +751,13 @@ const objections = [
        just 'center'. Do not add a second background-image layer as a fallback:
        browsers fetch every layer, so an unused one is a silent download.
 
-       TO SWAP: replace public/hero-video-marketing.jpg, same aspect, keep it
+       TO SWAP: replace public/hero-video-marketing.webp (WebP, ~1600px wide, under ~120KB) with the same aspect, keep it
        under ~400KB. */
 
     .page-hero {
       position: relative;
       background-color: var(--primary-deep);
-      background-image: url('/hero-video-marketing.jpg');
+      background-image: url('/hero-video-marketing.webp');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -1142,136 +1286,109 @@ const objections = [
       text-align: center;
     }
 
-    .route-close {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      margin-top: 3rem;
-      padding-top: 2.5rem;
-      border-top: 1px solid var(--rule);
-    }
-
-    .route-close p {
-      font-size: 1.05rem;
-      line-height: 1.65;
-      color: rgba(26, 26, 46, 0.72);
-    }
-
-    .route-close strong {
-      font-weight: 700;
-      color: var(--primary);
-      display: block;
-      margin-bottom: 0.35rem;
-    }
-
-    /* ---------- creative strategy panel ---------- */
-
-    .sp {
-      display: grid;
-      grid-template-columns: 1fr 56px 1.15fr;
-      align-items: stretch;
-    }
-
-    .sp-side {
-      background: var(--bg-secondary);
-      border: 1px solid var(--rule);
-      border-radius: 20px;
-      padding: 2rem 1.85rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .sp-out { border-color: var(--secondary); }
-
-    .sp-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--label);
-      padding-bottom: 0.85rem;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .sp-item h3 {
-      font-size: clamp(1.2rem, 2.4vw, 1.55rem);
-      line-height: 1.15;
-      margin-bottom: 0.5rem;
-    }
-
-    .sp-item p {
-      font-size: 1.02rem;
-      line-height: 1.6;
-      color: rgba(26, 26, 46, 0.74);
-    }
-
-    .sp-join { display: flex; align-items: center; justify-content: center; }
-    .sp-join svg { width: 40px; height: 24px; }
-    .sp-join line, .sp-join path {
-      stroke: var(--secondary);
-      stroke-width: 2.5;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .sp-cadence {
-      margin-top: auto;
+    /* the shortcut branch off the ad close's first step */
+    .rs-branch {
+      grid-column: 2;
+      position: relative;
+      margin-top: 0.75rem;
+      padding: 0.75rem 0.95rem;
+      border: 1.5px dashed var(--secondary);
+      border-radius: 12px;
       background: var(--mist);
-      border-radius: 14px;
-      padding: 1.25rem 1.1rem;
     }
 
-    .sp-cadence-label {
-      text-align: center;
-      font-size: 0.72rem;
+    .rs-branch::before {
+      content: "";
+      position: absolute;
+      left: -1.1rem;
+      top: 50%;
+      width: 1.1rem;
+      border-top: 1.5px dashed var(--secondary);
+    }
+
+    .rs-branch-tag {
+      font-size: 0.68rem !important;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--label);
-      margin-bottom: 0.9rem;
+      color: var(--primary) !important;
+      margin-bottom: 0.2rem !important;
     }
 
-    .cadence-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 0.4rem;
-    }
+    .rs-branch p { font-size: 0.95rem; line-height: 1.45; color: rgba(26, 26, 46, 0.75); margin: 0; }
 
-    .cadence-cell {
-      border-radius: 8px;
-      padding: 0.6rem 0.25rem;
-      text-align: center;
+    /* ---------- creative strategy funnel ---------- */
+
+    .funnel {
+      list-style: none;
+      margin: 0 auto;
+      padding: 0;
+      max-width: 820px;
       display: flex;
       flex-direction: column;
-      gap: 0.15rem;
+      align-items: center;
+      gap: 6px;
     }
 
-    .cadence-cell span { font-weight: 700; font-size: 0.72rem; }
-
-    .cadence-cell em {
-      font-style: normal;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+    /* Each band is a trapezoid, narrower than the one above, darker as the
+       research turns into something specific. */
+    .fn {
+      --w: calc(100% - var(--i) * 12%);
+      width: var(--w);
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+      padding: 1.05rem 7% 1.05rem 7%;
+      clip-path: polygon(0 0, 100% 0, calc(100% - 4.5%) 100%, 4.5% 100%);
+      color: var(--primary);
+      background: #D6E3F6;
     }
 
-    .cadence-paid { background: var(--primary); }
-    .cadence-paid span { color: #ffffff; }
-    .cadence-paid em { color: var(--accent); }
+    .fn:nth-child(2) { background: #B5CCEE; }
+    .fn:nth-child(3) { background: var(--secondary); color: #ffffff; }
+    .fn:nth-child(4) { background: var(--primary); color: #ffffff; }
 
-    .cadence-organic { background: var(--bg-secondary); border: 1px dashed var(--secondary); }
-    .cadence-organic span { color: var(--primary); }
-    .cadence-organic em { color: var(--label); }
+    .fn-num {
+      font-family: var(--font-editorial);
+      font-weight: 800;
+      font-size: 1rem;
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
 
-    .sp-cadence-note {
+    .fn-body h3 {
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      line-height: 1.15;
+      color: inherit;
+      margin: 0 0 0.15rem;
+    }
+
+    .fn-body p {
+      font-size: 0.92rem;
+      line-height: 1.4;
+      margin: 0;
+      opacity: 0.85;
+    }
+
+    .funnel-out {
+      margin-top: 1.25rem;
       text-align: center;
-      margin-top: 0.9rem;
-      font-size: 0.85rem;
-      line-height: 1.45;
-      color: rgba(26, 26, 46, 0.68);
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--primary);
     }
+
+    /* Build-down animation. ScrollReveal arms .reveal elements and adds
+       .reveal-in on entry; the bands then drop in one after another. */
+    .funnel.reveal-armed .fn { opacity: 0; transform: translateY(-10px) scaleX(0.92); }
+    .funnel.reveal-armed.reveal-in .fn {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: calc(var(--i) * 0.14s);
+    }
+    .funnel.reveal-armed { opacity: 1 !important; transform: none !important; }
 
     /* ---------- ad vs organic ---------- */
 
@@ -1405,106 +1522,185 @@ const objections = [
     .chart-featured { background: rgba(27, 58, 107, 0.05); }
     .chart-countrow .chart-featured { background: rgba(27, 58, 107, 0.1); }
 
-    /* ---------- roi ---------- */
+    /* ---------- roi calculator ---------- */
 
-    .sec-statement { padding-top: 8rem; padding-bottom: 8rem; }
-
-    .statement {
-      font-family: var(--font-impact);
-      font-weight: 400;
-      font-size: clamp(1.75rem, 4.4vw, 3.1rem);
-      line-height: 1.15;
-      letter-spacing: -0.015em;
-      color: var(--primary);
-      margin-bottom: 1rem;
-    }
-
-    .statement-sub {
+    .calc-sub {
       font-family: var(--font-editorial);
       font-style: italic;
-      font-weight: 400;
-      font-size: clamp(1.15rem, 2.2vw, 1.45rem);
-      color: var(--label);
-      margin-bottom: 4rem;
-    }
-
-    .roi-steps {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 2.75rem;
-      margin-bottom: 3rem;
-    }
-
-    .roi-steps li { display: flex; gap: 1.75rem; align-items: flex-start; }
-
-    .roi-num {
-      font-family: var(--font-editorial);
-      font-weight: 800;
       font-size: 1.15rem;
-      color: #ffffff;
-      background: var(--primary);
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
+      color: var(--label);
+      margin: -1rem 0 2.25rem;
+    }
+
+    .calc {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 0;
+      border-radius: 22px;
+      overflow: hidden;
+      background: var(--bg-secondary);
+      border: 1px solid var(--rule);
+      box-shadow: 0 2px 4px rgba(15, 33, 69, 0.04), 0 18px 44px rgba(15, 33, 69, 0.08);
+    }
+
+    .calc-in { padding: 2rem; display: flex; flex-direction: column; gap: 1.6rem; }
+
+    .calc-field { display: flex; flex-direction: column; gap: 0.45rem; border: 0; padding: 0; margin: 0; min-width: 0; }
+
+    .calc-label { font-weight: 700; font-size: 1rem; color: var(--primary); padding: 0; }
+    .calc-label strong { font-family: var(--font-editorial); font-size: 1.2rem; }
+    .calc-hint { font-size: 0.88rem; color: rgba(26, 26, 46, 0.6); margin-top: -0.25rem; }
+
+    .calc-money {
       display: flex;
       align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .roi-steps h3 {
-      font-size: clamp(1.15rem, 2.2vw, 1.5rem);
-      margin-bottom: 0.65rem;
-    }
-
-    .roi-steps p {
-      font-size: clamp(1.02rem, 1.8vw, 1.15rem);
-      line-height: 1.7;
-      color: rgba(26, 26, 46, 0.74);
-    }
-
-    .roi-close {
-      font-family: var(--font-editorial);
-      font-style: italic;
-      font-weight: 400;
-      font-size: clamp(1.1rem, 2.2vw, 1.4rem);
-      line-height: 1.6;
-      color: var(--primary);
-      border-left: 3px solid var(--secondary);
-      padding-left: 1.75rem;
-    }
-
-    /* ---------- questions ---------- */
-
-    .qa-list { border-top: 1px solid var(--rule); }
-
-    .qa {
-      display: grid;
-      grid-template-columns: 64px 1fr;
-      gap: 1.5rem;
-      padding: 2.5rem 0;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .qa-num {
+      gap: 0.35rem;
+      max-width: 220px;
+      padding: 0.2rem 0.9rem;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
       font-family: var(--font-editorial);
       font-weight: 800;
-      font-size: 1.1rem;
-      color: var(--label);
-      padding-top: 0.2rem;
+      font-size: 1.5rem;
+      color: var(--primary);
     }
 
-    .qa h3 {
-      font-size: clamp(1.15rem, 2.3vw, 1.5rem);
-      line-height: 1.25;
-      margin-bottom: 0.9rem;
+    .calc-money input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      font: inherit;
+      color: inherit;
+      padding: 0.35rem 0;
     }
 
-    .qa p {
-      font-size: clamp(1.02rem, 1.8vw, 1.15rem);
-      line-height: 1.7;
-      color: rgba(26, 26, 46, 0.74);
+    .calc-money:focus-within { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(91, 143, 212, 0.2); }
+
+    .calc-plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+
+    .calc-plan input { position: absolute; opacity: 0; pointer-events: none; }
+
+    .calc-plan span {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.1rem;
+      padding: 0.7rem 0.4rem;
+      border: 2px solid var(--rule);
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--primary);
+      cursor: pointer;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .calc-plan small { font-weight: 600; font-size: 0.78rem; color: rgba(26, 26, 46, 0.6); }
+    .calc-plan input:checked + span { border-color: var(--primary); background: var(--mist); }
+    .calc-plan input:focus-visible + span { outline: 2px solid var(--secondary); outline-offset: 2px; }
+
+    .calc-check { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 0.4rem; font-size: 0.95rem; font-weight: 600; color: rgba(26, 26, 46, 0.75); cursor: pointer; }
+    .calc-check input { width: 18px; height: 18px; accent-color: var(--primary); }
+
+    .calc-field input[type="range"] { width: 100%; accent-color: var(--primary); height: 28px; }
+
+    .calc-out {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.5rem;
+      color: #ffffff;
+      background: linear-gradient(160deg, #24508f 0%, var(--primary) 55%, var(--primary-deep) 100%);
+    }
+
+    .calc-kicker { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+
+    .calc-big { display: flex; align-items: baseline; gap: 0.6rem; font-family: var(--font-editorial); font-weight: 800; line-height: 1; }
+    .calc-big span { font-size: clamp(3rem, 7vw, 4.25rem); }
+    .calc-big small { font-family: var(--font-body); font-weight: 600; font-size: 1rem; color: rgba(255, 255, 255, 0.8); }
+
+    .calc-quip { font-family: var(--font-editorial); font-style: italic; font-size: 1.1rem; line-height: 1.45; color: rgba(255, 255, 255, 0.9); min-height: 3em; }
+
+    .calc-result { margin-top: 0.75rem; padding-top: 1rem; border-top: 1px solid rgba(168, 197, 240, 0.3); }
+    .calc-result p { margin: 0; font-size: 0.95rem; color: rgba(255, 255, 255, 0.8); }
+    .calc-result .calc-money-out { font-family: var(--font-editorial); font-weight: 800; font-size: 2rem; color: #ffffff; margin: 0.15rem 0; }
+    .calc-result .calc-money-out.is-down { color: #FFC9C9; }
+    .calc-multiple { font-size: 0.9rem !important; line-height: 1.45; }
+
+    .calc-note { margin-top: 1rem; font-size: 0.88rem; color: rgba(26, 26, 46, 0.6); text-align: center; }
+
+    /* ---------- questions: tabs + accordion ---------- */
+
+    .faq-tabs { display: none; }
+    .faq.is-tabbed .faq-tabs {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.25rem;
+    }
+    .faq.is-tabbed .faq-tabs::-webkit-scrollbar { display: none; }
+    .faq.is-tabbed .faq-group-name { display: none; }
+
+    .faq-tab {
+      flex-shrink: 0;
+      padding: 0.6rem 1.1rem;
+      border: 1.5px solid var(--rule);
+      border-radius: 999px;
+      background: var(--bg-secondary);
+      font: inherit;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    .faq-tab[aria-selected="true"] { background: var(--primary); border-color: var(--primary); color: #ffffff; }
+    .faq-tab:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+
+    .faq-group-name { font-weight: 700; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--label); margin: 1.5rem 0 0.5rem; }
+
+    .faq-item { border-bottom: 1px solid var(--rule); }
+    .faq-item:first-of-type { border-top: 1px solid var(--rule); }
+
+    .faq-item summary {
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.05rem 0.25rem;
+      cursor: pointer;
+      font-family: var(--font-editorial);
+      font-weight: 700;
+      font-size: clamp(1.05rem, 2vw, 1.2rem);
+      color: var(--primary);
+    }
+
+    .faq-item summary::-webkit-details-marker { display: none; }
+
+    .faq-item summary::after {
+      content: "+";
+      display: inline-block;
+      flex-shrink: 0;
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--secondary);
+    }
+
+    .faq-item[open] summary::after { content: "\2212"; }
+
+    .faq-item p {
+      margin: 0;
+      padding: 0 0.25rem 1.2rem;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: rgba(26, 26, 46, 0.75);
     }
 
     /* ---------- footer ---------- */
@@ -1532,8 +1728,7 @@ const objections = [
 
     @media (max-width: 1000px) {
       .plan-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
-      .sp { grid-template-columns: 1fr; gap: 1.25rem; }
-      .sp-join { transform: rotate(90deg); height: 40px; }
+      .calc { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
@@ -1582,14 +1777,13 @@ const objections = [
       .route { padding: 1.75rem 1.5rem 1.5rem; }
       .legend { margin: -1.25rem 0 2rem; gap: 0.6rem 1.25rem; }
       .legend-item { font-size: 0.9rem; }
-      .route-close { grid-template-columns: 1fr; gap: 1.5rem; margin-top: 2rem; padding-top: 2rem; }
 
-      .sp-side { padding: 1.5rem 1.25rem; }
-      .cadence-grid { grid-template-columns: repeat(3, 1fr); }
+      .fn { --w: calc(100% - var(--i) * 7%); padding: 0.85rem 6%; gap: 0.8rem; }
+      .fn-body p { font-size: 0.84rem; }
+      .calc-in, .calc-out { padding: 1.5rem 1.25rem; }
+      .calc-sub { margin: -0.5rem 0 1.5rem; }
 
       .example-grid { grid-template-columns: 1fr; gap: 2.5rem; max-width: 380px; }
-      .qa { grid-template-columns: 1fr; gap: 0.5rem; padding: 2rem 0; }
-      .roi-steps li { gap: 1rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
