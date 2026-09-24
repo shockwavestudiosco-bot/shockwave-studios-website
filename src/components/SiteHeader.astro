@@ -383,6 +383,13 @@ const servicesActive = SERVICE_LINKS.some(l => isActive(l.href));
     .desktop-nav, .header-cta { display: none; }
     .menu-toggle { display: block; }
     .logo-img { height: 150px; }
+    .bar { gap: 1rem; }
+  }
+
+  /* Narrow phones (iPhone SE): shrink the logo so the menu button keeps its
+     full 44px tap target. */
+  @media (max-width: 360px) {
+    .logo-img { height: 132px; }
   }
 
   @media (prefers-reduced-motion: reduce) {

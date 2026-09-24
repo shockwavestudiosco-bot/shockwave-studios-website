@@ -29,21 +29,51 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 const EASE = 'expo.out';
 
+/**
+ * Runs `fn` once `el` reaches 90% of the way down the viewport, or is already
+ * above that line. Measured live on every scroll frame instead of from cached
+ * trigger positions: cached positions went stale when the page height shifted
+ * on phones and left sections permanently invisible, and a fast fling past an
+ * element could skip it. Checking "is it above the line yet?" cannot miss.
+ */
+const pending = new Map<Element, () => void>();
+let ticking = false;
+
+function checkPending() {
+  ticking = false;
+  const line = window.innerHeight * 0.9;
+  for (const [el, fn] of pending) {
+    if (el.getBoundingClientRect().top < line) { pending.delete(el); fn(); }
+  }
+}
+
+const schedule = () => { if (!ticking) { ticking = true; requestAnimationFrame(checkPending); } };
+window.addEventListener('scroll', schedule, { passive: true });
+window.addEventListener('resize', schedule);
+window.addEventListener('load', schedule);
+
 (window as any).__motionReady = true;
 
 if (reduced) {
   root.classList.remove('motion');
 } else {
-  initSmoothScroll();
-  initSplit();
-  initReveal();
-  initStagger();
-  initCount();
-  initParallax();
-  if (finePointer) initMagnetic();
-  root.classList.add('motion-ready');
-  // Fonts can shift layout after first measure; recalc trigger positions.
-  document.fonts?.ready.then(() => ScrollTrigger.refresh());
+  try {
+    initSmoothScroll();
+    initSplit();
+    initReveal();
+    initStagger();
+    initCount();
+    initParallax();
+    if (finePointer) initMagnetic();
+    root.classList.add('motion-ready');
+    // Fonts can shift layout after first measure; recalc trigger positions.
+    document.fonts?.ready.then(() => { ScrollTrigger.refresh(); schedule(); });
+  } catch (err) {
+    // Any setup failure: show the finished page rather than hidden sections.
+    console.error('motion init failed', err);
+    root.classList.remove('motion');
+    gsap.set('[data-reveal], [data-split], [data-split] .split-word, [data-stagger] > *', { clearProps: 'all' });
+  }
 }
 
 function initSmoothScroll() {
@@ -58,11 +88,9 @@ function initSmoothScroll() {
   (window as any).__lenis = lenis;
 }
 
-/** Runs `fn` when `el` scrolls into view. Anything already on screen at load
- *  runs straight away, so nothing near the fold waits for a scroll. */
-function onEnter(el: Element, fn: () => void, start = 'top 88%') {
-  if (el.getBoundingClientRect().top < window.innerHeight) { fn(); return; }
-  ScrollTrigger.create({ trigger: el, start, once: true, onEnter: fn });
+function onEnter(el: Element, fn: () => void) {
+  pending.set(el, fn);
+  schedule();
 }
 
 function initReveal() {
