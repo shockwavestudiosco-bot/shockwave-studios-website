@@ -6,24 +6,30 @@ import FunnelCTA from '../components/FunnelCTA.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import InlineCTA from '../components/InlineCTA.astro';
 
-// The six steps. Kept to a word or two each on purpose (Ashton 2026-09-23):
-// the process is simple and the page should not over-explain it. Facts
-// (half day, two rounds, under five days) match the specs list below.
+// The six steps. Titles and icons only, no copy under them (Ashton
+// 2026-09-23): the process is simple and the page should not explain it.
 // Icons are Lucide-style strokes, 24px grid.
 const steps = [
-  { title: "Discovery Call", note: "What the video is for", icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>' },
-  { title: "Plan Call", note: "See the plan and price", icon: '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>' },
-  { title: "Book the Date", note: "Date locked in", icon: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>' },
-  { title: "Shoot", note: "Half a day on site", icon: '<path d="m16 13 5.2 3.5a.5.5 0 0 0 .8-.4V7.9a.5.5 0 0 0-.8-.4L16 11"/><rect x="2" y="6" width="14" height="12" rx="2"/>' },
-  { title: "Edit", note: "Two rounds of changes", icon: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>' },
-  { title: "Deliver", note: "Usually within 5 days", icon: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>' },
+  { title: "Discovery Call", icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>' },
+  { title: "Confirmation Call", icon: '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>' },
+  { title: "Book the Date", icon: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>' },
+  { title: "Shoot", icon: '<path d="m16 13 5.2 3.5a.5.5 0 0 0 .8-.4V7.9a.5.5 0 0 0-.8-.4L16 11"/><rect x="2" y="6" width="14" height="12" rx="2"/>' },
+  { title: "Edit", icon: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>' },
+  { title: "Deliver", icon: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>' },
 ];
 
+// What every shoot includes, all confirmed by Ashton: lighting, audio, 4K and
+// stabilized shots on every shoot, drone as an upgrade with no price shown
+// (2026-09-23), plus directing, two revision rounds, the turnaround and Drive
+// delivery. Shoot length is Mini / Half / Full day with no hours, by choice.
 const specs = [
-  { value: "Half day", label: "Shoot length", note: "Up to four hours on site as standard. Anything longer gets scoped and priced in the proposal." },
-  { value: "2 rounds", label: "Revisions included", note: "Two rounds of changes after the first cut. Send notes as timestamps and they get handled." },
-  { value: "Under 5 days", label: "Typical turnaround", note: "Most projects are delivered within five business days of the shoot. Bigger builds take longer, and you will know that upfront." },
-  { value: "Google Drive", label: "How you get it", note: "Final files delivered through Drive. Download them and they are yours to keep and reuse." },
+  { value: "Mini, half or full day", label: "Shoot length", note: "As long as the job needs. We pick the right length on the confirmation call." },
+  { value: "Pro setup", label: "On every shoot", note: "Professional lighting, pro audio, 4K cameras and stabilized shots." },
+  { value: "Drone", label: "Available upgrade", note: "Add aerial shots to any shoot." },
+  { value: "Directed", label: "On camera", note: "You don't have to be good on camera. Directing you is part of the job." },
+  { value: "2 rounds", label: "Revisions included", note: "Two rounds of changes after the first cut." },
+  { value: "Under 5 days", label: "Typical turnaround", note: "Most projects are delivered within five business days of the shoot." },
+  { value: "Google Drive", label: "How you get it", note: "Final files are yours to keep and reuse." },
 ];
 
 // Six examples, all already compressed and in the repo so nothing is
@@ -43,28 +49,26 @@ const examples = [
 ---
 <Layout
   title="Video Production in Melbourne, FL | Shockwave Studios"
-  description="High-quality video production in Melbourne, FL. Two quick calls to plan it, half a day to shoot it, and final files usually within five business days."
+  description="High-quality video production in Melbourne, FL. Professional lighting, audio and 4K on every shoot, mini, half or full day shoots, and final files usually within five business days."
 >
   <SiteHeader />
 
   <main>
     <section class="page-hero">
       <div class="page-hero-inner">
-        <p class="hero-eyebrow">Video Production</p>
         <h1>High-Quality Video Production.</h1>
-        <p class="subheadline">Made by people who care how it turns out. One video, no monthly commitment.</p>
+        <p class="subheadline">Made by people who care how it turns out.</p>
       </div>
     </section>
 
     <!-- ===== THE PROCESS =====
-         One short line and six icon steps. Replaces the long "a shoot that
+         Six icon steps, titles only. Replaces the long "a shoot that
          goes wrong..." statement and the six-card timeline, which took
          several screens to scroll on a phone. -->
     <section class="sec sec-white steps" id="process">
       <div class="sec-inner">
         <p class="sec-eyebrow reveal">How it works</p>
         <h2 class="h2-minor reveal">Plan It, Shoot It, Deliver It</h2>
-        <p class="steps-lead reveal">Two quick calls up front so we both know what the video is for. After that, it's just getting it done.</p>
 
         <ol class="step-grid reveal">
           {steps.map((step, i) => (
@@ -74,7 +78,6 @@ const examples = [
               </span>
               <span class="step-num">{String(i + 1).padStart(2, "0")}</span>
               <h3>{step.title}</h3>
-              <p>{step.note}</p>
             </li>
           ))}
         </ol>
@@ -383,15 +386,7 @@ const examples = [
 
     .steps { text-align: center; }
     .steps .sec-eyebrow { margin-bottom: 0.75rem; }
-    .steps h2.h2-minor { margin-bottom: 0.9rem; }
-
-    .steps-lead {
-      max-width: 560px;
-      margin: 0 auto 3rem;
-      font-size: 1.05rem;
-      line-height: 1.6;
-      color: rgba(26, 26, 46, 0.7);
-    }
+    .steps h2.h2-minor { margin-bottom: 3rem; }
 
     .step-grid {
       list-style: none;
@@ -448,12 +443,6 @@ const examples = [
       font-size: 1.1rem;
       line-height: 1.2;
       color: var(--primary);
-    }
-
-    .step p {
-      font-size: 0.9rem;
-      line-height: 1.4;
-      color: rgba(26, 26, 46, 0.62);
     }
 
     /* ---------- specs, as a list not a card grid ---------- */
@@ -627,8 +616,6 @@ const examples = [
       .step-grid::before { display: none; }
       .step-icon { width: 50px; height: 50px; }
       .step h3 { font-size: 0.98rem; }
-      .step p { font-size: 0.8rem; }
-      .steps-lead { margin-bottom: 2.25rem; font-size: 1rem; }
 
       .spec-row { grid-template-columns: 1fr; gap: 0.75rem; padding: 1.5rem 0; }
 
