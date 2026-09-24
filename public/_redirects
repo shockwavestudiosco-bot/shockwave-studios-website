@@ -7,4 +7,4 @@
 # retainer as the monthly offer. The URL is kept and 301'd rather than deleted
 # because it has existing search ranking and inbound links, which a 301 passes
 # to the new page and a 404 would throw away.
-/services  /video-marketing  301
+/services  /video-marketing/  301

@@ -18,8 +18,10 @@ export interface Props {
 }
 
 const { overlay = false } = Astro.props;
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const isActive = (href: string) => path === href;
+// Compare without the trailing slash: links are '/about/', the page URL may not be.
+const norm = (p: string) => p.replace(/\/$/, '') || '/';
+const path = norm(Astro.url.pathname);
+const isActive = (href: string) => path === norm(href);
 const servicesActive = SERVICE_LINKS.some(l => isActive(l.href));
 ---
 <header class:list={['site-header', { 'is-overlay': overlay }]} data-site-header>
@@ -32,7 +34,7 @@ const servicesActive = SERVICE_LINKS.some(l => isActive(l.href));
     <nav class="desktop-nav" aria-label="Main">
       <ul>
         <li class="has-dropdown">
-          <a href="/video-marketing" class:list={{ active: servicesActive }} aria-haspopup="true">
+          <a href="/video-marketing/" class:list={{ active: servicesActive }} aria-haspopup="true">
             Services
             <svg class="caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </a>
