@@ -2,17 +2,17 @@
 const { text = "Ready to grow? Let's talk." } = Astro.props;
 const calendlyUrl = "https://calendly.com/shockwavestudios-co/30min";
 ---
-<section class="bottom-cta-section">
-  <div class="bottom-cta-inner">
+<section class="bottom-cta-section navy-texture" data-hide-sticky>
+  <div class="bottom-cta-inner" data-reveal>
     <p class="bottom-cta-text">{text}</p>
-    <a href={calendlyUrl} target="_blank" rel="noopener noreferrer" class="bottom-cta-btn">Book a Free Call</a>
+    <a href={calendlyUrl} target="_blank" rel="noopener noreferrer" class="bottom-cta-btn sheen" data-magnetic data-book="book_call_bottom">Book a Free Call</a>
   </div>
 </section>
 
 <style>
   .bottom-cta-section {
     background: #1B3A6B;
-    padding: 4rem 5%;
+    padding: clamp(5rem, 10vw, 8rem) 5%;
     text-align: center;
   }
 
@@ -48,7 +48,6 @@ const calendlyUrl = "https://calendly.com/shockwavestudios-co/30min";
   }
 
   .bottom-cta-btn:hover {
-    transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(168, 197, 240, 0.35);
   }
 </style>

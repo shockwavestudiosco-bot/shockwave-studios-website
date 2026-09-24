@@ -1,93 +1,56 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import FunnelCTA from '../components/FunnelCTA.astro';
-import InstagramLink from '../components/InstagramLink.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import InlineCTA from '../components/InlineCTA.astro';
+import { CALENDLY_URL } from '../lib/site';
 
-// Monthly plans. Prices confirmed by Ashton 2026-09-21: 800/1400/2000.
-// Flat fee only. Rev share was considered and dropped on 2026-09-21, see
-// the decision note in the brain. Do not reintroduce it without asking.
+// Monthly plans. Restructured by Ashton 2026-09-23: everything is priced on
+// volume of content. Prices are "starting at". Supersedes the 2026-09-21
+// ladder (800/1400/2000, ads + organic counts, platforms, filming sessions,
+// strategy calls), which is gone rather than carried over. Flat fee only; rev
+// share was dropped on 2026-09-21 and stays out unless Ashton asks.
 //
-// The cards lead with the deliverable counts and carry the price underneath.
-// At position two on the page a bare price table makes a cold visitor judge
-// the number before they know what it buys; this order sells the volume first
-// and lets the price land as support.
+// Ads management is an add-on on every tier: +300 on Basic, +200 on
+// Standard and Premium (Premium moved from 100 to 200 on 2026-09-23). Ad
+// spend itself is billed to the client's own Meta Ads Manager (confirmed
+// 2026-09-20). Profile revamp is on every card, per Ashton 2026-09-23.
 //
-// How this ladder relates to Ashton's retainer ladder in the brain
-// (2026-07-07_service-packages-and-pricing), which ran platforms 1/2/4,
-// automation flows none/2/4, filming 1/2/3, custom requests 1/2/4 and strategy
-// calls 1/1/2, with profile optimization on every tier:
+// Every plan includes full strategy, scripts, and scheduling and posting.
+// Standard and Premium add comment-to-DM automation and custom videos.
 //
-//   filming 1/2/3 and flows none/2/4  match the retainer exactly
-//   platforms 2/2/3                   Basic gains one, Premium loses one
-//   custom requests none/1/2          pulled back a step
-//   strategy calls 1/2/2              Standard and Premium gain one
-//
-// Basic and Standard share a platform count on purpose. The ladder is fixed,
-// not a client pick: Facebook and Instagram first, then TikTok or YouTube on
-// Premium. The first two are the Meta pair that paid ads run across anyway, so
-// splitting them across tiers would be artificial. Confirmed 2026-09-21.
+// The cards lead with the video count and carry the price underneath. At
+// position two on the page a bare price makes a cold visitor judge the number
+// before they know what it buys; this order sells the volume first.
 const plans = [
-  {
-    name: "Basic",
-    price: "$800",
-    ads: 4,
-    organic: 3,
-    platforms: "2",
-    flows: null,
-    filming: "1",
-    featured: false,
-  },
-  {
-    name: "Standard",
-    price: "$1,400",
-    ads: 8,
-    organic: 6,
-    platforms: "2",
-    flows: "2",
-    filming: "2",
-    featured: true,
-  },
-  {
-    name: "Premium",
-    price: "$2,000",
-    ads: 10,
-    organic: 10,
-    platforms: "3",
-    flows: "4",
-    filming: "3",
-    featured: false,
-  },
+  { name: "Basic",    price: "$650",   videos: 8,  dm: false, custom: null, adsAddon: "$300", featured: false },
+  { name: "Standard", price: "$1,200", videos: 14, dm: true,  custom: 1,    adsAddon: "$200", featured: true },
+  { name: "Premium",  price: "$1,750", videos: 20, dm: true,  custom: 2,    adsAddon: "$200", featured: false },
 ];
 
 // The deliverables chart.
 //
-// `count` rows carry a number and are where the tiers actually differ. `null`
-// means not included on that tier. Everything else is yes across the board,
-// which is true and worth showing rather than inventing fake tier gates.
-//
-// The first group is what changes between tiers, the second is what every
-// client gets regardless. Ordering them that way means a prospect scanning
-// the chart sees the decision they have to make before the boilerplate.
+// `count` rows are where the tiers differ: a string shows as-is, `true` is a
+// tick, `null` is "Not included". Everything else is yes across the board.
+// Tier differences come first so a prospect sees the decision before the
+// boilerplate.
 const included = [
   { group: "What changes between plans" },
-  { row: "Paid ads, finished and ready to run", basic: "4", standard: "8", premium: "10", count: true },
-  { row: "Organic videos", basic: "3", standard: "6", premium: "10", count: true },
-  { row: "Platforms posted to", basic: "2", standard: "2", premium: "3", count: true },
-  { row: "Filming sessions per month", basic: "1", standard: "2", premium: "3", count: true },
-  { row: "DM automation flows", basic: null, standard: "2", premium: "4", count: true },
-  { row: "Custom video requests per month", basic: null, standard: "1", premium: "2", count: true },
-  { row: "Strategy calls per month", basic: "1", standard: "2", premium: "2", count: true },
+  { row: "Finished videos per month", basic: "8", standard: "14", premium: "20", count: true },
+  { row: "Comment-to-DM automation", basic: null, standard: true, premium: true, count: true },
+  { row: "Custom videos per month", basic: null, standard: "1", premium: "2", count: true },
+  { row: "Ads management (optional add-on)", basic: "+$300/mo", standard: "+$200/mo", premium: "+$200/mo", count: true },
 
   { group: "In every plan" },
+  { row: "Full content strategy", basic: true, standard: true, premium: true },
   { row: "Full profile revamp at onboarding", basic: true, standard: true, premium: true },
   { row: "Competitor audit of your niche", basic: true, standard: true, premium: true },
   { row: "Audit of your own account", basic: true, standard: true, premium: true },
   { row: "Content pillars built from both audits", basic: true, standard: true, premium: true },
-  { row: "Scripting, every video", basic: true, standard: true, premium: true },
+  { row: "Scripts for every video", basic: true, standard: true, premium: true },
   { row: "Editing", basic: true, standard: true, premium: true },
-  { row: "Ad copy and angle for each ad", basic: true, standard: true, premium: true },
   { row: "Scheduling and posting", basic: true, standard: true, premium: true },
   { row: "Raw files, yours to keep", basic: true, standard: true, premium: true },
 ];
@@ -107,7 +70,7 @@ const objections = [
   },
   {
     q: "What do I actually get each month?",
-    a: "Finished videos, ready to run. The ads come with the copy and the angle they are built for, the organic posts come scheduled. You get the files too, they are yours.",
+    a: "Finished videos, scripted, edited, scheduled and posted for you. Add ads management and the ads go out with the copy and the angle they are built for. You get the files too, they are yours.",
   },
 ];
 ---
@@ -115,28 +78,7 @@ const objections = [
   title="Video Marketing in Melbourne, FL | Shockwave Studios"
   description="How Shockwave Studios runs video marketing: paid ads that sell, organic content that makes you credible, and a content strategy built from real competitor data."
 >
-  <header class="site-header">
-    <a href="/" class="logo-link" aria-label="Shockwave Studios home">
-      <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
-    </a>
-    <nav class="nav">
-      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-links">
-        <li class="has-dropdown">
-          <a href="/video-marketing">Services</a>
-          <ul class="dropdown">
-            <li><a href="/video-marketing">Video Marketing</a></li>
-            <li><a href="/video-production">Video Production</a></li>
-          </ul>
-        </li>
-        <li><a href="/portfolio">Portfolio</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <SiteHeader />
 
   <main>
     <section class="page-hero">
@@ -155,7 +97,7 @@ const objections = [
       <div class="sec-inner">
         <p class="sec-eyebrow reveal">The offer</p>
         <h2 class="reveal">Finished Videos, Every Month</h2>
-        <p class="sec-lead reveal">Ads that sell and organic that makes them believable. The strategy behind all three is identical. What changes is the volume, how many platforms you run on, and how much automation is catching leads while you sleep.</p>
+        <p class="sec-lead reveal">Every plan gets the full strategy, a script for every video, and scheduling and posting handled. What changes is how many finished videos you get each month, plus automation and custom videos on the bigger plans.</p>
 
         <div class="plan-grid reveal">
           {plans.map(plan => (
@@ -164,31 +106,42 @@ const objections = [
               <p class="plan-name">{plan.name}</p>
 
               <p class="plan-headline">
-                <span class="ph-pair"><strong>{plan.ads}</strong> <span>ads</span></span>
-                <em>+</em>
-                <span class="ph-pair"><strong>{plan.organic}</strong> <span>organic</span></span>
+                <span class="ph-pair"><strong>{plan.videos}</strong> <span>videos</span></span>
               </p>
-              <p class="plan-sub">finished and ready to run, every month</p>
+              <p class="plan-sub">finished and posted, every month</p>
 
+              <p class="plan-from">Starting at</p>
               <p class="plan-price">{plan.price}<span>/mo</span></p>
 
-              <!-- The same four rows on every card, so the tiers compare at a
+              <!-- The same rows on every card, so the tiers compare at a
                    glance without anyone having to scroll to the chart. -->
               <dl class="plan-spec">
-                <div><dt>Platforms</dt><dd>{plan.platforms}</dd></div>
-                <div><dt>Filming sessions</dt><dd>{plan.filming}<span> / mo</span></dd></div>
-                <div><dt>DM automation flows</dt><dd>{plan.flows ? plan.flows : <em class="spec-none">Not included</em>}</dd></div>
+                <div><dt>Strategy, scripts, posting</dt><dd><span class="spec-yes" aria-label="Included">&#10003;</span></dd></div>
                 <div><dt>Profile revamp</dt><dd><span class="spec-yes" aria-label="Included">&#10003;</span></dd></div>
+                <div><dt>Comment-to-DM automation</dt><dd>{plan.dm ? <span class="spec-yes" aria-label="Included">&#10003;</span> : <em class="spec-none">Not included</em>}</dd></div>
+                <div><dt>Custom videos</dt><dd>{plan.custom ? <>{plan.custom}<span> / mo</span></> : <em class="spec-none">Not included</em>}</dd></div>
+                <div><dt>Ads management</dt><dd>+{plan.adsAddon}<span> / mo</span></dd></div>
               </dl>
             </div>
           ))}
+
+          <!-- Custom: for volume or a mix the three plans do not cover. -->
+          <div class="plan-card plan-custom">
+            <div>
+              <p class="plan-name">Custom</p>
+              <p class="plan-headline plan-headline-custom">Built around you</p>
+            </div>
+            <p class="plan-sub">More than 20 videos, a different mix, or something specific in mind? Tell me what you need and I will put a plan together around it.</p>
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" class="plan-custom-btn" data-book="book_call_video_marketing_custom">Let's Talk</a>
+          </div>
         </div>
 
         <!-- Confirmed by Ashton 2026-09-20: ad spend is billed separately,
-             straight to the client's own Meta Ads Manager. -->
+             straight to the client's own Meta Ads Manager. Management fee
+             per tier set 2026-09-23. -->
         <div class="plan-note reveal">
-          <p class="plan-note-title">Ad spend is separate</p>
-          <p>The prices above are what you pay me. Your ad budget is billed straight to your own Meta Ads Manager, so you set it, you can see every dollar of it, and the ad account stays yours.</p>
+          <p class="plan-note-title">Ads management is an add-on</p>
+          <p>Want me running paid ads with your videos? That is +$300/mo on Basic and +$200/mo on Standard or Premium. Your ad budget itself is billed straight to your own Meta Ads Manager, so you set it, you can see every dollar of it, and the ad account stays yours.</p>
         </div>
 
         <p class="plan-alt reveal">Need a single video instead of a monthly plan? That is <a href="/video-production">video production</a>.</p>
@@ -398,7 +351,7 @@ const objections = [
                 {plans.map(p => (
                   <th scope="col" class={p.featured ? "chart-featured" : ""}>
                     <span class="chart-tier">{p.name}</span>
-                    <span class="chart-price">{p.price}</span>
+                    <span class="chart-price"><small>from</small> {p.price}</span>
                   </th>
                 ))}
               </tr>
@@ -414,17 +367,17 @@ const objections = [
                     <th scope="row" class="chart-rowhead">{item.row}</th>
                     <td>
                       {item.count
-                        ? (item.basic ? <span class="chart-num">{item.basic}</span> : <span class="chart-no">Not included</span>)
+                        ? (item.basic === true ? <span class="chart-yes" aria-label="Included">&#10003;</span> : item.basic ? <span class="chart-num">{item.basic}</span> : <span class="chart-no">Not included</span>)
                         : <span class="chart-yes" aria-label="Included">&#10003;</span>}
                     </td>
                     <td class="chart-featured">
                       {item.count
-                        ? (item.standard ? <span class="chart-num">{item.standard}</span> : <span class="chart-no">Not included</span>)
+                        ? (item.standard === true ? <span class="chart-yes" aria-label="Included">&#10003;</span> : item.standard ? <span class="chart-num">{item.standard}</span> : <span class="chart-no">Not included</span>)
                         : <span class="chart-yes" aria-label="Included">&#10003;</span>}
                     </td>
                     <td>
                       {item.count
-                        ? (item.premium ? <span class="chart-num">{item.premium}</span> : <span class="chart-no">Not included</span>)
+                        ? (item.premium === true ? <span class="chart-yes" aria-label="Included">&#10003;</span> : item.premium ? <span class="chart-num">{item.premium}</span> : <span class="chart-no">Not included</span>)
                         : <span class="chart-yes" aria-label="Included">&#10003;</span>}
                     </td>
                   </tr>
@@ -504,22 +457,7 @@ const objections = [
     />
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <a href="/" class="logo-link" aria-label="Shockwave Studios home">
-        <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="footer-logo-img" />
-      </a>
-      <ul class="nav-links footer-links">
-        <li><a href="/video-marketing">Video Marketing</a></li>
-        <li><a href="/video-production">Video Production</a></li>
-        <li><a href="/portfolio">Portfolio</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
-      </ul>
-      <InstagramLink />
-    </div>
-    <p class="copyright">&copy; {new Date().getFullYear()} Shockwave Studios. Melbourne, Florida.</p>
-  </footer>
+  <SiteFooter />
 
   <ScrollReveal />
 
@@ -830,8 +768,8 @@ const objections = [
       line-height: 1;
     }
 
-    /* keeps "4 ads" and "2 organic" welded, so a narrow card wraps between
-       the pairs rather than orphaning the word from its number */
+    /* keeps the number welded to its word, so a narrow card never orphans
+       "videos" onto its own line */
     .ph-pair {
       display: inline-flex;
       align-items: baseline;
@@ -897,6 +835,67 @@ const objections = [
 
     .plan-featured .plan-price { color: #ffffff; }
     .plan-featured .plan-price span { color: rgba(255, 255, 255, 0.62); }
+
+    .plan-from {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--label);
+      margin-bottom: -0.15rem;
+    }
+
+    .plan-featured .plan-from { color: var(--accent); }
+
+    /* Custom: a full-width band under the three plans, so it reads as the
+       "none of these fit" option rather than a fourth tier to compare. */
+    .plan-custom {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 0.5rem 2rem;
+      border-style: dashed;
+      border-color: var(--secondary);
+      background: var(--bg);
+    }
+
+    .plan-custom .plan-headline-custom {
+      font-weight: 800;
+      font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+      letter-spacing: -0.01em;
+    }
+
+    .plan-custom .plan-sub {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      max-width: 52ch;
+    }
+
+    .plan-custom-btn {
+      justify-self: end;
+      display: inline-block;
+      padding: 0.9rem 2rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 1rem;
+      white-space: nowrap;
+      color: #ffffff;
+      background: var(--primary);
+      text-decoration: none;
+      transition: transform 0.3s var(--ease-out), box-shadow 0.3s ease;
+    }
+
+    .plan-custom-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(27, 58, 107, 0.25);
+    }
+
+    @media (max-width: 900px) {
+      .plan-custom { grid-template-columns: 1fr; text-align: left; }
+      .plan-custom-btn { justify-self: start; margin-top: 0.75rem; }
+    }
 
     /* the four rows that let the cards be compared without the chart */
     .plan-spec {
@@ -1340,6 +1339,15 @@ const objections = [
       font-size: clamp(1.25rem, 2.4vw, 1.6rem);
       letter-spacing: -0.02em;
       color: var(--primary);
+    }
+
+    .chart-price small {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.7;
     }
 
     .chart tbody th.chart-rowhead {

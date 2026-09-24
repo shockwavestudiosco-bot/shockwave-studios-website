@@ -1,25 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import BottomCTA from '../components/BottomCTA.astro';
-import ResearchedCall from '../components/ResearchedCall.astro';
-import InstagramLink from '../components/InstagramLink.astro';
 import FullscreenVideo from '../components/FullscreenVideo.astro';
-const navLinks = [
-  { href: "/video-marketing", label: "Video Marketing" },
-  { href: "/video-production", label: "Video Production" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
+import MobileStickyCTA from '../components/MobileStickyCTA.astro';
+import { CALENDLY_URL } from '../lib/site';
 
 // Homepage "Our Work" videos. To swap one out: drop the new file in
 // public/videos/ (keep it under 20MB for Cloudflare Pages) and change the
 // src and label here. Order on the page follows this list.
 const workVideos = [
-  { slug: "missy-promo",       label: "Service Showcase",   orientation: "portrait" },
-  { slug: "driftline-roofing", label: "Talking Head",       orientation: "landscape" },
-  { slug: "fca-beach",         label: "Event Recap",        orientation: "landscape" },
-  { slug: "marlo",             label: "Vlog",               orientation: "landscape" },
+  { slug: "missy-promo",       label: "Service Showcase",    orientation: "portrait" },
+  { slug: "driftline-roofing", label: "Talking Head",        orientation: "landscape" },
+  { slug: "real-estate",       label: "Real Estate Listing", orientation: "portrait" },
+  { slug: "fca-beach",         label: "Event Recap",         orientation: "landscape" },
+  { slug: "93-f250",           label: "Vehicle Feature",     orientation: "portrait" },
+  { slug: "concrete-day",      label: "On the Job",          orientation: "portrait" },
+  { slug: "marlo",             label: "Vlog",                orientation: "landscape" },
+  { slug: "pwo",               label: "Event Highlight",     orientation: "portrait" },
   { slug: "hurricane-pools",   label: "Service Walkthrough", orientation: "portrait" },
 ];
 
@@ -50,54 +49,70 @@ const reviews = [
     quote: "I hired Shockwave to help with some social clipper-type content. They are fast, professional, and creative. Highly recommend.",
   },
 ];
+
+const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
 ---
 <Layout
   title="Shockwave Studios | Social Media Marketing in Melbourne, FL"
   description="Shockwave Studios is a social media marketing agency in Melbourne, Florida offering content, video production, and automation services."
 >
-  <header class="site-header">
-    <a href="/" class="logo-link" aria-label="Shockwave Studios home">
-      <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
-    </a>
-    <nav class="nav">
-      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-links">
-        <li class="has-dropdown">
-          <a href="/video-marketing">Services</a>
-          <ul class="dropdown">
-            <li><a href="/video-marketing">Video Marketing</a></li>
-            <li><a href="/video-production">Video Production</a></li>
-          </ul>
-        </li>
-        <li><a href="/portfolio">Portfolio</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <SiteHeader overlay />
 
   <main>
-    <section class="hero">
-      <div class="hero-inner">
-        <div class="hero-glow"></div>
-        <p class="eyebrow">Melbourne, Florida</p>
-        <h1>Make Social Media Your <span class="highlight">#1 Source of Leads</span>.</h1>
-        <p class="subheadline">We handle the content, strategy, and automation so your social media works for you around the clock.</p>
-        <a href="https://calendly.com/shockwavestudios-co/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book a Free Call</a>
+    <!-- Showreel hero. Two cuts from the portfolio clips in public/videos:
+         a 16:9 one for wide screens and a 9:16 one for phones held upright.
+         Each is about 2.7MB, muted, and paused whenever it is off screen.
+         No background-image fallback: browsers download every layer. -->
+    <section class="hero navy-texture">
+      <div class="hero-media" data-parallax="0.18">
+        <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="/videos/showreel-landscape.jpg" aria-hidden="true" tabindex="-1" data-hero-video>
+          <source src="/videos/showreel-portrait.mp4" type="video/mp4" media="(max-width: 768px) and (orientation: portrait)" />
+          <source src="/videos/showreel-landscape.mp4" type="video/mp4" />
+        </video>
       </div>
+      <div class="hero-scrim" aria-hidden="true"></div>
+
+      <div class="hero-inner">
+        <p class="eyebrow" data-reveal>Melbourne, Florida</p>
+        <h1 data-split>Make Social Media Your <span class="highlight">#1 Source of Leads</span>.</h1>
+        <p class="subheadline" data-reveal data-reveal-delay="0.35">We handle the content, strategy, and automation so your social media works for you around the clock.</p>
+
+        <div class="hero-actions" data-reveal data-reveal-delay="0.5" data-sticky-after>
+          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" class="btn btn-hero sheen" data-magnetic data-book="book_call_home_hero">
+            Book a Free Call
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <p class="hero-note">Free 20-minute call. No commitment.</p>
+        </div>
+
+        <!-- Proof at the point of decision. Verbatim from Charlie Murray's
+             review below. No star count or review total on purpose: the
+             "5.0 stars from 4 reviews" line was removed on 2026-09-03. -->
+        <figure class="hero-proof" data-reveal data-reveal-delay="0.7">
+          <div class="hero-avatars" aria-hidden="true">
+            {reviews.map(r => <span>{initials(r.name)}</span>)}
+          </div>
+          <div>
+            <blockquote>"The quality exceeded our expectations."</blockquote>
+            <figcaption>Charlie Murray, Driftline Roofing</figcaption>
+          </div>
+        </figure>
+      </div>
+
+      <a href="#fork" class="scroll-cue" aria-label="Scroll to the next section">
+        <span></span>
+      </a>
     </section>
 
     <!-- The two-path fork. Sits directly under the hero on purpose: someone
          landing cold should know which door is theirs before they scroll. -->
     <section class="fork-section" id="fork">
       <div class="fork-inner">
-        <p class="fork-question">Are you here for video marketing, or video production?</p>
-        <p class="fork-sub">Two different doors. Pick the one that sounds like you.</p>
+        <p class="fork-question" data-split>Are you here for video marketing, or video production?</p>
+        <p class="fork-sub" data-reveal data-reveal-delay="0.3">Two different doors. Pick the one that sounds like you.</p>
 
-        <div class="fork-grid">
-          <a href="/video-marketing" class="fork-card">
+        <div class="fork-grid" data-stagger>
+          <a href="/video-marketing" class="fork-card" data-track="fork_click" data-track-label="video_marketing">
             <p class="fork-tag">Monthly</p>
             <h3>Video Marketing</h3>
             <p class="fork-desc">Paid ads that sell, plus organic content that makes people believe you. Built to bring you customers every month, not just views.</p>
@@ -112,7 +127,7 @@ const reviews = [
             </span>
           </a>
 
-          <a href="/video-production" class="fork-card">
+          <a href="/video-production" class="fork-card" data-track="fork_click" data-track-label="video_production">
             <p class="fork-tag">One-off</p>
             <h3>Video Production</h3>
             <p class="fork-desc">You need a video made. Listings, events, brand films, promos. Planned properly first, then shot, edited, and delivered.</p>
@@ -132,13 +147,15 @@ const reviews = [
       </div>
     </section>
 
-    <section class="our-work-section">
-      <h2>Our Work</h2>
-      <div class="our-work-grid">
+    <section class="our-work-section" id="work">
+      <h2 data-reveal>Our Work</h2>
+      <div class="our-work-grid" data-stagger>
         {workVideos.map(v => (
           <div class="work-item">
             <button type="button" class={`work-video-btn fs-video ${v.orientation}`} aria-label={`Play ${v.label} full screen`}>
-              <video autoplay muted loop playsinline data-loop="true" poster={`/videos/portfolio/${v.slug}.jpg`}>
+              <!-- No autoplay: the page script plays each clip only while it
+                   is on screen, so nothing downloads until it is needed. -->
+              <video muted loop playsinline preload="none" data-loop="true" data-lazy-play poster={`/videos/portfolio/${v.slug}.jpg`}>
                 <source src={`/videos/portfolio/${v.slug}.mp4`} type="video/mp4" />
               </video>
               <span class="work-expand" aria-hidden="true">
@@ -149,78 +166,37 @@ const reviews = [
           </div>
         ))}
       </div>
+      <a href="/portfolio" class="btn btn-outline-primary work-more" data-reveal>See the Full Portfolio</a>
     </section>
 
+    <!-- Reviews run as a slow marquee on desktop (pauses on hover or focus)
+         and a swipeable row on phones. The list is rendered twice for a
+         seamless loop; the second copy is hidden from assistive tech. -->
     <section class="results-section">
-      <h2>What Clients Say</h2>
-      <div class="review-grid">
-        {reviews.map(r => (
-          <figure class="review-card">
-            <p class="review-stars" aria-label="Rated 5 out of 5 stars">★★★★★</p>
-            <blockquote class="review-quote">{r.quote}</blockquote>
-            <figcaption class="review-author">
-              <span class="review-name">{r.name}</span>
-              <span class="review-org">{r.org}</span>
-            </figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
-
-    <section class="services-section journey-section" id="what-we-do">
-      <h2>What We Do</h2>
-      <div class="journey-intro">
-        <p class="journey-intro-lead">We handle everything social media for your business so you can sit back and focus on providing a great service while we generate you leads.</p>
-        <p class="journey-intro-kicker">Here's exactly what we do</p>
-      </div>
-
-      <div class="journey-map">
-        <div class="journey-world">
-          <svg class="journey-svg" viewBox="0 0 1000 380" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path class="route-bg" d="M 50 300 C 200 60, 300 60, 420 180 S 620 340, 750 220 S 900 60, 950 80" />
-            <path class="route-trail" d="M 50 300 C 200 60, 300 60, 420 180 S 620 340, 750 220 S 900 60, 950 80" />
-            <path class="route-progress" d="M 50 300 C 200 60, 300 60, 420 180 S 620 340, 750 220 S 900 60, 950 80" />
-          </svg>
-          <div class="journey-pin" data-stop="0"><span class="pin-dot">1</span><span class="pin-label">Audit</span></div>
-          <div class="journey-pin" data-stop="1"><span class="pin-dot">2</span><span class="pin-label">Strategy</span></div>
-          <div class="journey-pin" data-stop="2"><span class="pin-dot">3</span><span class="pin-label">Create</span></div>
-          <div class="journey-pin" data-stop="3"><span class="pin-dot">4</span><span class="pin-label">Automate</span></div>
-          <div class="journey-flag">
-            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
-            <span class="flag-label">#1 Lead Source</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="journey-panels">
-        <div class="journey-panel" data-stop="0">
-          <p class="journey-step">Stop 1 of 4</p>
-          <h3>Audit & Optimize Your Page</h3>
-          <p>First stop: we tear down your page and rebuild it for lead generation. Bio, highlights, link, profile photo, every inch of your profile gets optimized so visitors turn into followers and followers turn into customers.</p>
-        </div>
-        <div class="journey-panel" data-stop="1">
-          <p class="journey-step">Stop 2 of 4</p>
-          <h3>Build Your Strategy</h3>
-          <p>Next, we build your content strategy around your plan. Who you're talking to, what they care about, and what makes them stop scrolling, all turned into a repeatable system so your page always has a direction, not just random posts.</p>
-        </div>
-        <div class="journey-panel" data-stop="2">
-          <p class="journey-step">Stop 3 of 4</p>
-          <h3>Script, Shoot & Edit</h3>
-          <p>Then we batch-script the entire month's content, show up with the camera and film it, and edit every video to perform on social, not just to look pretty.</p>
-        </div>
-        <div class="journey-panel" data-stop="3">
-          <p class="journey-step">Stop 4 of 4</p>
-          <h3>Schedule & Automate</h3>
-          <p>Final stop: everything gets scheduled so your page stays consistent without you lifting a finger, and automated DM flows turn comments into leads 24/7, even while you sleep.</p>
-          <p class="journey-destination">Destination reached: social media is now your #1 source of leads.</p>
+      <h2 data-reveal>What Clients Say</h2>
+      <div class="review-marquee" data-reveal>
+        <div class="review-track">
+          {[...reviews, ...reviews].map((r, i) => (
+            <figure class="review-card" aria-hidden={i >= reviews.length ? 'true' : undefined}>
+              <p class="review-stars" aria-label="Rated 5 out of 5 stars">★★★★★</p>
+              <blockquote class="review-quote">{r.quote}</blockquote>
+              <figcaption class="review-author">
+                <span class="review-avatar" aria-hidden="true">{initials(r.name)}</span>
+                <span>
+                  <span class="review-name">{r.name}</span>
+                  <span class="review-org">{r.org}</span>
+                </span>
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </div>
     </section>
 
     <section class="video-packages-section">
       <div class="video-packages-inner">
-        <h2>Just Need One Video?</h2>
-        <div class="video-packages-grid">
+        <h2 data-reveal>Just Need One Video?</h2>
+        <div class="video-packages-grid" data-stagger>
           <div class="video-pkg-card">
             <h3>Real Estate Listing</h3>
             <p>A polished walkthrough of your property, filmed and edited to post the same week.</p>
@@ -241,25 +217,12 @@ const reviews = [
       </div>
     </section>
 
-    <ResearchedCall />
-
     <BottomCTA text="Your next client is already scrolling. Let's make sure they stop on you." />
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <a href="/" class="logo-link" aria-label="Shockwave Studios home">
-        <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="footer-logo-img" />
-      </a>
-      <ul class="nav-links footer-links">
-        {navLinks.map(link => (
-          <li><a href={link.href}>{link.label}</a></li>
-        ))}
-      </ul>
-      <InstagramLink />
-    </div>
-    <p class="copyright">&copy; {new Date().getFullYear()} Shockwave Studios. Melbourne, Florida.</p>
-  </footer>
+  <MobileStickyCTA />
+
+  <SiteFooter />
 
   <style>
     :root {
@@ -278,7 +241,6 @@ const reviews = [
       color: var(--text);
       font-family: var(--font-body);
       font-weight: 600;
-      scroll-behavior: smooth;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -287,14 +249,14 @@ const reviews = [
       font-family: var(--font-impact);
       font-weight: 400;
       letter-spacing: -0.015em;
-      color: #6B9FD4;
+      color: var(--c-heading);
     }
 
     h2, h3 {
       font-family: var(--font-editorial);
       font-weight: 700;
       letter-spacing: -0.005em;
-      color: #6B9FD4;
+      color: var(--c-heading);
     }
 
     .eyebrow, .subheadline, .badge, .case-type, .comparison-group-label, th {
@@ -303,192 +265,218 @@ const reviews = [
 
     img, video { max-width: 100%; display: block; }
 
-    .site-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5%;
-      height: 88px;
-      background: var(--bg);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      border-bottom: 1px solid rgba(168, 197, 240, 0.1);
-    }
-
-    .logo {
-      font-size: 1.4rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-
-    .logo-link {
-      display: flex;
-      align-items: center;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    .logo-img {
-      height: 192px;
-      width: auto;
-      display: block;
-    }
-
-    .footer-logo-img {
-      height: 160px;
-      width: auto;
-      display: block;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: color 0.2s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--accent);
-    }
-
-    .has-dropdown { position: relative; }
-
-    .dropdown {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: var(--bg-secondary);
-      border: 1px solid rgba(168, 197, 240, 0.15);
-      border-radius: 10px;
-      min-width: 220px;
-      box-shadow: 0 8px 24px rgba(27, 58, 107, 0.12);
-      padding: 0.5rem 0;
-      list-style: none;
-      flex-direction: column;
-      z-index: 200;
-    }
-
-    .has-dropdown:hover .dropdown { display: flex; }
-
-    .dropdown li a {
-      display: block;
-      padding: 0.75rem 1.25rem;
-      font-size: 0.9rem;
-      color: var(--text);
-    }
-
-    .dropdown li a:hover {
-      background: rgba(168, 197, 240, 0.08);
-      color: var(--accent);
-    }
-
-    .nav-toggle {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-    }
-
-    .nav-toggle span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--text);
-    }
-
     .btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
       padding: 0.9rem 2rem;
       border-radius: 999px;
       font-weight: 700;
       font-size: 1rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.3s var(--ease-out), box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
     }
 
-    .btn-primary {
-      background: var(--primary);
+    /* ---------- showreel hero ---------- */
+
+    .hero {
+      min-height: min(100svh, 980px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--c-ink-navy);
       color: #FFFFFF;
     }
 
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(168, 197, 240, 0.25);
+    .hero-media {
+      position: absolute;
+      inset: -8% 0 0;
+      z-index: -3;
     }
 
-    .hero {
-      position: relative;
-      background-image: url('/hero-bg.jpg');
-      background-size: cover;
-      background-position: right 50%;
-      background-repeat: no-repeat;
+    .hero-video {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      object-fit: cover;
     }
 
-    .hero::after {
-      content: '';
+    /* Legibility first: dark at the top for the nav, darkest behind the
+       headline, and fading to near-solid navy at the bottom edge. */
+    .hero-scrim {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(10, 20, 45, 0.6) 0%, rgba(10, 20, 45, 0.75) 100%);
-      z-index: 0;
+      z-index: -2;
+      background:
+        radial-gradient(70% 60% at 50% 50%, rgba(10, 20, 45, 0.55), rgba(10, 20, 45, 0.25) 70%),
+        linear-gradient(to bottom, rgba(10, 20, 45, 0.7) 0%, rgba(10, 20, 45, 0.35) 30%, rgba(10, 20, 45, 0.45) 65%, rgba(10, 20, 45, 0.92) 100%);
     }
+
+    /* The texture glow sits above the video but under the text. */
+    .hero.navy-texture::before { z-index: -1; opacity: 0.6; }
+    .hero.navy-texture::after { z-index: -1; }
 
     .hero-inner {
       position: relative;
-      z-index: 1;
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 8rem 5% 7rem;
+      padding: 9rem 5% 7rem;
       text-align: center;
-      animation: fadeUp 0.8s ease both;
-    }
-
-    .hero-glow {
-      display: none;
     }
 
     .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
       color: var(--accent);
-      font-weight: 700;
-      letter-spacing: 0.08em;
+      font-weight: 600;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      font-size: 0.85rem;
-      margin-bottom: 1.25rem;
+      font-size: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .eyebrow::before, .eyebrow::after {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.6;
     }
 
     .hero h1 {
-      font-size: clamp(2.2rem, 5vw, 3.6rem);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.5rem;
-      color: #ffffff;
+      font-size: clamp(2.5rem, 6.4vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.75rem;
+      color: #FFFFFF;
+      text-wrap: balance;
+      text-shadow: 0 2px 30px rgba(0, 0, 0, 0.25);
     }
 
     .hero h1 .highlight {
       color: var(--accent);
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
+    .subheadline {
+      max-width: 620px;
+      margin: 0 auto 2.5rem;
+      font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+      color: rgba(255, 255, 255, 0.86);
+      line-height: 1.6;
     }
 
-    .subheadline {
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.85);
-      margin-bottom: 0.75rem;
-      line-height: 1.6;
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .btn-hero {
+      padding: 1.15rem 2.4rem;
+      font-size: 1.08rem;
+      background: #FFFFFF;
+      color: var(--c-navy);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35), 0 0 0 6px rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-hero svg { transition: transform 0.35s var(--ease-out); }
+    .btn-hero:hover { box-shadow: 0 14px 50px rgba(0, 0, 0, 0.4), 0 0 0 10px rgba(255, 255, 255, 0.1); }
+    .btn-hero:hover svg { transform: translateX(4px); }
+    .btn-hero:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    .btn-hero.sheen::after { background: linear-gradient(110deg, transparent 30%, rgba(168, 197, 240, 0.55) 50%, transparent 70%); }
+
+    .hero-note {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .hero-proof {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2.75rem;
+      padding: 0.75rem 1.25rem 0.75rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      text-align: left;
+    }
+
+    .hero-avatars { display: flex; }
+
+    .hero-avatars span {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      margin-left: -10px;
+      border-radius: 50%;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--c-navy);
+      background: var(--accent);
+      border: 2px solid var(--c-ink-navy);
+    }
+
+    .hero-avatars span:first-child { margin-left: 0; }
+    .hero-avatars span:nth-child(2n) { background: #FFFFFF; }
+
+    .hero-proof blockquote {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.02rem;
+      color: #FFFFFF;
+    }
+
+    .hero-proof figcaption {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .scroll-cue {
+      position: absolute;
+      left: 50%;
+      bottom: 1.75rem;
+      width: 26px;
+      height: 42px;
+      margin-left: -13px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 999px;
+    }
+
+    .scroll-cue span {
+      position: absolute;
+      left: 50%;
+      top: 8px;
+      width: 4px;
+      height: 8px;
+      margin-left: -2px;
+      border-radius: 2px;
+      background: #FFFFFF;
+      animation: cue 1.8s var(--ease-out) infinite;
+    }
+
+    @keyframes cue {
+      0% { transform: translateY(0); opacity: 0; }
+      30% { opacity: 1; }
+      100% { transform: translateY(14px); opacity: 0; }
+    }
+
+    @media (max-width: 768px) {
+      .hero { min-height: 100svh; }
+      .hero-inner { padding: 7rem 6% 6rem; }
+      .hero-proof { border-radius: 20px; flex-direction: column; text-align: center; gap: 0.6rem; padding: 0.9rem 1.1rem; }
+      .scroll-cue { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scroll-cue span { animation: none; }
     }
 
     .hero-alt-cta {
@@ -526,7 +514,7 @@ const reviews = [
 
     .fork-section {
       background: var(--bg-secondary);
-      padding: 5.5rem 5%;
+      padding: var(--space-section) 5%;
       border-bottom: 1px solid rgba(168, 197, 240, 0.15);
     }
 
@@ -566,17 +554,22 @@ const reviews = [
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      background: var(--bg);
-      border: 2px solid rgba(168, 197, 240, 0.4);
-      border-radius: 20px;
-      padding: 2.5rem 2.25rem;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      /* Spotlight: --mx/--my follow the cursor (set by the page script), so a
+         soft blue light tracks the pointer across the card. */
+      background:
+        radial-gradient(420px circle at var(--mx, 50%) var(--my, -20%), rgba(91, 143, 212, 0.14), transparent 60%),
+        var(--bg);
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-lg);
+      padding: 2.75rem 2.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.5s var(--ease-out), box-shadow 0.5s ease, border-color 0.3s ease;
     }
 
     .fork-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--secondary);
-      box-shadow: 0 18px 44px rgba(27, 58, 107, 0.16);
+      transform: translateY(-8px);
+      border-color: rgba(91, 143, 212, 0.45);
+      box-shadow: var(--shadow-lg);
     }
 
     .fork-tag {
@@ -688,7 +681,7 @@ const reviews = [
     }
 
     .our-work-section {
-      padding: 5rem 5%;
+      padding: var(--space-section) 5%;
       background: var(--bg);
       text-align: center;
     }
@@ -725,8 +718,15 @@ const reviews = [
       background: none;
       cursor: pointer;
       line-height: 0;
-      border-radius: 12px;
+      border-radius: var(--r-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: box-shadow 0.5s ease, transform 0.6s var(--ease-out);
     }
+
+    .work-video-btn:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    .work-video-btn video { transition: transform 1.2s var(--ease-out); }
+    .work-video-btn:hover video { transform: scale(1.04); }
 
     .work-video-btn:focus-visible {
       outline: 3px solid var(--secondary);
@@ -761,8 +761,6 @@ const reviews = [
       height: 100%;
       display: block;
       object-fit: cover;
-      border-radius: 12px;
-      border: 1px solid rgba(168, 197, 240, 0.2);
     }
 
     /* Each clip keeps its own shape rather than being cropped to one tile ratio */
@@ -780,7 +778,7 @@ const reviews = [
     }
 
     .services-section, .results-section {
-      padding: 5rem 5%;
+      padding: var(--space-section) 5%;
     }
 
     .services-section {
@@ -850,27 +848,82 @@ const reviews = [
       color: rgba(26, 26, 46, 0.85);
     }
 
-    .review-grid {
-      column-count: 2;
-      column-gap: 2rem;
-      max-width: 1100px;
+    .review-marquee {
+      max-width: 1400px;
       margin: 3rem auto 0;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+      mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    }
+
+    .review-track {
+      display: flex;
+      width: max-content;
+      align-items: stretch;
+      padding: 1rem 0 2rem;
+      animation: marquee 80s linear infinite;
+    }
+
+    .review-marquee:hover .review-track,
+    .review-marquee:focus-within .review-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes marquee {
+      to { transform: translateX(-50%); }
     }
 
     .review-card {
-      break-inside: avoid;
-      margin: 0 0 2rem;
+      display: flex;
+      flex-direction: column;
+      width: 400px;
+      margin: 0 1.5rem 0 0;
       background: var(--bg);
-      border: 1px solid rgba(168, 197, 240, 0.15);
-      border-radius: 16px;
-      padding: 2.25rem;
-      margin: 0;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.4s var(--ease-out), box-shadow 0.4s ease;
     }
 
     .review-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(27, 58, 107, 0.35);
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .review-avatar {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, var(--c-blue), var(--c-navy));
+    }
+
+    @media (max-width: 768px) {
+      .review-marquee {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-mask-image: none;
+        mask-image: none;
+        scrollbar-width: none;
+        margin-left: -5vw;
+        margin-right: -5vw;
+      }
+      .review-marquee::-webkit-scrollbar { display: none; }
+      .review-track { animation: none; padding: 0.5rem 5vw 1.5rem; gap: 1rem; }
+      .review-card { width: 84vw; margin: 0; scroll-snap-align: center; }
+      .review-card[aria-hidden="true"] { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .review-marquee { overflow-x: auto; }
+      .review-track { animation: none; }
+      .review-card[aria-hidden="true"] { display: none; }
     }
 
     .review-stars {
@@ -889,27 +942,33 @@ const reviews = [
       line-height: 1.6;
       color: rgba(26, 26, 46, 0.85);
       margin: 0 0 1.5rem;
+      flex-grow: 1;
     }
 
     .review-author {
       display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
+      align-items: center;
+      gap: 0.85rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--c-line);
     }
 
     .review-name {
+      display: block;
       font-weight: 700;
       color: var(--primary);
     }
 
     .review-org {
-      font-size: 0.9rem;
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 500;
       color: rgba(26, 26, 46, 0.6);
     }
 
     .video-packages-section {
       background: var(--bg);
-      padding: 5rem 5%;
+      padding: var(--space-section) 5%;
     }
 
     .video-packages-inner {
@@ -946,20 +1005,23 @@ const reviews = [
     }
 
     .video-pkg-card {
-      background: var(--bg-secondary);
-      border: 1px solid rgba(168, 197, 240, 0.1);
-      border-radius: 16px;
+      background:
+        radial-gradient(360px circle at var(--mx, 50%) var(--my, -20%), rgba(91, 143, 212, 0.12), transparent 60%),
+        var(--bg-secondary);
+      border: 1px solid var(--c-line);
+      border-radius: var(--r-lg);
       padding: 2.25rem;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
-      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.5s var(--ease-out), border-color 0.3s ease, box-shadow 0.5s ease;
     }
 
     .video-pkg-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(168, 197, 240, 0.35);
-      box-shadow: 0 16px 40px rgba(27, 58, 107, 0.15);
+      transform: translateY(-8px);
+      border-color: rgba(91, 143, 212, 0.4);
+      box-shadow: var(--shadow-lg);
     }
 
     .video-pkg-card h3 {
@@ -997,405 +1059,71 @@ const reviews = [
       box-shadow: 0 8px 24px rgba(27, 58, 107, 0.2);
     }
 
-    .site-footer {
-      padding: 1.5rem 5% 1.25rem;
-      border-top: 1px solid rgba(168, 197, 240, 0.1);
-      text-align: center;
-    }
-
-    .footer-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .footer-links {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem 2rem;
-    }
-
-    .copyright {
-      color: rgba(26, 26, 46, 0.4);
-      font-size: 0.85rem;
-    }
-
-    /* --- What We Do journey map (normal document flow, no scroll pinning) --- */
-    .journey-section {
-      padding: 5rem 5%;
-      overflow-x: clip;
-    }
-
-    .journey-intro {
-      max-width: 720px;
-      margin: 0 auto 3rem;
-      text-align: center;
-    }
-
-    .journey-intro-lead {
-      font-size: clamp(1.05rem, 2vw, 1.3rem);
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.92);
-      font-weight: 600;
-    }
-
-    .journey-intro-kicker {
-      margin-top: 1rem;
-      font-family: var(--font-editorial);
-      font-style: italic;
-      font-weight: 400;
-      color: var(--accent);
-      font-size: 1.2rem;
-    }
-
-    .journey-map {
-      position: relative;
-      max-width: 900px;
-      width: 100%;
-      margin: 0 auto 3.5rem;
-      aspect-ratio: 1000 / 380;
-    }
-
-    .journey-world {
-      position: absolute;
-      inset: 0;
-    }
-
-    .journey-svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .route-bg, .route-trail, .route-progress {
-      fill: none;
-      stroke-width: 3;
-      stroke-linecap: round;
-    }
-
-    /* What's coming up: faint dashed route ahead */
-    .route-bg {
-      stroke: rgba(168, 197, 240, 0.14);
-      stroke-dasharray: 2 10;
-    }
-
-    /* What we passed: dim solid trail */
-    .route-trail {
-      stroke: rgba(168, 197, 240, 0.35);
-    }
-
-    /* Where we are: bright glowing head at the tip */
-    .route-progress {
-      stroke: var(--accent);
-      filter: drop-shadow(0 0 8px rgba(168, 197, 240, 0.85));
-    }
-
-    .journey-pin {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .pin-dot {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(27, 58, 107, 0.9);
-      border: 2px solid rgba(168, 197, 240, 0.35);
-      color: rgba(255, 255, 255, 0.5);
-      font-weight: 800;
-      font-family: var(--font-editorial);
-      font-size: 0.9rem;
-      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .pin-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.45);
-      transition: color 0.3s ease;
-      white-space: nowrap;
-    }
-
-    .journey-pin.reached .pin-dot {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: var(--primary);
-      box-shadow: 0 0 24px rgba(168, 197, 240, 0.6);
-    }
-
-    .journey-pin.reached .pin-label {
-      color: var(--accent);
-    }
-
-    .journey-flag {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.3rem;
-      color: var(--accent);
-      transform: translate(-85%, -110%) scale(0);
-      transform-origin: bottom right;
-      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .journey-flag.show {
-      transform: translate(-85%, -110%) scale(1.15);
-    }
-
-    .flag-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .journey-panels {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .journey-panel {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(168, 197, 240, 0.22);
-      border-radius: 18px;
-      padding: 1.75rem;
-      box-shadow: 0 12px 40px rgba(10, 20, 45, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    }
-
-    /* Reveal on scroll is opt-in from the script, so the cards stay
-       visible if JavaScript never runs. */
-    .journey-panels.js-reveal .journey-panel {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .journey-panels.js-reveal .journey-panel.revealed {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .journey-panel p {
-      color: rgba(255, 255, 255, 0.85);
-      line-height: 1.6;
-      font-weight: 500;
-    }
-
-    .journey-panel h3 {
-      color: var(--accent);
-      font-size: 1.35rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .journey-step {
-      font-family: var(--font-editorial);
-      font-style: italic;
-      font-weight: 400;
-      color: rgba(255, 255, 255, 0.6);
-      margin-bottom: 0.5rem;
-    }
-
-    .journey-destination {
-      margin-top: 0.75rem;
-      font-family: var(--font-editorial);
-      font-style: italic;
-      font-weight: 400;
-      font-size: 1.05rem;
-      color: var(--accent) !important;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .journey-panel, .pin-dot, .pin-label, .journey-pin .pin-dot {
-        transition: none;
-      }
-    }
-
     @media (max-width: 900px) {
       .our-work-grid { column-count: 2; }
     }
 
+    .work-more {
+      margin-top: 1rem;
+    }
+
     @media (max-width: 768px) {
-      .logo-img { height: 144px; }
-
-      .nav-toggle { display: flex; }
-
-      .nav-links {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--bg-secondary);
-        flex-direction: column;
-        gap: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-      }
-
-      .nav-links.open {
-        max-height: 400px;
-      }
-
-      .nav-links li {
-        width: 100%;
-        border-top: 1px solid rgba(168, 197, 240, 0.1);
-      }
-
-      .nav-links a {
-        display: block;
-        padding: 1rem 5%;
-      }
-
-      /* Hover cannot open a submenu on touch, so the arm links sit open
-         inside the collapsed menu instead of hiding behind :hover. */
-      .has-dropdown .dropdown {
-        display: flex;
-        position: static;
-        box-shadow: none;
-        border: none;
-        border-radius: 0;
-        background: rgba(168, 197, 240, 0.05);
-        padding: 0;
-        min-width: unset;
-      }
-
-      .dropdown li a { padding-left: 10%; }
-
+      /* Two narrow columns on phones: nine full-width clips in one column
+         was several screens of scrolling before the reviews. */
       .our-work-grid {
-        column-count: 1;
+        column-count: 2;
+        column-gap: 0.85rem;
       }
+
+      .work-item { margin-bottom: 1.1rem; gap: 0.5rem; }
+      .work-label { font-size: 0.72rem; }
 
       .card-grid {
         grid-template-columns: 1fr;
       }
 
-      .review-grid {
-        column-count: 1;
-      }
-
       .video-packages-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-inner {
-        padding: 4rem 5% 3rem;
-      }
-
-      .journey-section {
-        padding: 3.5rem 5%;
-      }
-
-      .pin-dot {
-        width: 28px;
-        height: 28px;
-        font-size: 0.75rem;
-      }
-
-      .pin-label {
-        font-size: 0.6rem;
-      }
-
-      .journey-panels {
         grid-template-columns: 1fr;
       }
     }
   </style>
 
   <script>
-    // The map draws itself once when it scrolls into view. The page scrolls
-    // normally; nothing is pinned and nothing is driven by scroll position.
-    const svg = document.querySelector('.journey-svg');
-    const progressPath = document.querySelector('.route-progress');
-    const trailPath = document.querySelector('.route-trail');
-    const mapEl = document.querySelector('.journey-map');
-    const flag = document.querySelector('.journey-flag');
-    const pins = [...document.querySelectorAll('.journey-pin')];
-    const panelWrap = document.querySelector('.journey-panels');
-    const panels = [...document.querySelectorAll('.journey-panel')];
+    import { reduced } from '../scripts/motion';
 
-    if (svg && progressPath && trailPath && mapEl) {
-      const pathLength = progressPath.getTotalLength();
-      // Bright head: a short glowing segment that rides the tip of the route
-      const HEAD_LEN = pathLength * 0.08;
-      const stopFractions = [0.001, 0.3, 0.6, 0.88];
+    // ----- Work clips: play only while on screen. Nothing downloads until a
+    // clip is near the viewport (preload="none" in the markup).
+    const lazyVideos = [...document.querySelectorAll<HTMLVideoElement>('video[data-lazy-play]')];
+    const heroVideo = document.querySelector<HTMLVideoElement>('[data-hero-video]');
 
-      trailPath.style.strokeDasharray = String(pathLength);
-      progressPath.style.strokeDasharray = `${HEAD_LEN} ${pathLength}`;
-
-      function placePins() {
-        const vb = svg.viewBox.baseVal;
-        pins.forEach((pin, i) => {
-          const pt = progressPath.getPointAtLength(stopFractions[i] * pathLength);
-          pin.style.left = (pt.x / vb.width) * 100 + '%';
-          pin.style.top = (pt.y / vb.height) * 100 + '%';
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+          const v = target as HTMLVideoElement;
+          if (document.fullscreenElement === v) return;
+          if (isIntersecting) v.play().catch(() => {});
+          else v.pause();
         });
-        if (flag) {
-          const end = progressPath.getPointAtLength(pathLength);
-          flag.style.left = (end.x / vb.width) * 100 + '%';
-          flag.style.top = (end.y / vb.height) * 100 + '%';
-        }
-      }
-      placePins();
-      window.addEventListener('resize', placePins);
+      }, { rootMargin: '200px 0px' });
+      lazyVideos.forEach(v => io.observe(v));
+      // The hero keeps looping while visible and stops burning battery after.
+      if (heroVideo && !reduced) io.observe(heroVideo);
+    } else {
+      lazyVideos.forEach(v => { v.preload = 'metadata'; v.autoplay = true; v.play().catch(() => {}); });
+    }
 
-      function draw(progress) {
-        const drawn = progress * pathLength;
-        trailPath.style.strokeDashoffset = String(pathLength - drawn);
-        progressPath.style.strokeDashoffset = String(HEAD_LEN - drawn);
-        pins.forEach((pin, i) => pin.classList.toggle('reached', progress >= stopFractions[i] - 0.05));
-        if (flag) flag.classList.toggle('show', progress >= 0.94);
-      }
+    // Reduced motion: hold the showreel on its poster frame.
+    if (reduced && heroVideo) { heroVideo.removeAttribute('autoplay'); heroVideo.pause(); }
 
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      if (reduceMotion || !('IntersectionObserver' in window)) {
-        draw(1);
-      } else {
-        draw(0);
-        if (panelWrap) panelWrap.classList.add('js-reveal');
-
-        const DURATION = 2200;
-        let started = false;
-        const mapObserver = new IntersectionObserver((entries) => {
-          if (started || !entries.some(e => e.isIntersecting)) return;
-          started = true;
-          mapObserver.disconnect();
-          const t0 = performance.now();
-          (function step(now) {
-            const t = Math.min(1, (now - t0) / DURATION);
-            const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-            draw(eased);
-            if (t < 1) requestAnimationFrame(step);
-          })(t0);
-        }, { threshold: 0.35 });
-        mapObserver.observe(mapEl);
-
-        const panelObserver = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-            entry.target.style.transitionDelay = (panels.indexOf(entry.target) % 2) * 0.1 + 's';
-            entry.target.classList.add('revealed');
-            panelObserver.unobserve(entry.target);
-          });
-        }, { threshold: 0.2 });
-        panels.forEach(p => panelObserver.observe(p));
-      }
+    // ----- Card spotlight: feeds the cursor position to the CSS gradient.
+    if (window.matchMedia('(hover: hover)').matches) {
+      document.querySelectorAll<HTMLElement>('.fork-card, .video-pkg-card').forEach(card => {
+        card.addEventListener('pointermove', (e) => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          card.style.setProperty('--my', `${e.clientY - r.top}px`);
+        });
+      });
     }
   </script>
 

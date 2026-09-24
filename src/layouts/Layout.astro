@@ -47,7 +47,22 @@ const businessSchema = {
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!--
+    Motion guard. Adds `motion` before first paint so scroll-reveal content is
+    hidden from the start instead of flashing in and out. Skipped for reduced
+    motion. If src/scripts/motion.ts has not run within 2.5s (blocked, slow,
+    broken) the class comes off and the page shows finished.
+  -->
+  <script is:inline>
+    (function () {
+      var d = document.documentElement;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      d.classList.add('motion');
+      setTimeout(function () { if (!window.__motionReady) d.classList.remove('motion'); }, 2500);
+    })();
+  </script>
 
   <!-- Google tag (gtag.js), only in production builds so dev traffic isn't counted -->
   {import.meta.env.PROD && (
@@ -105,6 +120,10 @@ const businessSchema = {
 </head>
 <body>
   <slot />
+  <script>
+    import '../scripts/motion';
+    import '../scripts/analytics';
+  </script>
 </body>
 
 <style is:global>
@@ -117,12 +136,127 @@ const businessSchema = {
     --font-impact: 'Archivo Black', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --font-editorial: 'Newsreader', Georgia, 'Times New Roman', serif;
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    /*
+      Design tokens. Pages still carry their own older variables (--primary,
+      --accent...) and move onto these as they are reworked. Prefixed `--c-`
+      so the two sets never collide during the move.
+    */
+    --c-navy: #1B3A6B;
+    --c-navy-deep: #0F2145;
+    --c-ink-navy: #0A142D;
+    --c-blue: #5B8FD4;
+    --c-sky: #A8C5F0;
+    --c-heading: #3A6DAE;   /* replaces #6B9FD4 (2.6:1), measures 4.9:1 on #F4F7FC */
+    --c-bg: #F4F7FC;
+    --c-surface: #FFFFFF;
+    --c-band: #E7EEF9;
+    --c-text: #1A1A2E;
+    --c-muted: rgba(26, 26, 46, 0.62);
+    --c-line: rgba(27, 58, 107, 0.1);
+
+    --r-sm: 10px;
+    --r-md: 16px;
+    --r-lg: 24px;
+
+    --shadow-sm: 0 1px 2px rgba(15, 33, 69, 0.06), 0 2px 8px rgba(15, 33, 69, 0.05);
+    --shadow-md: 0 2px 4px rgba(15, 33, 69, 0.04), 0 12px 32px rgba(15, 33, 69, 0.09);
+    --shadow-lg: 0 4px 8px rgba(15, 33, 69, 0.04), 0 24px 60px rgba(15, 33, 69, 0.14);
+
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+    --space-section: clamp(4.5rem, 9vw, 8rem);
+  }
+
+  /* ----- motion system (see src/scripts/motion.ts) ----- */
+  .motion [data-reveal],
+  .motion [data-stagger] > *,
+  .motion [data-split] {
+    visibility: hidden;
+  }
+
+  .split-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    /* room for descenders inside the mask */
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+  }
+
+  .split-word { display: inline-block; will-change: transform; }
+
+  html.menu-locked { overflow: hidden; }
+
+  /* Lenis smooth scroll, from lenis/dist/lenis.css (not exported by the package) */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+  .lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  /* Deliberately NOT carried over from lenis.css: `.lenis-smooth iframe
+     { pointer-events: none }`. That class stays on for the whole visit, so
+     it would make the Tally form on /intake impossible to click. */
+
+  /*
+    Premium texture for navy sections: film grain plus a slow drifting glow.
+    Add class="navy-texture" to a position:relative section; content inside
+    needs position:relative / z-index:1 to sit above it.
+  */
+  .navy-texture { position: relative; isolation: isolate; overflow: hidden; }
+  .navy-texture::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    z-index: -1;
+    background:
+      radial-gradient(40% 50% at 20% 30%, rgba(91, 143, 212, 0.35), transparent 70%),
+      radial-gradient(35% 45% at 80% 70%, rgba(168, 197, 240, 0.22), transparent 70%);
+    animation: glow-drift 18s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  .navy-texture::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  @keyframes glow-drift {
+    from { transform: translate3d(-4%, -2%, 0) scale(1); }
+    to { transform: translate3d(4%, 3%, 0) scale(1.08); }
+  }
+
+  /* Shared button sheen: a light sweep across on hover. Add class="sheen". */
+  .sheen { position: relative; overflow: hidden; isolation: isolate; }
+  .sheen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.8s var(--ease-out);
+  }
+  .sheen:hover::after { transform: translateX(120%); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .navy-texture::before { animation: none; }
+    .sheen::after { display: none; }
   }
 
   /* Newsreader carries an optical size axis. Letting the browser drive it is
      what keeps a 13px eyebrow and a 30px heading both looking correct. */
   html {
     font-optical-sizing: auto;
+  }
+
+  /* Pages reset their own elements, but body sits in this file, so its
+     default 8px margin used to frame every full-bleed section. */
+  body {
+    margin: 0;
   }
 
   /* Archivo Black has exactly one weight. Asking for a heavier one makes the

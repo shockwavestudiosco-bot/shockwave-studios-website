@@ -1,16 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import BottomCTA from '../components/BottomCTA.astro';
-import InstagramLink from '../components/InstagramLink.astro';
 import FullscreenVideo from '../components/FullscreenVideo.astro';
-const navLinks = [
-  { href: "/video-marketing", label: "Video Marketing" },
-  { href: "/video-production", label: "Video Production" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
-
 // Portfolio collection, self-hosted from public/videos/portfolio/.
 // Each entry needs a matching <slug>.mp4 and <slug>.jpg poster frame.
 // To add one: compress to 1080p under 20MB, drop both files in, add a line.
@@ -41,28 +34,7 @@ const portfolioVideos = [
   title="Portfolio | Shockwave Studios"
   description="See real social media content Shockwave Studios has produced for businesses in Melbourne, Florida."
 >
-  <header class="site-header">
-    <a href="/" class="logo-link" aria-label="Shockwave Studios home">
-      <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="logo-img" />
-    </a>
-    <nav class="nav">
-      <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-links">
-        <li class="has-dropdown">
-          <a href="/video-marketing">Services</a>
-          <ul class="dropdown">
-            <li><a href="/video-marketing">Video Marketing</a></li>
-            <li><a href="/video-production">Video Production</a></li>
-          </ul>
-        </li>
-        <li><a href="/portfolio">Portfolio</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <SiteHeader />
 
   <main>
     <section class="page-hero">
@@ -98,20 +70,7 @@ const portfolioVideos = [
     <BottomCTA text="Like what you see? Let's build something for your business." />
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <a href="/" class="logo-link" aria-label="Shockwave Studios home">
-        <img src="/shockwave-studios/logo.svg" alt="Shockwave Studios" class="footer-logo-img" />
-      </a>
-      <ul class="nav-links footer-links">
-        {navLinks.map(link => (
-          <li><a href={link.href}>{link.label}</a></li>
-        ))}
-      </ul>
-      <InstagramLink />
-    </div>
-    <p class="copyright">&copy; {new Date().getFullYear()} Shockwave Studios. Melbourne, Florida.</p>
-  </footer>
+  <SiteFooter />
 
 
   <style>
