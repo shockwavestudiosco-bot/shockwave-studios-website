@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import BottomCTA from '../components/BottomCTA.astro';
-import FullscreenVideo from '../components/FullscreenVideo.astro';
 import MobileStickyCTA from '../components/MobileStickyCTA.astro';
 import { CALENDLY_URL } from '../lib/site';
 
@@ -69,15 +68,22 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
           <source src="/videos/showreel-portrait.mp4" type="video/mp4" media="(max-width: 768px) and (orientation: portrait)" />
           <source src="/videos/showreel-landscape.mp4" type="video/mp4" />
         </video>
+        <script is:inline>
+          // Phones held upright get the vertical cut, so give them its poster too
+          // instead of a cropped wide frame while the video loads.
+          if (matchMedia("(max-width: 768px) and (orientation: portrait)").matches) {
+            document.querySelector("[data-hero-video]").poster = "/videos/showreel-portrait.jpg";
+          }
+        </script>
       </div>
       <div class="hero-scrim" aria-hidden="true"></div>
 
       <div class="hero-inner">
         <p class="eyebrow" data-reveal>Melbourne, Florida</p>
         <h1 data-split>Make Social Media Your <span class="highlight">#1 Source of Leads</span>.</h1>
-        <p class="subheadline" data-reveal data-reveal-delay="0.35">We handle the content, strategy, and automation so your social media works for you around the clock.</p>
+        <p class="subheadline" data-reveal data-reveal-delay="0.15">We handle the content, strategy, and automation so your social media works for you around the clock.</p>
 
-        <div class="hero-actions" data-reveal data-reveal-delay="0.5" data-sticky-after>
+        <div class="hero-actions" data-reveal data-reveal-delay="0.25" data-sticky-after>
           <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" class="btn btn-hero sheen" data-magnetic data-book="book_call_home_hero">
             Book a Free Call
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -88,7 +94,7 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
         <!-- Proof at the point of decision. Verbatim from Charlie Murray's
              review below. No star count or review total on purpose: the
              "5.0 stars from 4 reviews" line was removed on 2026-09-03. -->
-        <figure class="hero-proof" data-reveal data-reveal-delay="0.7">
+        <figure class="hero-proof" data-reveal data-reveal-delay="0.35">
           <div class="hero-avatars" aria-hidden="true">
             {reviews.map(r => <span>{initials(r.name)}</span>)}
           </div>
@@ -109,7 +115,7 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
     <section class="fork-section" id="fork">
       <div class="fork-inner">
         <p class="fork-question" data-split>Are you here for video marketing, or video production?</p>
-        <p class="fork-sub" data-reveal data-reveal-delay="0.3">Two different doors. Pick the one that sounds like you.</p>
+        <p class="fork-sub" data-reveal data-reveal-delay="0.15">Two different doors. Pick the one that sounds like you.</p>
 
         <div class="fork-grid" data-stagger>
           <a href="/video-marketing" class="fork-card" data-track="fork_click" data-track-label="video_marketing">
@@ -152,11 +158,13 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
       <div class="our-work-grid" data-stagger>
         {workVideos.map(v => (
           <div class="work-item">
-            <button type="button" class={`work-video-btn fs-video ${v.orientation}`} aria-label={`Play ${v.label} full screen`}>
-              <!-- No autoplay: the page script plays each clip only while it
-                   is on screen, so nothing downloads until it is needed. -->
-              <video muted loop playsinline preload="none" data-loop="true" data-lazy-play poster={`/videos/portfolio/${v.slug}.jpg`}>
-                <source src={`/videos/portfolio/${v.slug}.mp4`} type="video/mp4" />
+            <button type="button" class="work-video-btn" data-full={`/videos/portfolio/${v.slug}.mp4`} data-full-poster={`/videos/portfolio/${v.slug}.jpg`} aria-label={`Play ${v.label} with sound`}>
+              <!-- Tiles loop a 6s, ~350KB preview from public/videos/previews
+                   (480x600, no audio). The full clip, 8-17MB, only loads when
+                   the tile is tapped. The page script plays previews only
+                   while on screen. -->
+              <video muted loop playsinline preload="none" data-lazy-play poster={`/videos/previews/${v.slug}.jpg`}>
+                <source src={`/videos/previews/${v.slug}.mp4`} type="video/mp4" />
               </video>
               <span class="work-expand" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
@@ -221,6 +229,16 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
   </main>
 
   <MobileStickyCTA />
+
+  <!-- In-page player for the work tiles. A modal rather than the Fullscreen
+       API: iPhones only allow fullscreen on a video that has already loaded,
+       and the tiles hold previews, not the full clip. -->
+  <div class="lightbox" data-lightbox hidden role="dialog" aria-modal="true" aria-label="Video player">
+    <button type="button" class="lightbox-close" data-lightbox-close aria-label="Close video">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+    <video class="lightbox-video" controls playsinline preload="none" data-lenis-prevent></video>
+  </div>
 
   <SiteFooter />
 
@@ -716,20 +734,24 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
       letter-spacing: 0.06em;
     }
 
+    /* A plain grid of same-shape tiles. This used to be a CSS multi-column
+       masonry, which iPhone Safari mis-renders while items animate in: gaps,
+       labels painted over the next video, and the portfolio button landing
+       in the wrong place. Equal tiles cannot do any of that. */
     .our-work-grid {
-      column-count: 3;
-      column-gap: 2rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2rem 1.75rem;
       max-width: 1100px;
-      margin: 0 auto;
+      margin: 0 auto 2.5rem;
       text-align: left;
     }
 
     .work-item {
-      break-inside: avoid;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
-      margin: 0 0 2rem;
+      min-width: 0;
     }
 
     .work-video-btn {
@@ -747,9 +769,13 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
       transition: box-shadow 0.5s ease, transform 0.6s var(--ease-out);
     }
 
-    .work-video-btn:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    /* Hover effects only where hovering exists: on touch screens a tap leaves
+       :hover stuck on, which left tiles lifted and zoomed. */
+    @media (hover: hover) {
+      .work-video-btn:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+      .work-video-btn:hover video { transform: scale(1.04); }
+    }
     .work-video-btn video { transition: transform 1.2s var(--ease-out); }
-    .work-video-btn:hover video { transform: scale(1.04); }
 
     .work-video-btn:focus-visible {
       outline: 3px solid var(--secondary);
@@ -786,9 +812,9 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
       object-fit: cover;
     }
 
-    /* Each clip keeps its own shape rather than being cropped to one tile ratio */
-    .work-video-btn.portrait { aspect-ratio: 9 / 16; }
-    .work-video-btn.landscape { aspect-ratio: 16 / 9; }
+    /* Every tile is the same 4:5 shape; wide clips crop to their centre here
+       and play uncropped when tapped full screen. */
+    .work-video-btn { aspect-ratio: 4 / 5; }
 
     .work-label {
       font-family: var(--font-body);
@@ -1083,22 +1109,14 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
     }
 
     @media (max-width: 900px) {
-      .our-work-grid { column-count: 2; }
-    }
-
-    .work-more {
-      margin-top: 1rem;
+      .our-work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem 1rem; }
+      /* Two columns: show eight so the last row is never a lone tile. */
+      .work-item:nth-child(9) { display: none; }
     }
 
     @media (max-width: 768px) {
-      /* Two narrow columns on phones: nine full-width clips in one column
-         was several screens of scrolling before the reviews. */
-      .our-work-grid {
-        column-count: 2;
-        column-gap: 0.85rem;
-      }
-
-      .work-item { margin-bottom: 1.1rem; gap: 0.5rem; }
+      .our-work-grid { gap: 1.1rem 0.75rem; }
+      .work-item { gap: 0.45rem; }
       .work-label { font-size: 0.78rem; letter-spacing: 0.03em; }
       .fork-tag { font-size: 0.75rem; }
       .video-pkg-card { padding: 1.6rem; }
@@ -1111,6 +1129,50 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
         grid-template-columns: 1fr;
       }
     }
+    /* ---------- in-page video player ---------- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4.5rem 1rem 2rem;
+      background: rgba(6, 12, 28, 0.94);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .lightbox[hidden] { display: none; }
+    .lightbox.is-open { opacity: 1; }
+
+    .lightbox-video {
+      max-width: min(100%, 1100px);
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      border-radius: var(--r-md);
+      background: #000;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: max(1rem, env(safe-area-inset-top));
+      right: 1rem;
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      cursor: pointer;
+    }
+
+    .lightbox-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
   </style>
 
   <script>
@@ -1121,15 +1183,29 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
     const lazyVideos = [...document.querySelectorAll<HTMLVideoElement>('video[data-lazy-play]')];
     const heroVideo = document.querySelector<HTMLVideoElement>('[data-hero-video]');
 
+    // Which videos are on screen right now. Only these play: phones start
+    // refusing or stuttering when many videos decode at once.
+    const onScreen = new Set<HTMLVideoElement>();
+
+    // play() can be refused (iPhone Low Power Mode, a slow network, coming
+    // back from another app). Muted inline video is always allowed after a
+    // touch, so every refusal gets retried on the next interaction.
+    const tryPlay = (v: HTMLVideoElement) => {
+      if (!v.paused || document.fullscreenElement === v) return;
+      if (v.readyState === 0 && v.preload === 'none') v.preload = 'auto';
+      v.play().catch(() => {});
+    };
+    const retryVisible = () => onScreen.forEach(tryPlay);
+
     if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {
         entries.forEach(({ target, isIntersecting }) => {
           const v = target as HTMLVideoElement;
           if (document.fullscreenElement === v) return;
-          if (isIntersecting) v.play().catch(() => {});
-          else v.pause();
+          if (isIntersecting) { onScreen.add(v); tryPlay(v); }
+          else { onScreen.delete(v); v.pause(); }
         });
-      }, { rootMargin: '200px 0px' });
+      }, { threshold: 0.2 });
       lazyVideos.forEach(v => io.observe(v));
       // The hero keeps looping while visible and stops burning battery after.
       if (heroVideo && !reduced) io.observe(heroVideo);
@@ -1137,8 +1213,55 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
       lazyVideos.forEach(v => { v.preload = 'metadata'; v.autoplay = true; v.play().catch(() => {}); });
     }
 
+    ['touchstart', 'touchend', 'click', 'scroll', 'keydown'].forEach(evt =>
+      window.addEventListener(evt, retryVisible, { passive: true }));
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) retryVisible(); });
+    window.addEventListener('pageshow', retryVisible); // back button restores a frozen page
+    heroVideo?.addEventListener('canplay', () => { if (heroVideo && onScreen.has(heroVideo)) tryPlay(heroVideo); });
+
     // Reduced motion: hold the showreel on its poster frame.
-    if (reduced && heroVideo) { heroVideo.removeAttribute('autoplay'); heroVideo.pause(); }
+    if (reduced && heroVideo) { heroVideo.removeAttribute('autoplay'); heroVideo.pause(); onScreen.delete(heroVideo); }
+
+    // ----- Work tiles open the full clip, with sound, in the in-page player.
+    // The tap is the user gesture that lets it play unmuted, even in iPhone
+    // Low Power Mode.
+    const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
+    const lbVideo = lightbox?.querySelector<HTMLVideoElement>('video');
+    let lastTile: HTMLElement | null = null;
+
+    const closeLightbox = () => {
+      if (!lightbox || !lbVideo || lightbox.hidden) return;
+      lbVideo.pause();
+      lbVideo.removeAttribute('src');
+      lbVideo.load();
+      lightbox.classList.remove('is-open');
+      lightbox.hidden = true;
+      document.documentElement.classList.remove('menu-locked');
+      window.dispatchEvent(new CustomEvent('scroll-unlock'));
+      lastTile?.focus();
+    };
+
+    document.querySelectorAll<HTMLElement>('.work-video-btn[data-full]').forEach(tile => {
+      tile.addEventListener('click', () => {
+        if (!lightbox || !lbVideo) return;
+        lastTile = tile;
+        lbVideo.poster = tile.dataset.fullPoster || '';
+        lbVideo.src = tile.dataset.full || '';
+        lbVideo.muted = false;
+        lightbox.hidden = false;
+        requestAnimationFrame(() => lightbox.classList.add('is-open'));
+        document.documentElement.classList.add('menu-locked');
+        window.dispatchEvent(new CustomEvent('scroll-lock'));
+        lbVideo.play().catch(() => {});
+        lightbox.querySelector<HTMLElement>('[data-lightbox-close]')?.focus();
+      });
+    });
+
+    lightbox?.addEventListener('click', (e) => {
+      const t = e.target as HTMLElement;
+      if (t === lightbox || t.closest('[data-lightbox-close]')) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
     // ----- Card spotlight: feeds the cursor position to the CSS gradient.
     if (window.matchMedia('(hover: hover)').matches) {
@@ -1152,5 +1275,4 @@ const initials = (name: string) => name.split(/\s+/).slice(0, 2).map(w => w[0]).
     }
   </script>
 
-  <FullscreenVideo />
 </Layout>

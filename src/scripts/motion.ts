@@ -30,7 +30,7 @@ const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matc
 const EASE = 'expo.out';
 
 /**
- * Runs `fn` once `el` reaches 90% of the way down the viewport, or is already
+ * Runs `fn` once `el` peeks in at the bottom of the viewport, or is already
  * above that line. Measured live on every scroll frame instead of from cached
  * trigger positions: cached positions went stale when the page height shifted
  * on phones and left sections permanently invisible, and a fast fling past an
@@ -41,7 +41,8 @@ let ticking = false;
 
 function checkPending() {
   ticking = false;
-  const line = window.innerHeight * 0.9;
+  // Start as soon as the element peeks in, so nothing looks late.
+  const line = window.innerHeight * 0.98;
   for (const [el, fn] of pending) {
     if (el.getBoundingClientRect().top < line) { pending.delete(el); fn(); }
   }
@@ -95,9 +96,9 @@ function onEnter(el: Element, fn: () => void) {
 
 function initReveal() {
   gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((el) => {
-    gsap.set(el, { autoAlpha: 0, y: 36 });
+    gsap.set(el, { autoAlpha: 0, y: 20 });
     onEnter(el, () =>
-      gsap.to(el, { autoAlpha: 1, y: 0, duration: 1.1, ease: EASE, delay: parseFloat(el.dataset.revealDelay || '0') })
+      gsap.to(el, { autoAlpha: 1, y: 0, duration: 0.7, ease: EASE, delay: parseFloat(el.dataset.revealDelay || '0') })
     );
   });
 }
@@ -105,9 +106,9 @@ function initReveal() {
 function initStagger() {
   gsap.utils.toArray<HTMLElement>('[data-stagger]').forEach((wrap) => {
     const kids = [...wrap.children] as HTMLElement[];
-    gsap.set(kids, { autoAlpha: 0, y: 40 });
+    gsap.set(kids, { autoAlpha: 0, y: 24 });
     gsap.set(wrap, { autoAlpha: 1 });
-    onEnter(wrap, () => gsap.to(kids, { autoAlpha: 1, y: 0, duration: 1, ease: EASE, stagger: 0.09 }));
+    onEnter(wrap, () => gsap.to(kids, { autoAlpha: 1, y: 0, duration: 0.7, ease: EASE, stagger: 0.05 }));
   });
 }
 
@@ -149,7 +150,7 @@ function initSplit() {
     words.forEach((w) => w.setAttribute('aria-hidden', 'true'));
     gsap.set(words, { yPercent: 115 });
     gsap.set(el, { autoAlpha: 1 });
-    const play = () => gsap.to(words, { yPercent: 0, duration: 1.15, ease: EASE, stagger: 0.055, delay: parseFloat(el.dataset.splitDelay || '0') });
+    const play = () => gsap.to(words, { yPercent: 0, duration: 0.8, ease: EASE, stagger: 0.035, delay: parseFloat(el.dataset.splitDelay || '0') });
     onEnter(el, play);
   });
 }
